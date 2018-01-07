@@ -21,11 +21,20 @@ class App extends Component {
     const script = document.createElement("script");
     script.src = "https://labeling-api-nmntfiowht.now.sh";
     script.async = true;
-    script.onload = () => {
+    script.onload = () => this.next();
+    document.body.appendChild(script);
+  }
+
+  next(label){
+    const getNext = () => {
       window.Labelbox.fetchNextAssetToLabel()
         .then((imageUrl) => this.setState({imageUrl}));
-    };
-    document.body.appendChild(script);
+    }
+    if (label) {
+      window.Labelbox.setLabelForAsset(label).then(getNext);
+    } else {
+      getNext();
+    }
   }
 
   render() {
@@ -34,7 +43,11 @@ class App extends Component {
         <div className="app">
           <div className="content">
             <div className="labeling-frame">
-              <LabelingScreen imageUrl={this.state && this.state.imageUrl}/>
+              <LabelingScreen
+                imageUrl={this.state && this.state.imageUrl}
+                onSkip={() => this.next()}
+                onSubmit={(label) => this.next(label)}
+              />
             </div>
           </div>
         </div>
