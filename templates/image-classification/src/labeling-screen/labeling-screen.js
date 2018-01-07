@@ -9,6 +9,16 @@ export class LabelingScreen extends Component {
       return (<div>Loading...</div>);
     }
 
+    const onSubmit = (label) => {
+      this.props.onSubmit(this.state.label)
+      this.setState({label: undefined})
+    }
+
+    const onSkip = () => {
+      this.props.onSkip()
+      this.setState({label: undefined})
+    }
+
     return (
       <div>
         <div>
@@ -22,8 +32,13 @@ export class LabelingScreen extends Component {
             />
           </div>
           <div className="form-buttons">
-            <Button>Skip</Button>
-            <Button raised={true} color="primary" disabled={!this.state || !this.state.label}>Submit</Button>
+            <Button onClick={onSkip}>Skip</Button>
+            <Button
+              raised={true}
+              color="primary"
+              disabled={!this.state || !this.state.label}
+              onClick={onSubmit}
+            >Submit</Button>
           </div>
         </div>
       </div>
