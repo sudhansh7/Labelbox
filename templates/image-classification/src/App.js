@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import ClassificationForm from './classification-options';
-import Button from 'material-ui/Button';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
+import { LabelingScreen } from './labeling-screen/labeling-screen';
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -16,28 +15,26 @@ export const theme = createMuiTheme({
 });
 
 class App extends Component {
+
+  // The embedded api script will soon be a npm package
+  componentWillMount () {
+    const script = document.createElement("script");
+    script.src = "https://labeling-api-nmntfiowht.now.sh";
+    script.async = true;
+    script.onload = () => {
+      console.log(window.Labelbox);
+    };
+    document.body.appendChild(script);
+  }
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
           <div className="content">
-
             <div className="labeling-frame">
-              <div>
-                <img src="https://electrek.files.wordpress.com/2016/06/tesla-model-3-silver-prototype-promo-shot-headlands.jpg?quality=82&strip=all&w=1600" alt="classify-data" />
-              </div>
-              <div className="form-controls">
-                <div className="classification">
-                  <ClassificationForm />
-                </div>
-                <div className="form-buttons">
-                  <Button>Skip</Button>
-                  <Button raised={true} color="primary">Submit</Button>
-                </div>
-              </div>
-
+              <LabelingScreen imageUrl={"https://electrek.files.wordpress.com/2016/06/tesla-model-3-silver-prototype-promo-shot-headlands.jpg?quality=82&strip=all&w=1600"}/>
             </div>
-
           </div>
         </div>
       </MuiThemeProvider>
