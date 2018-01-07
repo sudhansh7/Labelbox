@@ -1,22 +1,11 @@
 import React, { Component } from 'react';
 import ClassificationForm from './classification-options';
-import PropTypes from 'prop-types';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
-
-const styles = theme => ({
-  card: {
-    maxHeight: '80vh',
-  },
-});
 
 export class LabelingScreen extends Component {
   state = {}
   render() {
-
-    const bull = <span>•</span>;
-
     if (!this.props.imageUrl) {
       return (<div>Loading...</div>);
     }
