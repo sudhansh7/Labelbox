@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ClassificationForm from './classification-options';
+import Button from 'material-ui/Button';
 
 class App extends Component {
   render() {
@@ -13,10 +14,12 @@ class App extends Component {
               <img src="https://electrek.files.wordpress.com/2016/06/tesla-model-3-silver-prototype-promo-shot-headlands.jpg?quality=82&strip=all&w=1600" alt="classify-data" />
             </div>
             <div className="form-controls">
-              <ClassificationForm />
+              <div className="classification">
+                <ClassificationForm />
+              </div>
               <div className="form-buttons">
-                <button>Skip</button>
-                <button>Submit</button>
+                <Button>Skip</Button>
+                <Button raised={true} color="primary">Submit</Button>
               </div>
             </div>
 
