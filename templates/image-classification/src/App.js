@@ -22,7 +22,8 @@ class App extends Component {
     script.src = "https://labeling-api-nmntfiowht.now.sh";
     script.async = true;
     script.onload = () => {
-      console.log(window.Labelbox);
+      window.Labelbox.fetchNextAssetToLabel()
+        .then((imageUrl) => this.setState({imageUrl}));
     };
     document.body.appendChild(script);
   }
@@ -33,7 +34,7 @@ class App extends Component {
         <div className="app">
           <div className="content">
             <div className="labeling-frame">
-              <LabelingScreen imageUrl={"https://electrek.files.wordpress.com/2016/06/tesla-model-3-silver-prototype-promo-shot-headlands.jpg?quality=82&strip=all&w=1600"}/>
+              <LabelingScreen imageUrl={this.state && this.state.imageUrl}/>
             </div>
           </div>
         </div>

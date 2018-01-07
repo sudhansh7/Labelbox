@@ -3,6 +3,10 @@ import Button from 'material-ui/Button';
 import ClassificationForm from './classification-options';
 
 export function LabelingScreen(props) {
+  if (!props.imageUrl) {
+    return (<div>Loading...</div>);
+  }
+
   return (
     <div>
       <div>
