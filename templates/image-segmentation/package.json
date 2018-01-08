@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "leaflet": "^1.2.0",
+    "leaflet-draw": "^0.4.13",
     "material-ui": "^1.0.0-beta.27",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
