@@ -35,8 +35,27 @@ export class SegmentImage extends Component {
     });
     const bounds = [[0,0], [height,width]];
     const image = L.imageOverlay(imageUrl, bounds).addTo(map);
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
     map.fitBounds(bounds);
     map.setZoom(-1)
+
+		map.on(L.Draw.Event.CREATED, function (e) {
+			const type = e.layerType;
+			const layer = e.layer;
+      console.log(layer.getLatLngs())
+			drawnItems.addLayer(layer);
+		});
+
+		map.on(L.Draw.Event.EDITED, function (e) {
+      console.log('Edits', e);
+		  /* var layers = e.layers;*/
+		  /* var countOfEditedLayers = 0;*/
+		  /* layers.eachLayer(function (layer) {*/
+		  /* countOfEditedLayers++;*/
+		  /* });*/
+		  /* console.log("Edited " + countOfEditedLayers + " layers");*/
+		});
 
     this.props.drawPolygonFunction(() => {
       const polygon = new L.Draw.Polygon(map);
