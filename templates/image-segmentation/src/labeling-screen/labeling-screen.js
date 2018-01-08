@@ -13,14 +13,8 @@ export class LabelingScreen extends Component {
     }
 
     const onSubmit = (label) => {
-      // this.props.onSubmit(this.state.label);
-      // this.setState({label: undefined});
-      console.log(this.state.segmentation);
-    };
-
-    const onSkip = () => {
-      this.props.onSkip();
-      this.setState({label: undefined});
+      this.props.onSubmit(JSON.stringify(this.state.segmentation));
+      this.setState({segmentation: undefined});
     };
 
     return (
