@@ -19,7 +19,7 @@ class App extends Component {
   // The embedded api script will soon be a npm package
   componentWillMount () {
     const script = document.createElement("script");
-    script.src = "https://labeling-api-nmntfiowht.now.sh";
+    script.src = "https://api.labelbox.io";
     script.async = true;
     script.onload = () => this.next();
     document.body.appendChild(script);
@@ -29,7 +29,7 @@ class App extends Component {
     const getNext = () => {
       window.Labelbox.fetchNextAssetToLabel()
         .then((imageUrl) => this.setState({imageUrl}));
-    }
+    };
     if (label) {
       window.Labelbox.setLabelForAsset(label).then(getNext);
     } else {

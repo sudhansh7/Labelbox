@@ -21,21 +21,30 @@ function getSizeOnImage(url) {
 }
 
 export class SegmentImage extends Component {
-  componentDidMount(){
-    const { imageUrl } = this.props;
-    getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
+  componentWillUpdate(newProps){
+    const { imageUrl } = newProps;
+    if (imageUrl !== this.props.imageUrl) {
+      this.drawnItems.getLayers().forEach((layer) => layer.remove());
+      this.drawnOverlay.remove();
+      getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
+    }
   }
 
-  drawMap({imageUrl, width, height}) {
-    const map = L.map('map', {
+  componentDidMount(){
+    this.map = L.map('map', {
       crs: L.CRS.Simple,
       minZoom: -5,
       attributionControl: false,
       zoomControl: false
     });
+    const { imageUrl } = this.props;
+    getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
+  }
+
+  drawMap({imageUrl, width, height}) {
     const bounds = [[0,0], [height,width]];
-    const image = L.imageOverlay(imageUrl, bounds).addTo(map);
-    const drawnItems = new L.FeatureGroup();
+    this.drawnOverlay = L.imageOverlay(imageUrl, bounds).addTo(this.map);
+    this.drawnItems = new L.FeatureGroup();
     const drawControl = new L.Control.Draw({
       position: 'topright',
       draw: {
@@ -47,19 +56,19 @@ export class SegmentImage extends Component {
         marker: false
       },
       edit: {
-        featureGroup: drawnItems,
+        featureGroup: this.drawnItems,
         remove: true
       }
     });
-    map.addControl(drawControl);
-    map.addLayer(drawnItems);
-    map.fitBounds(bounds);
-    map.setZoom(-1);
+    this.map.addControl(drawControl);
+    this.map.addLayer(this.drawnItems);
+    this.map.fitBounds(bounds);
+    this.map.setZoom(-1);
 
-		map.on(L.Draw.Event.CREATED, (e) => {
-			drawnItems.addLayer(e.layer);
+		this.map.on(L.Draw.Event.CREATED, (e) => {
+			this.drawnItems.addLayer(e.layer);
       const toPixelLocation = ({lat, lng}) => ({y: lat, x: lng});
-      const segmentation = drawnItems.getLayers()
+      const segmentation = this.drawnItems.getLayers()
         .map((layer) => layer.getLatLngs())
         .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
       this.props.updateLabel(segmentation);
