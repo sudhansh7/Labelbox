@@ -36,14 +36,30 @@ export class SegmentImage extends Component {
     const bounds = [[0,0], [height,width]];
     const image = L.imageOverlay(imageUrl, bounds).addTo(map);
     const drawnItems = new L.FeatureGroup();
+    const drawControl = new L.Control.Draw({
+      position: 'topright',
+      draw: {
+        polyline: false,
+        polygon: true,
+        rectangle: true,
+        circle: false,
+        circlemarker: false,
+        marker: false
+      },
+      edit: {
+        featureGroup: drawnItems,
+        remove: true
+      }
+    });
+    map.addControl(drawControl);
     map.addLayer(drawnItems);
     map.fitBounds(bounds);
-    map.setZoom(-1)
+    map.setZoom(-1);
 
 		map.on(L.Draw.Event.CREATED, function (e) {
 			const type = e.layerType;
 			const layer = e.layer;
-      console.log(layer.getLatLngs())
+      console.log(layer.getLatLngs());
 			drawnItems.addLayer(layer);
 		});
 
@@ -56,16 +72,6 @@ export class SegmentImage extends Component {
 		  /* });*/
 		  /* console.log("Edited " + countOfEditedLayers + " layers");*/
 		});
-
-    this.props.drawPolygonFunction(() => {
-      const polygon = new L.Draw.Polygon(map);
-      polygon.enable()
-    });
-
-    this.props.drawRectangleFunction(() => {
-      const rectangle = new L.Draw.Rectangle(map);
-      rectangle.enable()
-    });
   }
 
 

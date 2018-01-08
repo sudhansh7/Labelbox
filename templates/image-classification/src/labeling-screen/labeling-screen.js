@@ -38,7 +38,6 @@ export class LabelingScreen extends Component {
           </div>
         </CardContent>
         <CardActions style={{justifyContent: 'flex-end'}}>
-          <Button onClick={onSkip}>Skip</Button>
           <Button
             raised={true}
             color="primary"

@@ -37,23 +37,10 @@ export class LabelingScreen extends Component {
             />
           </div>
           <div className="form-controls">
-            <div className="classification">
-              <div>Outline the car using the polygon tool</div>
-              <div>
-                <Button onClick={() => drawPolygon()} color="primary" dense>
-                  <img src={polygonIcon} width="30px"/>
-                </Button>
-                <Button onClick={() => drawRectangle()} color="primary" dense>
-                  <img src={rectangleIcon} width="30px"/>
-                </Button>
-              </div>
-            </div>
-            <div className="form-buttons">
-            </div>
+            <div>Outline the car using the polygon tool</div>
           </div>
         </CardContent>
         <CardActions style={{justifyContent: 'flex-end'}}>
-          <Button onClick={onSkip}>Skip</Button>
           <Button
             raised={true}
             color="primary"

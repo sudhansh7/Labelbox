@@ -9,23 +9,3 @@
 .labeling-frame {
   width: 75vh;
 }
-
-.form-controls {
-  display: flex;
-  flex-grow: 1;
-  padding: 20px 10px;
-}
-
-@media screen and (max-width: 480px) {
-  .form-controls {
-    padding: 5px 10px;
-    margin: 5px;
-  }
-}
-
-.classification {
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  align-items: center;
-}
