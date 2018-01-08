@@ -37,7 +37,16 @@ export class SegmentImage extends Component {
     const image = L.imageOverlay(imageUrl, bounds).addTo(map);
     map.fitBounds(bounds);
     map.setZoom(-1)
-    console.log(map)
+
+    this.props.drawPolygonFunction(() => {
+      const polygon = new L.Draw.Polygon(map);
+      polygon.enable()
+    });
+
+    this.props.drawRectangleFunction(() => {
+      const rectangle = new L.Draw.Rectangle(map);
+      rectangle.enable()
+    });
   }
 
 

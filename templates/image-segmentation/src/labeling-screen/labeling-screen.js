@@ -21,18 +21,24 @@ export class LabelingScreen extends Component {
       this.setState({label: undefined});
     };
 
+    let drawPolygon;
+    let drawRectangle;
+
     return (
       <Card>
         <CardContent>
           <div>
-            <SegmentImage imageUrl={this.props.imageUrl} style={{width: '100%'}} />
+            <SegmentImage
+              imageUrl={this.props.imageUrl}
+              style={{width: '100%'}}
+              drawPolygonFunction={(drawPolygonFunc) => drawPolygon = drawPolygonFunc}
+              drawRectangleFunction={(drawRectangleFunc) => drawRectangle = drawRectangleFunc}
+            />
           </div>
           <div className="form-controls">
             <div className="classification">
-              <ClassificationForm
-                value={this.state.label || ''}
-                onSelect={(label) => this.setState({label})}
-              />
+              <Button onClick={() => drawPolygon()} color="primary">Polygon</Button>
+              <Button onClick={() => drawRectangle()} color="primary">Rectangle</Button>
             </div>
             <div className="form-buttons">
             </div>
