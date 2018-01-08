@@ -37,13 +37,6 @@ export class SegmentImage extends Component {
       attributionControl: false,
       zoomControl: false
     });
-    const { imageUrl } = this.props;
-    getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
-  }
-
-  drawMap({imageUrl, width, height}) {
-    const bounds = [[0,0], [height,width]];
-    this.drawnOverlay = L.imageOverlay(imageUrl, bounds).addTo(this.map);
     this.drawnItems = new L.FeatureGroup();
     const drawControl = new L.Control.Draw({
       position: 'topright',
@@ -61,6 +54,13 @@ export class SegmentImage extends Component {
       }
     });
     this.map.addControl(drawControl);
+    const { imageUrl } = this.props;
+    getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
+  }
+
+  drawMap({imageUrl, width, height}) {
+    const bounds = [[0,0], [height,width]];
+    this.drawnOverlay = L.imageOverlay(imageUrl, bounds).addTo(this.map);
     this.map.addLayer(this.drawnItems);
     this.map.fitBounds(bounds);
     this.map.setZoom(-1);
