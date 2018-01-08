@@ -24,7 +24,7 @@ export class LabelingScreen extends Component {
       <Card>
         <CardContent>
           <div>
-            <img src={this.props.imageUrl} alt="classify-data" />
+            <img src={this.props.imageUrl} alt="classify-data" style={{width: '100%'}}/>
           </div>
           <div className="form-controls">
             <div className="classification">

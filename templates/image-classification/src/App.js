@@ -41,14 +41,12 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
-          <div className="content">
-            <div className="labeling-frame">
-              <LabelingScreen
-                imageUrl={this.state && this.state.imageUrl}
-                onSkip={() => this.next()}
-                onSubmit={(label) => this.next(label)}
-              />
-            </div>
+          <div className="labeling-frame">
+            <LabelingScreen
+              imageUrl={this.state && this.state.imageUrl}
+              onSkip={() => this.next()}
+              onSubmit={(label) => this.next(label)}
+            />
           </div>
         </div>
       </MuiThemeProvider>
