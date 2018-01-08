@@ -19,7 +19,7 @@ class App extends Component {
   // The embedded api script will soon be a npm package
   componentWillMount () {
     const script = document.createElement("script");
-    script.src = "https://api.labelbox.io";
+    script.src = "https://storage.googleapis.com/labelbox-api/client/v0.1/labeling-api.js";
     script.async = true;
     script.onload = () => this.next();
     document.body.appendChild(script);
