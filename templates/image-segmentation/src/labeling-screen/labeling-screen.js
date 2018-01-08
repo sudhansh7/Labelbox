@@ -13,17 +13,15 @@ export class LabelingScreen extends Component {
     }
 
     const onSubmit = (label) => {
-      this.props.onSubmit(this.state.label);
-      this.setState({label: undefined});
+      // this.props.onSubmit(this.state.label);
+      // this.setState({label: undefined});
+      console.log(this.state.segmentation);
     };
 
     const onSkip = () => {
       this.props.onSkip();
       this.setState({label: undefined});
     };
-
-    let drawPolygon;
-    let drawRectangle;
 
     return (
       <Card>
@@ -32,8 +30,7 @@ export class LabelingScreen extends Component {
             <SegmentImage
               imageUrl={this.props.imageUrl}
               style={{width: '100%'}}
-              drawPolygonFunction={(drawPolygonFunc) => drawPolygon = drawPolygonFunc}
-              drawRectangleFunction={(drawRectangleFunc) => drawRectangle = drawRectangleFunc}
+              updateLabel={(segmentation) => this.setState({segmentation})}
             />
           </div>
           <div className="form-controls">
@@ -44,7 +41,7 @@ export class LabelingScreen extends Component {
           <Button
             raised={true}
             color="primary"
-            disabled={!this.state || !this.state.label}
+            disabled={!this.state || !this.state.segmentation || this.state.segmentation.length === 0}
             onClick={onSubmit}
           >Submit</Button>
         </CardActions>

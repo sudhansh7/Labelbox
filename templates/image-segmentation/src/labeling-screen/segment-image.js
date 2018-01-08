@@ -17,7 +17,7 @@ function getSizeOnImage(url) {
     };
     img.style.display = 'none';
     document.body.appendChild(img);
-  })
+  });
 }
 
 export class SegmentImage extends Component {
@@ -56,21 +56,13 @@ export class SegmentImage extends Component {
     map.fitBounds(bounds);
     map.setZoom(-1);
 
-		map.on(L.Draw.Event.CREATED, function (e) {
-			const type = e.layerType;
-			const layer = e.layer;
-      console.log(layer.getLatLngs());
-			drawnItems.addLayer(layer);
-		});
-
-		map.on(L.Draw.Event.EDITED, function (e) {
-      console.log('Edits', e);
-		  /* var layers = e.layers;*/
-		  /* var countOfEditedLayers = 0;*/
-		  /* layers.eachLayer(function (layer) {*/
-		  /* countOfEditedLayers++;*/
-		  /* });*/
-		  /* console.log("Edited " + countOfEditedLayers + " layers");*/
+		map.on(L.Draw.Event.CREATED, (e) => {
+			drawnItems.addLayer(e.layer);
+      const toPixelLocation = ({lat, lng}) => ({y: lat, x: lng});
+      const segmentation = drawnItems.getLayers()
+        .map((layer) => layer.getLatLngs())
+        .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
+      this.props.updateLabel(segmentation);
 		});
   }
 
