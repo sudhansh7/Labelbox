@@ -4,6 +4,7 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import { SegmentImage } from './segment-image';
 import { rectangleIcon, polygonIcon } from './icons';
+import screenText from './screen-text';
 
 export class LabelingScreen extends Component {
   state = {}
@@ -28,7 +29,7 @@ export class LabelingScreen extends Component {
             />
           </div>
           <div className="form-controls">
-            <div>Outline the car using the polygon tool</div>
+            <div>{screenText.instructions}</div>
           </div>
         </CardContent>
         <CardActions style={{justifyContent: 'flex-end'}}>

@@ -9,3 +9,8 @@
 .labeling-frame {
   width: 75vh;
 }
+
+.form-controls{
+  margin-top: 10px;
+  color: grey;
+}
