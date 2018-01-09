@@ -1,21 +1,22 @@
 import React from 'react';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
+import screenText from './screen-text';
 
 export default function ClassificationForm(props){
   return (
     <div>
       <FormControl component="fieldset" required>
-        <FormLabel component="legend">Select the car model</FormLabel>
+        <FormLabel component="legend">{screenText.instructions}</FormLabel>
         <RadioGroup
-          aria-label="gender"
-          name="gender1"
           value={props.value}
           onChange={(event, value) => props.onSelect(value)}
         >
-          <FormControlLabel value="model_s" control={<Radio />} label="Tesla Model S" />
-          <FormControlLabel value="model_3" control={<Radio />} label="Tesla Model 3" />
-          <FormControlLabel value="model_x" control={<Radio />} label="Tesla Model X" />
+          {
+            screenText.options.map(({value, label}) => (
+              <FormControlLabel value={value} control={<Radio />} label={label} key={value}/>
+            ))
+          }
         </RadioGroup>
       </FormControl>
     </div>
