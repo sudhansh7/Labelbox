@@ -21,13 +21,16 @@ Once you've found a template for your job you can either host and manage the dat
 
 # Labeling Frontend Templates
 
-## Image Segmentation
-
-coming soon
-
 ## Image Classification
 
-coming soon
+[Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
+![images/classification.png](./images/classification.png)
+
+## Image Segmentation
+
+[Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
+![images/segmentation.png](./images/segmentation.png)
+
 
 # Create a New Labeling Frontend
 
