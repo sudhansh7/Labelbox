@@ -37,7 +37,7 @@ Once you've found a template for your job you can either host and manage the dat
 Step 1. Attach the Labelbox's client side api.
 
 ```html
-<script src="https://labeling-api-nmntfiowht.now.sh/"></script>
+<script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 ```
 
 Step 2. Get a row to label
