@@ -1,5 +1,5 @@
 {
-  "name": "image-segmentation",
+  "name": "image-segmentation.labelbox.io",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
