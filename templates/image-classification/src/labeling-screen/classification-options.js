@@ -12,7 +12,7 @@ export default class ClassificationForm extends React.Component {
   componentWillMount(){
     this.customizationSubscription = window.Labelbox.getTemplateCustomization()
       .subscribe((customization) => {
-        this.setState({...this.state, customization})
+        this.setState({...this.state, customization});
       });
   }
 

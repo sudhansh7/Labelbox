@@ -7,7 +7,23 @@ import { rectangleIcon, polygonIcon } from './icons';
 import screenText from './screen-text';
 
 export class LabelingScreen extends Component {
-  state = {}
+  state = {
+    customization: screenText
+  };
+
+  customizationSubscription;
+
+  componentWillMount(){
+    this.customizationSubscription = window.Labelbox.getTemplateCustomization()
+      .subscribe((customization) => {
+        this.setState({...this.state, customization});
+      });
+  }
+
+  componentWillUnmount(){
+    this.customizationSubscription.unsubscribe();
+  }
+
   render() {
     if (!this.props.imageUrl) {
       return (<div>Loading...</div>);
@@ -15,7 +31,7 @@ export class LabelingScreen extends Component {
 
     const onSubmit = (label) => {
       this.props.onSubmit(JSON.stringify(this.state.segmentation));
-      this.setState({segmentation: undefined});
+      this.setState({...this.state, segmentation: undefined});
     };
 
     return (
@@ -25,11 +41,11 @@ export class LabelingScreen extends Component {
             <SegmentImage
               imageUrl={this.props.imageUrl}
               style={{width: '100%'}}
-              updateLabel={(segmentation) => this.setState({segmentation})}
+              updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
             />
           </div>
           <div className="form-controls">
-            <div>{screenText.instructions}</div>
+            <div>{this.state.customization.instructions}</div>
           </div>
         </CardContent>
         <CardActions style={{justifyContent: 'flex-end'}}>
