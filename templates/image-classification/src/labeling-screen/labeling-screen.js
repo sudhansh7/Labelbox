@@ -12,7 +12,7 @@ export class LabelingScreen extends Component {
 
     const onSubmit = (label) => {
       this.props.onSubmit(this.state.label);
-      this.setState({label: undefined});
+      this.setState({...this.state, label: undefined});
     };
 
     return (
@@ -25,7 +25,7 @@ export class LabelingScreen extends Component {
             <div className="classification">
               <ClassificationForm
                 value={this.state.label || ''}
-                onSelect={(label) => this.setState({label})}
+                onSelect={(label) => this.setState({...this.state, label})}
               />
             </div>
             <div className="form-buttons">
