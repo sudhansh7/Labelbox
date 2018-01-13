@@ -16,13 +16,8 @@ export const theme = createMuiTheme({
 
 class App extends Component {
 
-  // The embedded api script will soon be a npm package
   componentWillMount () {
-    const script = document.createElement("script");
-    script.src = "https://api.labelbox.io/client/v0.1/labeling-api.js";
-    script.async = true;
-    script.onload = () => this.next();
-    document.body.appendChild(script);
+    this.next();
   }
 
   next(label){
