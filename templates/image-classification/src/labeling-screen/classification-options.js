@@ -7,29 +7,30 @@ export default class ClassificationForm extends React.Component {
   state = {
     customization: screenText
   }
+  customizationSubscription;
 
   componentWillMount(){
-    // TODO need to cleanup
-    console.log('running');
-    window.Labelbox.getTemplateCustomization().subscribe((customization) => {
-      console.log('Im guessing this message comes up more and more as more callbacks get registered: TODO add unsubscribe to cleanup');
-      console.log('res', customization);
-      this.setState({...this.state, customization: JSON.parse(customization)})
-    })
+    this.customizationSubscription = window.Labelbox.getTemplateCustomization()
+      .subscribe((customization) => {
+        this.setState({...this.state, customization})
+      });
+  }
+
+  componentWillUnmount(){
+    this.customizationSubscription.unsubscribe();
   }
 
   render(){
-
     return (
       <div>
         <FormControl component="fieldset" required>
-          <FormLabel component="legend">{screenText.instructions}</FormLabel>
+          <FormLabel component="legend">{this.state.customization.instructions}</FormLabel>
           <RadioGroup
             value={this.props.value}
             onChange={(event, value) => this.props.onSelect(value)}
             >
             {
-              screenText.options.map(({value, label}) => (
+              this.state.customization.options.map(({value, label}) => (
                 <FormControlLabel value={value} control={<Radio />} label={label} key={value}/>
               ))
             }
