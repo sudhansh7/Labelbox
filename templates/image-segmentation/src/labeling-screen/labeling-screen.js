@@ -7,10 +7,12 @@ import { rectangleIcon, polygonIcon } from './icons';
 
 export class LabelingScreen extends Component {
   state = {
+    segmentation: [],
     customization: {
       instructions: "Outline the car using the polygon tool",
       showPolygonTool: true,
-      showRectangleTool: true
+      showRectangleTool: true,
+      allowMultipleAnnotations: false
     }
   };
 
@@ -34,28 +36,32 @@ export class LabelingScreen extends Component {
 
     const onSubmit = (label) => {
       this.props.onSubmit(JSON.stringify(this.state.segmentation));
-      this.setState({...this.state, segmentation: undefined});
+      this.setState({...this.state, segmentation: []});
     };
+
+    const {showPolygonTool, showRectangleTool, allowMultipleAnnotations, instructions} = this.state.customization;
+
+    const removeTools = this.state.segmentation.length > 0 && !allowMultipleAnnotations;
 
     return (
       <Card>
         <CardContent>
           <SegmentImage
             imageUrl={this.props.imageUrl}
-            showPolygonTool={this.state.customization.showPolygonTool}
-            showRectangleTool={this.state.customization.showRectangleTool}
+            showPolygonTool={removeTools ? false : showPolygonTool}
+            showRectangleTool={removeTools ? false : showRectangleTool}
             style={{width: '100%'}}
             updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
           />
           <div className="form-controls">
-            <div>{this.state.customization.instructions}</div>
+            <div>{instructions}</div>
           </div>
         </CardContent>
         <CardActions style={{justifyContent: 'flex-end'}}>
           <Button
             raised={true}
             color="primary"
-            disabled={!this.state || !this.state.segmentation || this.state.segmentation.length === 0}
+            disabled={this.state.segmentation.length === 0}
             onClick={onSubmit}
           >Submit</Button>
         </CardActions>

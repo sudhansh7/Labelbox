@@ -74,6 +74,14 @@ export class SegmentImage extends Component {
   }
 
   drawImageOnMap(imageUrl) {
+    const updateLabel = () => {
+      const toPixelLocation = ({lat, lng}) => ({y: lat, x: lng});
+      const segmentation = this.drawnItems.getLayers()
+            .map((layer) => layer.getLatLngs())
+            .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
+      this.props.updateLabel(segmentation || []);
+    };
+
     this.setState({...this.state, loading: true});
     getSizeOnImage(imageUrl).then(({width, height}) => {
       const bounds = [[0,0], [height,width]];
@@ -85,12 +93,13 @@ export class SegmentImage extends Component {
 
 		  this.map.on(L.Draw.Event.CREATED, (e) => {
 			  this.drawnItems.addLayer(e.layer);
-        const toPixelLocation = ({lat, lng}) => ({y: lat, x: lng});
-        const segmentation = this.drawnItems.getLayers()
-              .map((layer) => layer.getLatLngs())
-              .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
-        this.props.updateLabel(segmentation);
+        updateLabel();
 		  });
+
+		  this.map.on(L.Draw.Event.DELETED, (e) => {
+        updateLabel();
+		  });
+
       this.setState({...this.state, loading: false});
     });
   }
