@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import ClassificationForm from './classification-options';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
+import { LinearProgress } from 'material-ui/Progress';
 
 export class LabelingScreen extends Component {
-  state = {}
+  state = {
+    loading: true
+  }
+
   render() {
     if (!this.props.imageUrl) {
       return (<div>Loading...</div>);
@@ -12,15 +16,23 @@ export class LabelingScreen extends Component {
 
     const onSubmit = (label) => {
       this.props.onSubmit(this.state.label);
-      this.setState({...this.state, label: undefined});
+      this.setState({...this.state, label: undefined, loading: true});
     };
 
     return (
       <Card>
         <CardContent>
-          <div>
-            <img src={this.props.imageUrl} alt="classify-data" style={{width: '100%'}}/>
-          </div>
+          {
+            this.state.loading && (<LinearProgress color="accent" />)
+          }
+          {
+            this.props.imageUrl &&
+              (<img
+                src={this.props.imageUrl}
+                onLoad={(e) => this.setState({...this.state, loading: false})}
+                alt="classify-data" style={{width: '100%'}}
+              />)
+          }
           <div className="form-controls">
             <div className="classification">
               <ClassificationForm
