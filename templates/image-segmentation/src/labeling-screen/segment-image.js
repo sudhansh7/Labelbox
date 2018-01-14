@@ -3,6 +3,7 @@ import L from 'leaflet';
 import './leaflet.css';
 import './leaflet-draw/leaflet.draw.css';
 import './leaflet-draw/leaflet.draw';
+import { LinearProgress } from 'material-ui/Progress';
 
 function getSizeOnImage(url) {
   return new Promise((resolve) => {
@@ -21,12 +22,16 @@ function getSizeOnImage(url) {
 }
 
 export class SegmentImage extends Component {
+  state = {
+    loading: true
+  }
+
   componentWillUpdate(newProps){
     const { imageUrl } = newProps;
     if (imageUrl !== this.props.imageUrl) {
       this.drawnItems.getLayers().forEach((layer) => layer.remove());
       this.drawnOverlay.remove();
-      getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
+      this.drawImageOnMap(imageUrl);
     }
   }
 
@@ -55,30 +60,37 @@ export class SegmentImage extends Component {
     });
     this.map.addControl(drawControl);
     const { imageUrl } = this.props;
-    getSizeOnImage(imageUrl).then((size) => this.drawMap({imageUrl, ...size}));
+    this.drawImageOnMap(imageUrl);
   }
 
-  drawMap({imageUrl, width, height}) {
-    const bounds = [[0,0], [height,width]];
-    this.drawnOverlay = L.imageOverlay(imageUrl, bounds).addTo(this.map);
-    this.map.addLayer(this.drawnItems);
-    this.map.fitBounds(bounds);
-    this.map.setZoom(-1);
+  drawImageOnMap(imageUrl) {
+    this.setState({loading: true});
+    getSizeOnImage(imageUrl).then(({width, height}) => {
+      const bounds = [[0,0], [height,width]];
 
-		this.map.on(L.Draw.Event.CREATED, (e) => {
-			this.drawnItems.addLayer(e.layer);
-      const toPixelLocation = ({lat, lng}) => ({y: lat, x: lng});
-      const segmentation = this.drawnItems.getLayers()
-        .map((layer) => layer.getLatLngs())
-        .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
-      this.props.updateLabel(segmentation);
-		});
+      this.drawnOverlay = L.imageOverlay(imageUrl, bounds).addTo(this.map);
+      this.map.addLayer(this.drawnItems);
+      this.map.fitBounds(bounds);
+      this.map.setZoom(-1);
+
+		  this.map.on(L.Draw.Event.CREATED, (e) => {
+			  this.drawnItems.addLayer(e.layer);
+        const toPixelLocation = ({lat, lng}) => ({y: lat, x: lng});
+        const segmentation = this.drawnItems.getLayers()
+              .map((layer) => layer.getLatLngs())
+              .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
+        this.props.updateLabel(segmentation);
+		  });
+      this.setState({loading: false});
+    });
   }
-
 
   render() {
     return (
       <div>
+        {
+          this.state.loading && (<LinearProgress color="accent" />)
+        }
         <div id="map" style={{height: '350px'}}></div>
       </div>
     );

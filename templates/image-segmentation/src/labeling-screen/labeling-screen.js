@@ -37,13 +37,11 @@ export class LabelingScreen extends Component {
     return (
       <Card>
         <CardContent>
-          <div>
-            <SegmentImage
-              imageUrl={this.props.imageUrl}
-              style={{width: '100%'}}
-              updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
-            />
-          </div>
+          <SegmentImage
+            imageUrl={this.props.imageUrl}
+            style={{width: '100%'}}
+            updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
+          />
           <div className="form-controls">
             <div>{this.state.customization.instructions}</div>
           </div>
