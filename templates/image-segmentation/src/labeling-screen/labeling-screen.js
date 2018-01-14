@@ -4,11 +4,14 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import { SegmentImage } from './segment-image';
 import { rectangleIcon, polygonIcon } from './icons';
-import screenText from './screen-text';
 
 export class LabelingScreen extends Component {
   state = {
-    customization: screenText
+    customization: {
+      instructions: "Outline the car using the polygon tool",
+      showPolygonTool: true,
+      showRectangleTool: true
+    }
   };
 
   customizationSubscription;
@@ -39,6 +42,8 @@ export class LabelingScreen extends Component {
         <CardContent>
           <SegmentImage
             imageUrl={this.props.imageUrl}
+            showPolygonTool={this.state.customization.showPolygonTool}
+            showRectangleTool={this.state.customization.showRectangleTool}
             style={{width: '100%'}}
             updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
           />

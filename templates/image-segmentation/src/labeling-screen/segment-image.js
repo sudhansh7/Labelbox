@@ -26,13 +26,38 @@ export class SegmentImage extends Component {
     loading: true
   }
 
-  componentWillUpdate(newProps){
-    const { imageUrl } = newProps;
+  componentDidUpdate(newProps){
+    const { imageUrl, showPolygonTool, showRectangleTool } = newProps;
     if (imageUrl !== this.props.imageUrl) {
       this.drawnItems.getLayers().forEach((layer) => layer.remove());
       this.drawnOverlay.remove();
       this.drawImageOnMap(imageUrl);
     }
+    if (this.props.showPolygonTool !== showPolygonTool || this.props.showPolygonTool !== showRectangleTool) {
+      this.updateDrawControls();
+    }
+  }
+
+  updateDrawControls() {
+    if (this.drawControl){
+      this.drawControl.remove();
+    }
+    this.drawControl = new L.Control.Draw({
+      position: 'topright',
+      draw: {
+        polyline: false,
+        polygon: this.props.showPolygonTool,
+        rectangle: this.props.showRectangleTool,
+        circle: false,
+        circlemarker: false,
+        marker: false
+      },
+      edit: {
+        featureGroup: this.drawnItems,
+        remove: true
+      }
+    });
+    this.map.addControl(this.drawControl);
   }
 
   componentDidMount(){
@@ -43,28 +68,13 @@ export class SegmentImage extends Component {
       zoomControl: false
     });
     this.drawnItems = new L.FeatureGroup();
-    const drawControl = new L.Control.Draw({
-      position: 'topright',
-      draw: {
-        polyline: false,
-        polygon: true,
-        rectangle: true,
-        circle: false,
-        circlemarker: false,
-        marker: false
-      },
-      edit: {
-        featureGroup: this.drawnItems,
-        remove: true
-      }
-    });
-    this.map.addControl(drawControl);
+    this.updateDrawControls();
     const { imageUrl } = this.props;
     this.drawImageOnMap(imageUrl);
   }
 
   drawImageOnMap(imageUrl) {
-    this.setState({loading: true});
+    this.setState({...this.state, loading: true});
     getSizeOnImage(imageUrl).then(({width, height}) => {
       const bounds = [[0,0], [height,width]];
 
@@ -81,7 +91,7 @@ export class SegmentImage extends Component {
               .map(([latLngLocations]) => latLngLocations.map(toPixelLocation));
         this.props.updateLabel(segmentation);
 		  });
-      this.setState({loading: false});
+      this.setState({...this.state, loading: false});
     });
   }
 
