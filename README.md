@@ -57,7 +57,7 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 Full Example
 
 ```html
-<script src="https://labeling-api-nmntfiowht.now.sh/"></script>
+<script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 <div id="form"></div>
 <script>
 function next(label){
