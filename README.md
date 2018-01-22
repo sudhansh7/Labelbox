@@ -29,17 +29,22 @@ Please see [labeling frontend templates](#labeling-frontend-templates) for templ
 Once you've found a template for your job you can either host and manage the data labeling yourself or deploy your frontend to our hosting service at (labelbox.io)[https://www.labelbox.io/].
 
 
-# Labeling Frontend Templates
+# Labelbox Frontend Templates
 
 ## Image Classification
 
 [Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
-![images/classification.png](./images/classification.png)
+
+<img src="./images/classification.png" width="400">
+
+
 
 ## Image Segmentation
 
 [Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
-![images/segmentation.png](./images/segmentation.png)
+
+<img src="./images/segmentation.png" width="400">
+
 
 
 # Using labeling-api.js
