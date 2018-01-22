@@ -42,15 +42,16 @@ Once you've found a template for your job you can either host and manage the dat
 ![images/segmentation.png](./images/segmentation.png)
 
 
-# Create a New Labeling Frontend
+# Using labeling-api.js
+To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data. 
 
-Step 1. Attach the Labelbox's client side api.
+### Attach the Labelbox's client side api.
 
 ```html
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 ```
 
-Step 2. Get a row to label
+### Get a row to label
 
 ```javascript
 Labelbox.fetchNextAssetToLabel().then((dataToLabel) => {
@@ -58,12 +59,13 @@ Labelbox.fetchNextAssetToLabel().then((dataToLabel) => {
 });
 ```
 
-Step 3. Save the label for a row
+### Save the label for a row
 
 ```javascript
 Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 ```
 
+### Full Example
 Full Example
 
 ```html
@@ -91,3 +93,20 @@ function drawItem(dataToLabel){
 next();
 </script>
 ```
+
+# Developing Labeling Frontend with Localhost
+
+### Run localhost server 
+1. Start the localhost server in a directory containing your labeling frontend files. For example, run the server inside labelingfrontend if you have index.html (labeling frontend) inside it. 
+```
+python2 -m SimpleHTTPServer
+```
+2. Copy file path to the main HTML file. Following the example above, it would look like localhost:8000/index.html
+
+3. Paste the path of labeling frontend under Custom Labeling Interface for an existing project. 
+![](https://s3-us-west-2.amazonaws.com/labelbox/localhost_frontend.png)
+
+
+# Installing Labeling Frontend in Labelbox.io
+
+
