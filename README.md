@@ -94,7 +94,7 @@ next();
 </script>
 ```
 
-# Developing Labeling Frontend with Localhost
+# Local Labeling Frontend Development
 
 ### Run localhost server 
 1. Start the localhost server in a directory containing your labeling frontend files. For example, run the server inside labelingfrontend if you have index.html (labeling frontend) inside it. 
@@ -105,9 +105,19 @@ python2 -m SimpleHTTPServer
 
 3. Paste the path of labeling frontend under Custom Labeling Interface for an existing project. 
 
-![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
+ ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
 
 # Installing Labeling Frontend in Labelbox.io
+At Labelbox, we are fan of https://zeit.co/now for cloud deployment. 
 
+### Install Now
+Create an account at Zeit, download and install Now here: https://zeit.co/download
 
+### Deploy labeling frontend
+In terminal, go to your labeling frontend directory and type: ```now``` and copy the link. 
+
+### Add labeling frontend to your Labelbox project
+Paste the link under custom labeling interface tab, as shown in the video below. Now you are ready to label data with your team using the custom frontend. 
+
+![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_cloud_deploy.gif)
