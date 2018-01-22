@@ -1,5 +1,7 @@
 # Labelbox
+Labelbox is the most versatile labeling tool for machine learning. Simply connect your data, choose or customize an open source labeling interface, invite team members and start labeling.
 
+## Overview
 All labeling tasks share the theme of "data in labels out". This repo contains a set of highquality labeling frontends to aid in many data labeling projects.
 
 ```
