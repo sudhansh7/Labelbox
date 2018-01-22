@@ -1,6 +1,14 @@
 # Labelbox
 Labelbox is the most versatile labeling tool for machine learning. Simply connect your data, choose or customize an open source labeling interface, invite team members and start labeling.
 
+## Benefits of using Labelbox
+- Simple Image Labeling: Labelbox makes it really easy to do basic image classification or segmentation tasks. Simply upload a CSV file pointing to the location of your data and choose an image classification or segmentation labeling template to get started
+
+- Label just about anything: Not only are Labelbox templates open source, you can build your own templates using Labelbox.js. Build your own custom labeling template to label any kind of data as long as it can be loaded in a browser
+
+- Manage Teams: Ready for your team, no matter the size. Labelbox streamlines your workflows, from micro labeling projects for quick R&D to production grade projects requiring hundreds of collaborators
+- Monitor Performance: Maintain the highest quality standards for your data by keeping track of labeling task performance of individuals and teams
+
 ## Overview
 All labeling tasks share the theme of "data in labels out". This repo contains a set of highquality labeling frontends to aid in many data labeling projects.
 
