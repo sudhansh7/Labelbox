@@ -1,5 +1,5 @@
 # Labelbox
-Labelbox is the most versatile labeling tool for machine learning. Simply connect your data, choose or customize an open source labeling interface, invite team members and start labeling.
+Labelbox (www.labelbox.io) is the most versatile labeling tool for machine learning. Simply connect your data, choose or customize an open source labeling interface, invite team members and start labeling.
 
 ## Benefits of using Labelbox
 - Simple Image Labeling: Labelbox makes it really easy to do basic image classification or segmentation tasks. Simply upload a CSV file pointing to the location of your data and choose an image classification or segmentation labeling template to get started
