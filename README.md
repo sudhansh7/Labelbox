@@ -104,6 +104,7 @@ python2 -m SimpleHTTPServer
 2. Copy file path to the main HTML file. Following the example above, it would look like localhost:8000/index.html
 
 3. Paste the path of labeling frontend under Custom Labeling Interface for an existing project. 
+
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
 
