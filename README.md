@@ -126,3 +126,8 @@ In terminal, go to your labeling frontend directory and type: ```now``` and copy
 Paste the link under custom labeling interface tab, as shown in the video below. Now you are ready to label data with your team using the custom frontend. 
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_cloud_deploy.gif)
+
+# Request Features
+Have a feature request or you'd like us to make a labeling template for you? 
+
+Create an issue here: https://github.com/Labelbox/Labelbox/issues
