@@ -9,7 +9,7 @@ Labelbox (www.labelbox.io) is a versatile labeling tool for machine learning. Yo
 - Manage Teams: Ready for your team, no matter the size. Labelbox streamlines your workflows, from micro labeling projects for quick R&D to production grade projects requiring hundreds of collaborators
 - Monitor Performance: Maintain the highest quality standards for your data by keeping track of labeling task performance of individuals and teams
 
-# Overview
+## Overview
 All labeling tasks share the theme of "data in labels out". This repo contains a set of highquality labeling frontends to aid in many data labeling projects.
 
 ```
@@ -29,9 +29,9 @@ Please see [labeling frontend templates](#labeling-frontend-templates) for templ
 Once you've found a template for your job you can either host and manage the data labeling yourself or deploy your frontend to our hosting service at (labelbox.io)[https://www.labelbox.io/].
 
 
-# Labelbox Frontend Templates
+## Labelbox Frontend Templates
 
-## Image Classification
+### Image Classification
 
 [Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
 
@@ -39,7 +39,7 @@ Once you've found a template for your job you can either host and manage the dat
 
 
 
-## Image Segmentation
+### Image Segmentation
 
 [Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
 
@@ -47,7 +47,7 @@ Once you've found a template for your job you can either host and manage the dat
 
 
 
-# Using labeling-api.js
+## Using labeling-api.js
 To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data. 
 
 ### Attach the Labelbox's client side api.
@@ -99,7 +99,7 @@ next();
 </script>
 ```
 
-# Local Labeling Frontend Development
+## Local Labeling Frontend Development
 
 ### Run localhost server 
 1. Start the localhost server in a directory containing your labeling frontend files. For example, run the server inside labelingfrontend if you have index.html (labeling frontend) inside it. 
@@ -113,7 +113,7 @@ python2 -m SimpleHTTPServer
  ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
 
-# Installing Labeling Frontend in Labelbox.io
+## Installing Labeling Frontend in Labelbox.io
 At Labelbox, we are fan of https://zeit.co/now for cloud deployment. 
 
 ### Install Now
@@ -127,7 +127,7 @@ Paste the link under custom labeling interface tab, as shown in the video below.
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_cloud_deploy.gif)
 
-# Request Features
+## Request Features
 Have a feature request or you'd like us to make a labeling template for you? 
 
-Create an issue here: https://github.com/Labelbox/Labelbox/issues
+Create an issue here: https://github.com/Labelbox/Labelbox/issues or contact us at support@labelbox.io
