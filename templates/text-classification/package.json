@@ -1,5 +1,5 @@
 {
-  "name": "image-classification.labelbox.io",
+  "name": "text-classification.labelbox.io",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,7 @@
     "deploy": "now && now alias"
   },
   "now": {
-    "alias": "image-classification.labelbox.io"
+    "alias": "text-classification.labelbox.io"
   },
   "devDependencies": {
     "serve": "^6.4.8"
