@@ -3,10 +3,12 @@ import ClassificationForm from './classification-options';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
+import Icon from 'material-ui/Icon';
 
 export class LabelingScreen extends Component {
   state = {
-    loading: true
+    loading: true,
+    errorLoadingImage: false
   }
 
   render() {
@@ -26,12 +28,24 @@ export class LabelingScreen extends Component {
             this.state.loading && (<LinearProgress color="accent" />)
           }
           {
-            this.props.imageUrl &&
+            this.props.imageUrl && !this.state.errorLoadingImage &&
               (<img
                 src={this.props.imageUrl}
                 onLoad={(e) => this.setState({...this.state, loading: false})}
+                onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
                 alt="classify-data" style={{width: '100%'}}
               />)
+          }
+          {
+            this.state.errorLoadingImage && (
+              <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', alignItems: 'center'}}>
+                <Icon style={{color: 'grey', fontSize: '200px'}}>broken_image</Icon>
+                <div style={{color: 'grey', fontStyle: 'italic'}}>
+                  Error loading <a href={this.props.imageUrl} target="_blank">{this.props.imageUrl}</a>. Please confirm that this url is live and a direct link to an image. Webpage links are not supported.
+                </div>
+              </div>
+            )
+
           }
           <div className="form-controls">
             <div className="classification">
