@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './icons.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';

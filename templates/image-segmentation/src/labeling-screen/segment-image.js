@@ -4,9 +4,10 @@ import './leaflet.css';
 import './leaflet-draw/leaflet.draw.css';
 import './leaflet-draw/leaflet.draw';
 import { LinearProgress } from 'material-ui/Progress';
+import Icon from 'material-ui/Icon';
 
 function getSizeOnImage(url) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const img = document.createElement('img');
     img.src = url;
     img.onload = (event) => {
@@ -16,6 +17,9 @@ function getSizeOnImage(url) {
         height: img.naturalHeight
       });
     };
+    img.onerror = (event) => {
+      reject('Error loading image');
+    };
     img.style.display = 'none';
     document.body.appendChild(img);
   });
@@ -23,7 +27,8 @@ function getSizeOnImage(url) {
 
 export class SegmentImage extends Component {
   state = {
-    loading: true
+    loading: true,
+    errorLoadingImage: false
   }
 
   componentDidUpdate(newProps){
@@ -101,6 +106,8 @@ export class SegmentImage extends Component {
 		  });
 
       this.setState({...this.state, loading: false});
+    }, () => {
+      this.setState({...this.state, loading: false, errorLoadingImage: true});
     });
   }
 
@@ -110,7 +117,17 @@ export class SegmentImage extends Component {
         {
           this.state.loading && (<LinearProgress color="accent" />)
         }
-        <div id="map" style={{height: '350px'}}></div>
+        {
+          this.state.errorLoadingImage ? (
+            <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', alignItems: 'center'}}>
+              <Icon style={{color: 'grey', fontSize: '200px'}}>broken_image</Icon>
+              <div style={{color: 'grey', fontStyle: 'italic'}}>
+                Error loading <a href={this.props.imageUrl} target="_blank">{this.props.imageUrl}</a>. Please confirm that this url is live and a direct link to an image. Webpage links are not supported.
+              </div>
+            </div>
+          ) :
+          (<div id="map" style={{height: '350px'}}></div>)
+        }
       </div>
     );
   }
