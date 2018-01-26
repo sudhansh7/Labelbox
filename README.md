@@ -46,6 +46,12 @@ Once you've found a template for your job you can either host and manage the dat
 <img src="./images/segmentation.png" width="400">
 
 
+### Text Classification
+
+[Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
+
+<img src="./images/text-classification.png" width="400">
+
 
 ## Using labeling-api.js
 To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data. 
