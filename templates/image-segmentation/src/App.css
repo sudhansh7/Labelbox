@@ -2,12 +2,43 @@
   display: flex;
   background-color: #f2f2f2;
   height: 100vh;
-  justify-content: center;
-  align-items: center;
+}
+
+.content{
+  margin-top: 5vh;
+  margin-right: 5vh;
+  height: 80vh;
+  display: flex;
+  flex-grow: 1;
+}
+
+.sidebar{
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo{
+  margin-left: 20px;
+}
+
+.header{
+  font-size: 22px;
+  margin-bottom: 50px;
+}
+
+.toolbar{
+  box-shadow: 2px 0px 13px #bfbfbf;
+  background-color: white;
+  display: flex;
+  width: 250px;
+  flex-grow: 1;
 }
 
 .labeling-frame {
-  width: 75vh;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
 }
 
 .form-controls{

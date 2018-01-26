@@ -113,7 +113,7 @@ export class SegmentImage extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'}}>
         {
           this.state.loading && (<LinearProgress color="accent" />)
         }
@@ -126,7 +126,7 @@ export class SegmentImage extends Component {
               </div>
             </div>
           ) :
-          (<div id="map" style={{height: '350px'}}></div>)
+          (<div id="map" style={{display: 'flex', flexGrow: '1'}}></div>)
         }
       </div>
     );

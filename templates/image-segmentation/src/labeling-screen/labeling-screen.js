@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import ClassificationForm from './classification-options';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
-import Button from 'material-ui/Button';
 import { SegmentImage } from './segment-image';
 import { rectangleIcon, polygonIcon } from './icons';
 
@@ -44,28 +42,13 @@ export class LabelingScreen extends Component {
     const removeTools = this.state.segmentation.length > 0 && !allowMultipleAnnotations;
 
     return (
-      <Card>
-        <CardContent>
-          <SegmentImage
-            imageUrl={this.props.imageUrl}
-            showPolygonTool={removeTools ? false : showPolygonTool}
-            showRectangleTool={removeTools ? false : showRectangleTool}
-            style={{width: '100%'}}
-            updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
-          />
-          <div className="form-controls">
-            <div>{instructions}</div>
-          </div>
-        </CardContent>
-        <CardActions style={{justifyContent: 'flex-end'}}>
-          <Button
-            raised={true}
-            color="primary"
-            disabled={this.state.segmentation.length === 0}
-            onClick={onSubmit}
-          >Submit</Button>
-        </CardActions>
-      </Card>
+      <SegmentImage
+        imageUrl={this.props.imageUrl}
+        showPolygonTool={removeTools ? false : showPolygonTool}
+        showRectangleTool={removeTools ? false : showRectangleTool}
+        style={{width: '100%'}}
+        updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
+      />
     );
   }
 }
