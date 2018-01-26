@@ -5,6 +5,7 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { LabelingScreen } from './labeling-screen/labeling-screen';
+import { Toolbar } from './toolbar/toolbar';
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -40,7 +41,7 @@ class App extends Component {
           <div className="content">
             <div className="sidebar">
               <div className="header logo">Labelbox</div>
-              <div className="toolbar">Toolbar</div>
+              <Toolbar />
             </div>
             <div className="labeling-frame">
               <div className="header">Outline all listed objects</div>
