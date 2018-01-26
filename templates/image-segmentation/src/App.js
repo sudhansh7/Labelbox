@@ -17,6 +17,7 @@ export const theme = createMuiTheme({
 });
 
 class App extends Component {
+  state = {}
 
   componentWillMount () {
     this.next();
@@ -41,7 +42,9 @@ class App extends Component {
           <div className="content">
             <div className="sidebar">
               <div className="header logo">Labelbox</div>
-              <Toolbar />
+              <Toolbar
+                colorChange={(color) => this.setState({...this.state, color})}
+              />
             </div>
             <div className="labeling-frame">
               <div className="header">Outline all listed objects</div>
@@ -49,6 +52,7 @@ class App extends Component {
                 imageUrl={this.state && this.state.imageUrl}
                 onSkip={() => this.next()}
                 onSubmit={(label) => this.next(label)}
+                color={this.state.color}
                 />
             </div>
           </div>

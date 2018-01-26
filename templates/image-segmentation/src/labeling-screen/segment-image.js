@@ -5,25 +5,7 @@ import './leaflet-draw/leaflet.draw.css';
 import './leaflet-draw/leaflet.draw';
 import { LinearProgress } from 'material-ui/Progress';
 import Icon from 'material-ui/Icon';
-
-function getSizeOnImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = document.createElement('img');
-    img.src = url;
-    img.onload = (event) => {
-      document.body.removeChild(img);
-      resolve({
-        width: img.naturalWidth,
-        height: img.naturalHeight
-      });
-    };
-    img.onerror = (event) => {
-      reject('Error loading image');
-    };
-    img.style.display = 'none';
-    document.body.appendChild(img);
-  });
-}
+import { getSizeOnImage } from './image-size';
 
 export class SegmentImage extends Component {
   state = {
@@ -38,9 +20,7 @@ export class SegmentImage extends Component {
       this.drawnOverlay.remove();
       this.drawImageOnMap(imageUrl);
     }
-    if (this.props.showPolygonTool !== showPolygonTool || this.props.showPolygonTool !== showRectangleTool) {
-      this.updateDrawControls();
-    }
+    this.updateDrawControls();
   }
 
   updateDrawControls() {
@@ -51,8 +31,16 @@ export class SegmentImage extends Component {
       position: 'topright',
       draw: {
         polyline: false,
-        polygon: this.props.showPolygonTool,
-        rectangle: this.props.showRectangleTool,
+        polygon: this.props.showPolygonTool && {
+          shapeOptions: {
+            color: this.props.color
+          }
+        },
+        rectangle: this.props.showRectangleTool && {
+          shapeOptions: {
+            color: this.props.color
+          }
+        },
         circle: false,
         circlemarker: false,
         marker: false

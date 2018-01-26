@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { Tool } from './tool';
 import Button from 'material-ui/Button';
 
-export function Toolbar() {
+export function Toolbar({colorChange}) {
   return (
     <div className="toolbar">
       <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
         <div style={{margin: '20px 15px 10px', fontWeight: '700'}}>Select a class below</div>
-        <Tool name="Sidewalk" color="pink" count={1} />
-        <Tool name="Paved Road" color="purple" count={1} />
-        <Tool name="Vegetation" color="green" count={3} />
-        <Tool name="Buildings" color="orange" count={2} />
+        <Tool name="Sidewalk" color="pink" count={1} onSelect={() => colorChange('pink')}/>
+        <Tool name="Paved Road" color="purple" count={1} onSelect={() => colorChange('purple')}/>
+        <Tool name="Vegetation" color="green" count={3} onSelect={() => colorChange('green')}/>
+        <Tool name="Buildings" color="orange" count={2} onSelect={() => colorChange('orange')}/>
       </div>
       <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
         <div style={{margin: '20px 15px 10px', fontWeight: '700'}}>Keyboard shortcuts</div>

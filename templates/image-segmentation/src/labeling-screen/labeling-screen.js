@@ -10,7 +10,7 @@ export class LabelingScreen extends Component {
       instructions: "Outline the car using the polygon tool",
       showPolygonTool: true,
       showRectangleTool: true,
-      allowMultipleAnnotations: false
+      allowMultipleAnnotations: true
     }
   };
 
@@ -48,6 +48,7 @@ export class LabelingScreen extends Component {
         showRectangleTool={removeTools ? false : showRectangleTool}
         style={{width: '100%'}}
         updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
+        color={this.props.color}
       />
     );
   }
