@@ -5,9 +5,9 @@
 }
 
 .content{
-  margin-top: 5vh;
+  margin-top: 3vh;
   margin-right: 5vh;
-  height: 80vh;
+  height: 92vh;
   display: flex;
   flex-grow: 1;
 }
@@ -24,7 +24,7 @@
 
 .header{
   font-size: 22px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .toolbar{
