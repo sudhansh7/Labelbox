@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Circle } from './circle';
 import Icon from 'material-ui/Icon';
 
-export function Tool({color, name, count, onSelect}) {
+export function Tool({color, name, count, onClick, selected}) {
   return (
   <div
     style={{
@@ -12,9 +12,10 @@ export function Tool({color, name, count, onSelect}) {
       width: '100%',
       borderBottom: '1px solid #c1c1c1',
       padding: '10px 0px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      backgroundColor: selected ? '#e4e4e4ad' : 'inherit'
     }}
-    onClick={onSelect}
+    onClick={onClick}
   >
       <div style={{display: 'flex', flexGrow: '1', alignItems: 'center', margin: '0px 15px'}}>
         <Circle color={color}/>
