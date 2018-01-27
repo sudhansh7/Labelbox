@@ -15,32 +15,26 @@ interface Props {
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void,
 }
 
-export class SegmentImage extends React.Component {
-  state = {
-    loading: true,
-    errorLoadingImage: false
-  }
+export function SegmentImage ({imageUrl}: Props) {
+  const position = {
+    lat: 51.505,
+    lng: -0.09,
+    zoom: 13
+  };
 
-  public props: Props;
+  console.log('render this image', imageUrl);
 
-  render() {
-    const position = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 13
-    };
-    return (
-      <Map center={position} zoom={position.zoom}>
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-        />
-        <Marker position={position}>
-          <Popup>
-            <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
-          </Popup>
-        </Marker>
-      </Map>
-    );
-  }
+  return (
+    <Map center={position} zoom={position.zoom}>
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+      />
+      <Marker position={position}>
+        <Popup>
+          <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+        </Popup>
+      </Marker>
+    </Map>
+  );
 }
