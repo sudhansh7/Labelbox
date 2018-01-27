@@ -4,6 +4,10 @@
   height: 100vh;
 }
 
+.leaflet-bottom.leaflet-right{
+  display: none;
+}
+
 .content{
   margin-top: 3vh;
   margin-right: 5vh;
@@ -13,7 +17,7 @@
 }
 
 .leaflet-container {
-  height: 400px;
+  height: 100%;
   width: 100%;
 }
 
