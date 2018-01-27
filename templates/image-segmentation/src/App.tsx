@@ -87,7 +87,7 @@ class App extends React.Component {
             <div className="labeling-frame">
               <div className="header">Outline all listed objects</div>
               <LabelingScreen
-                imageUrl={this.state.imageInfo && this.state.imageInfo.url}
+                imageInfo={this.state.imageInfo}
                 onSubmit={(label: string) => this.next(label)}
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}

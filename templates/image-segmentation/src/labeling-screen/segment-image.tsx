@@ -5,6 +5,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 interface Props {
   imageUrl: string;
+  imageSize: {width: number, height: number};
   showPolygonTool: boolean;
   showRectangleTool: boolean;
   updateLabel: (label: string) => void;
@@ -12,7 +13,7 @@ interface Props {
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
 }
 
-export function SegmentImage ({imageUrl}: Props) {
+export function SegmentImage ({imageUrl, imageSize: {width, height}}: Props) {
   const position = {
     lat: 51.505,
     lng: -0.09,
@@ -20,7 +21,7 @@ export function SegmentImage ({imageUrl}: Props) {
   };
 
   // tslint:disable-next-line
-  console.log('render this image', imageUrl);
+  console.log('render this image', imageUrl, width, height);
 
   return (
     <Map center={position} zoom={position.zoom}>

@@ -14,7 +14,7 @@ export class LabelingScreen extends React.Component {
   };
 
   public props: {
-    imageUrl: string | undefined,
+    imageInfo: {url: string, height: number, width: number} | undefined,
     onSubmit: (label: string) => void,
     drawColor: string,
     // tslint:disable-next-line
@@ -37,7 +37,7 @@ export class LabelingScreen extends React.Component {
   }
 
   render() {
-    if (!this.props.imageUrl) {
+    if (!this.props.imageInfo) {
       return (<div>Loading...</div>);
     }
 
@@ -45,9 +45,11 @@ export class LabelingScreen extends React.Component {
 
     const removeTools = this.state.segmentation.length > 0 && !allowMultipleAnnotations;
 
+    const { width, height, url } = this.props.imageInfo;
     return (
       <SegmentImage
-        imageUrl={this.props.imageUrl}
+        imageUrl={url}
+        imageSize={{width, height}}
         showPolygonTool={removeTools ? false : showPolygonTool}
         showRectangleTool={removeTools ? false : showRectangleTool}
         updateLabel={(segmentation: string) => this.setState({...this.state, segmentation})}
