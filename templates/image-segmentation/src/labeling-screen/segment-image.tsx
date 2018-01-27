@@ -1,7 +1,6 @@
 import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
-/* import { getSizeOnImage } from './image-size';*/
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 interface Props {

@@ -6,6 +6,7 @@ import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { Toolbar } from './toolbar/toolbar';
+import { getSizeOnImage } from './utils/image-size';
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -18,11 +19,11 @@ export const theme = createMuiTheme({
 
 class App extends React.Component {
   public state: {
-    imageUrl: string | undefined,
+    imageInfo: {url: string, height: number, width: number} | undefined,
     currentToolIndex: number,
     annotationsByTool: {},
   } = {
-    imageUrl: undefined,
+    imageInfo: undefined,
     currentToolIndex: 0,
     annotationsByTool: {}
   };
@@ -35,7 +36,12 @@ class App extends React.Component {
     const getNext = () => {
       // tslint:disable-next-line
       (window as any).Labelbox.fetchNextAssetToLabel()
-        .then((imageUrl: string) => this.setState({imageUrl}));
+        .then((imageUrl: string) => {
+          const updateImageInfo = ({height, width}: {height: number, width: number}) => {
+            this.setState({...this.state, imageInfo: {width, height, url: imageUrl}});
+          };
+          getSizeOnImage(imageUrl).then(updateImageInfo);
+        });
     };
     if (label) {
       // tslint:disable-next-line
@@ -81,7 +87,7 @@ class App extends React.Component {
             <div className="labeling-frame">
               <div className="header">Outline all listed objects</div>
               <LabelingScreen
-                imageUrl={this.state && this.state.imageUrl}
+                imageUrl={this.state.imageInfo && this.state.imageInfo.url}
                 onSubmit={(label: string) => this.next(label)}
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}
