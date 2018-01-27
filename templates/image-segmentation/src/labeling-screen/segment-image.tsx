@@ -54,86 +54,73 @@ const toLatLngLocation = ({x, y}: {x: number, y: number}) => {
 };
 
 // TODO make this a function again
-export class SegmentImage extends React.Component {
-  public props: Props;
+export function SegmentImage({
+  imageUrl,
+  imageSize: {width, height},
+  drawColor,
+  selectedTool,
+  onNewAnnotation,
+  annotations
+}: Props) {
 
-  componentDidMount() {
-    const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
-    // tslint:disable-next-line
-    console.log(toolbar);
-  }
+  // tslint:disable-next-line
+  const onCreate = (e: any) => {
+    let points = e.layerType === 'polyline' ?
+      e.layer.getLatLngs() :
+      e.layer.getLatLngs()[0]
+    onNewAnnotation(points.map(toPixelLocation));
+    // In order to keep this pure
+    // I'm removing the drawn shape and letting it get updated via props
+    e.layer.remove();
+  };
 
-  render() {
-    const {
-      imageUrl,
-      imageSize: {width, height},
-      drawColor,
-      selectedTool,
-      onNewAnnotation
-    } = this.props;
-
-    // tslint:disable-next-line
-    console.log(this.props.annotations);
-
-    // tslint:disable-next-line
-    const onCreate = (e: any) => {
-      let points = e.layerType === 'polyline' ?
-        e.layer.getLatLngs() :
-        e.layer.getLatLngs()[0]
-      onNewAnnotation(points.map(toPixelLocation));
-      // In order to keep this pure
-      // I'm removing the drawn shape and letting it get updated via props
-      e.layer.remove();
-    };
-
-    // TODO improve zooming
-    return (
-      <Map
-        crs={CRS.Simple}
-        bounds={[[0, 0], [height, width]]}
-        maxZoom={100}
-        minZoom={-4}
-        zoomControl={false}
-      >
-        <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
-        <FeatureGroup>
-          <EditControl
-            // tslint:disable-next-line
-            ref={() => setTool(selectedTool)}
-            position="topright"
-            // tslint:disable-next-line
-            onEdited={() => console.log('woot')}
-            // tslint:disable-next-line
-            onCreated={onCreate}
-            // tslint:disable-next-line
-            onDeleted={() => console.log('woot')}
-            draw={{
-              circle: false,
-              marker: false,
-              circlemarker: false,
-              polygon: {
-                shapeOptions: {
-                  color: drawColor
-                }
-              },
-              rectangle: {
-                shapeOptions: {
-                  color: drawColor
-                }
+  // TODO improve zooming
+  return (
+    <Map
+      crs={CRS.Simple}
+      bounds={[[0, 0], [height, width]]}
+      maxZoom={100}
+      minZoom={-4}
+      zoomControl={false}
+    >
+      <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
+      <FeatureGroup>
+        <EditControl
+          // tslint:disable-next-line
+          ref={() => setTool(selectedTool)}
+          position="topright"
+          // tslint:disable-next-line
+          onEdited={() => console.log('woot')}
+          // tslint:disable-next-line
+          onCreated={onCreate}
+          // tslint:disable-next-line
+          onDeleted={() => console.log('woot')}
+          draw={{
+            circle: false,
+            marker: false,
+            circlemarker: false,
+            polygon: {
+              shapeOptions: {
+                color: drawColor
               }
-            }}
-          />
-        </FeatureGroup>
-        {this.props.annotations.polygon &&  this.props.annotations.polygon.map(({color, bounds}, index) => (
-          <Polygon key={index} positions={bounds.map(toLatLngLocation)} color={color} />
-        ))}
-        {this.props.annotations.rectangle &&  this.props.annotations.rectangle.map(({color, bounds}, index) => (
-          <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
-        ))}
-        {this.props.annotations.line && this.props.annotations.line.map(({color, bounds}, index) => (
-          <Polyline positions={bounds.map(toLatLngLocation)} color={color} />
-        ))}
-      </Map>
-    );
-  }
+            },
+            rectangle: {
+              shapeOptions: {
+                color: drawColor
+              }
+            }
+          }}
+        />
+      </FeatureGroup>
+      {annotations.polygon && annotations.polygon.map(({color, bounds}, index) => (
+        <Polygon key={index} positions={bounds.map(toLatLngLocation)} color={color} />
+      ))}
+      {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (
+        <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
+      ))}
+      {annotations.line && annotations.line.map(({color, bounds}, index) => (
+        <Polyline key={index} positions={bounds.map(toLatLngLocation)} color={color} />
+      ))}
+    </Map>
+  );
 }
