@@ -112,10 +112,15 @@ class App extends React.Component {
       });
     };
 
-    const toggleVisiblityOfTool = (hiddenTools: number) => {
-      // tslint:disable
-      console.log({...this.state, hiddenTools, test: hiddenTools})
-      this.setState({...this.state, hiddenTools, test: hiddenTools});
+    const toggleVisiblityOfTool = (toolIndex: number) => {
+      const removeItem = (arr: number[], index: number) => [...arr.slice(0, index), ...arr.slice(index+1)];
+      const currentHiddenTools = this.state.hiddenTools || [];
+      const foundIndex = currentHiddenTools.indexOf(toolIndex);
+      const hiddenTools = foundIndex === -1 ?
+        [...currentHiddenTools, toolIndex] :
+        removeItem(currentHiddenTools, foundIndex);
+
+      this.setState({...this.state, hiddenTools});
     };
 
 
