@@ -1,9 +1,17 @@
+// tslint:disable
 import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
-import { Map, ImageOverlay, FeatureGroup, Circle } from 'react-leaflet';
-import { CRS } from 'leaflet';
-import { EditControl } from 'react-leaflet-draw';
+import {
+  Map,
+  ImageOverlay,
+  FeatureGroup,
+  Polygon,
+  /* Polyline,*/
+  Rectangle
+} from 'react-leaflet';
+import { CRS, latLngBounds } from 'leaflet';
+import { EditControl, } from 'react-leaflet-draw';
 
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
@@ -37,6 +45,14 @@ function setTool(toolName: ToolNames) {
   }
 }
 
+const toPixelLocation = ({lat, lng}: {lat: number, lng: number}) => {
+  return {y: lat, x: lng};
+};
+
+const toLatLngLocation = ({x, y}: {x: number, y: number}) => {
+  return {lat: y, lng: x};
+};
+
 // TODO make this a function again
 export class SegmentImage extends React.Component {
   public props: Props;
@@ -55,10 +71,6 @@ export class SegmentImage extends React.Component {
       selectedTool,
       onNewAnnotation
     } = this.props;
-
-    const toPixelLocation = ({lat, lng}: {lat: number, lng: number}) => {
-      return {y: lat, x: lng};
-    };
 
     // tslint:disable-next-line
     console.log(this.props.annotations);
@@ -108,9 +120,13 @@ export class SegmentImage extends React.Component {
               }
             }}
           />
-          <Circle center={[0, 0]} radius={10} />
         </FeatureGroup>
-
+        {this.props.annotations.polygon &&  this.props.annotations.polygon.map(({color, bounds}, index) => (
+          <Polygon key={index} positions={bounds.map(toLatLngLocation)} color={color} />
+        ))}
+        {this.props.annotations.rectangle &&  this.props.annotations.rectangle.map(({color, bounds}, index) => (
+          <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
+        ))}
       </Map>
     );
   }
