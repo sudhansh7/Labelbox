@@ -32,8 +32,14 @@ const tools: Tool[] = [
 ];
 
 function selectToolbarState(currentTools: Tool[], annotationsByTool: AnnotationsByTool) {
-  return currentTools.map(({name, color, tool}) => {
-    return {name, color, tool, count: 2, visible: true};
+  return currentTools.map(({name, color, tool}, index) => {
+    return {
+      name,
+      color,
+      tool,
+      count: annotationsByTool[index] ? annotationsByTool[index].length : 0,
+      visible: true
+    };
   });
 }
 
@@ -89,9 +95,6 @@ class App extends React.Component {
         }
       });
     };
-
-    // tslint:disable-next-line
-    console.log(this.state.annotationsByTool);
 
     return (
       <MuiThemeProvider theme={theme}>
