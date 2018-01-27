@@ -9,10 +9,13 @@ export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
   imageUrl: string;
   imageSize: {width: number, height: number};
-  showPolygonTool: boolean;
-  showRectangleTool: boolean;
-  updateLabel: (label: string) => void;
   drawColor: string;
+  annotations: {
+    [key: string]: {
+      color: string;
+      bounds: {x: number, y: number}[];
+    }[]
+  };
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames;
 }
@@ -34,6 +37,7 @@ function setTool(toolName: ToolNames) {
   }
 }
 
+// TODO make this a function again
 export class SegmentImage extends React.Component {
   public props: Props;
 
@@ -56,6 +60,17 @@ export class SegmentImage extends React.Component {
       return {y: lat, x: lng};
     };
 
+    // tslint:disable-next-line
+    console.log(this.props.annotations);
+
+    // tslint:disable-next-line
+    const onCreate = (e: any) => {
+      onNewAnnotation(e.layer.getLatLngs()[0].map(toPixelLocation));
+      // In order to keep this pure
+      // I'm removing the drawn shape and letting it get updated via props
+      e.layer.remove();
+    };
+
     // TODO improve zooming
     return (
       <Map
@@ -74,7 +89,7 @@ export class SegmentImage extends React.Component {
             // tslint:disable-next-line
             onEdited={() => console.log('woot')}
             // tslint:disable-next-line
-            onCreated={(e: any) => onNewAnnotation(e.layer.getLatLngs()[0].map(toPixelLocation))}
+            onCreated={onCreate}
             // tslint:disable-next-line
             onDeleted={() => console.log('woot')}
             draw={{

@@ -19,12 +19,19 @@ export class LabelingScreen extends React.Component {
     drawColor: string,
     // tslint:disable-next-line
     onNewAnnotation: (annotation: any) => void,
-    selectedTool: ToolNames
+    selectedTool: ToolNames,
+    annotations: {
+      [key: string]: {
+        color: string;
+        bounds: {x: number, y: number}[];
+      }[]
+    };
   };
 
   customizationSubscription: {unsubscribe: () => {}};
 
   componentWillMount() {
+    // TODO need to redo this customization
     // tslint:disable-next-line
     this.customizationSubscription = (window as any).Labelbox.getTemplateCustomization()
       // tslint:disable-next-line
@@ -42,21 +49,15 @@ export class LabelingScreen extends React.Component {
       return (<div>Loading...</div>);
     }
 
-    const { showPolygonTool, showRectangleTool, allowMultipleAnnotations } = this.state.customization;
-
-    const removeTools = this.state.segmentation.length > 0 && !allowMultipleAnnotations;
-
     const { width, height, url } = this.props.imageInfo;
     return (
       <SegmentImage
         imageUrl={url}
         imageSize={{width, height}}
-        showPolygonTool={removeTools ? false : showPolygonTool}
-        showRectangleTool={removeTools ? false : showRectangleTool}
-        updateLabel={(segmentation: string) => this.setState({...this.state, segmentation})}
         drawColor={this.props.drawColor}
         onNewAnnotation={this.props.onNewAnnotation}
         selectedTool={this.props.selectedTool}
+        annotations={this.props.annotations}
       />
     );
   }

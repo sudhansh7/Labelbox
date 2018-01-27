@@ -43,6 +43,18 @@ function selectToolbarState(currentTools: Tool[], annotationsByTool: Annotations
   });
 }
 
+// TODO write test for this function
+function selectAnnotations(currentTools: Tool[], annotationsByTool: AnnotationsByTool) {
+  const mergeAnnotationsAndTools = (allAnnotations: AnnotationsByTool, {tool, color}: Tool, index: number) => {
+    const annotations = annotationsByTool[index] ?
+      annotationsByTool[index].map((bounds) => ({ color, bounds })) :
+      [];
+    const differentColorWithSameTool = allAnnotations[tool as string] ? allAnnotations[tool as string] : [];
+    return Object.assign(allAnnotations, {[tool as string]: [...differentColorWithSameTool, ...annotations]});
+  };
+  return currentTools.reduce(mergeAnnotationsAndTools, {});
+}
+
 class App extends React.Component {
   public state: {
     imageInfo: {url: string, height: number, width: number} | undefined,
@@ -112,6 +124,7 @@ class App extends React.Component {
               <div className="header">Outline all listed objects</div>
               <LabelingScreen
                 imageInfo={this.state.imageInfo}
+                annotations={selectAnnotations(tools, this.state.annotationsByTool)}
                 onSubmit={(label: string) => this.next(label)}
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}
