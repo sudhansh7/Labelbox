@@ -45,8 +45,12 @@ function selectToolbarState(currentTools: Tool[], annotationsByTool: Annotations
 }
 
 // TODO write test for this function
-function selectAnnotations(currentTools: Tool[], annotationsByTool: AnnotationsByTool) {
+function selectAnnotations(currentTools: Tool[], annotationsByTool: AnnotationsByTool, hiddenTools: number[]) {
   const mergeAnnotationsAndTools = (allAnnotations: AnnotationsByTool, {tool, color}: Tool, index: number) => {
+    if (hiddenTools.indexOf(index) !== -1) {
+      return allAnnotations;
+    }
+
     const annotations = annotationsByTool[index] ?
       annotationsByTool[index].map((bounds) => ({ color, bounds })) :
       [];
@@ -98,9 +102,6 @@ class App extends React.Component {
   }
 
   render() {
-    // tslint:disable
-    console.log('hidden', this.state.hiddenTools, (this.state as any).test)
-
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
       this.setState({
         ...this.state,
@@ -143,7 +144,7 @@ class App extends React.Component {
               <div className="header">Outline all listed objects</div>
               <LabelingScreen
                 imageInfo={this.state.imageInfo}
-                annotations={selectAnnotations(tools, this.state.annotationsByTool)}
+                annotations={selectAnnotations(tools, this.state.annotationsByTool, this.state.hiddenTools)}
                 onSubmit={(label: string) => this.next(label)}
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}
