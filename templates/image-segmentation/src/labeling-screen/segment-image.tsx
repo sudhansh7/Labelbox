@@ -7,7 +7,7 @@ import {
   ImageOverlay,
   FeatureGroup,
   Polygon,
-  /* Polyline,*/
+  Polyline,
   Rectangle
 } from 'react-leaflet';
 import { CRS, latLngBounds } from 'leaflet';
@@ -77,7 +77,10 @@ export class SegmentImage extends React.Component {
 
     // tslint:disable-next-line
     const onCreate = (e: any) => {
-      onNewAnnotation(e.layer.getLatLngs()[0].map(toPixelLocation));
+      let points = e.layerType === 'polyline' ?
+        e.layer.getLatLngs() :
+        e.layer.getLatLngs()[0]
+      onNewAnnotation(points.map(toPixelLocation));
       // In order to keep this pure
       // I'm removing the drawn shape and letting it get updated via props
       e.layer.remove();
@@ -126,6 +129,9 @@ export class SegmentImage extends React.Component {
         ))}
         {this.props.annotations.rectangle &&  this.props.annotations.rectangle.map(({color, bounds}, index) => (
           <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
+        ))}
+        {this.props.annotations.line && this.props.annotations.line.map(({color, bounds}, index) => (
+          <Polyline positions={bounds.map(toLatLngLocation)} color={color} />
         ))}
       </Map>
     );
