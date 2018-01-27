@@ -64,3 +64,7 @@
 .leaflet-draw.leaflet-control{
   opacity: 0.2;
 }
+
+.leaflet-draw-tooltip{
+  display: none;
+}
