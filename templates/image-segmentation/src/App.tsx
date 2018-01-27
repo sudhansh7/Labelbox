@@ -7,6 +7,8 @@ import lightblue from 'material-ui/colors/blue';
 import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
+import { ToolNames } from './labeling-screen/segment-image';
+
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -52,11 +54,11 @@ class App extends React.Component {
   }
 
   render() {
-    const tools = [
-      {name: 'Vegetation', color: 'pink'},
-      {name: 'Paved Road', color: 'purple'},
-      {name: 'Sidewalk', color: 'green'},
-      {name: 'Buildings', color: 'orange'},
+    const tools: {name: string, color: string, tool: ToolNames}[] = [
+      {name: 'Vegetation', color: 'pink', tool: 'polygon'},
+      {name: 'Paved Road', color: 'purple', tool: 'line'},
+      {name: 'Sidewalk', color: 'green', tool: 'rectangle'},
+      {name: 'Buildings', color: 'orange', tool: undefined},
     ];
 
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
@@ -91,6 +93,7 @@ class App extends React.Component {
                 onSubmit={(label: string) => this.next(label)}
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}
+                selectedTool={tools[this.state.currentToolIndex].tool}
               />
             </div>
           </div>

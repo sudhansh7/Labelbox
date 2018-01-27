@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SegmentImage } from './segment-image';
+import { SegmentImage, ToolNames } from './segment-image';
 
 export class LabelingScreen extends React.Component {
   // TODO move these all to props
@@ -19,6 +19,7 @@ export class LabelingScreen extends React.Component {
     drawColor: string,
     // tslint:disable-next-line
     onNewAnnotation: (annotation: any) => void,
+    selectedTool: ToolNames
   };
 
   customizationSubscription: {unsubscribe: () => {}};
@@ -55,6 +56,7 @@ export class LabelingScreen extends React.Component {
         updateLabel={(segmentation: string) => this.setState({...this.state, segmentation})}
         drawColor={this.props.drawColor}
         onNewAnnotation={this.props.onNewAnnotation}
+        selectedTool={this.props.selectedTool}
       />
     );
   }
