@@ -1,8 +1,9 @@
 import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
-import { Map, ImageOverlay } from 'react-leaflet';
+import { Map, ImageOverlay, FeatureGroup, Circle } from 'react-leaflet';
 import { CRS } from 'leaflet';
+import { EditControl } from 'react-leaflet-draw';
 
 interface Props {
   imageUrl: string;
@@ -28,7 +29,21 @@ export function SegmentImage ({imageUrl, imageSize: {width, height}}: Props) {
       minZoom={-4}
       zoomControl={false}
     >
-      <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]}/>
+      <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
+      <FeatureGroup>
+        <EditControl
+          position="topright"
+          // tslint:disable-next-line
+          onEdited={() => console.log('woot')}
+          // tslint:disable-next-line
+          onCreated={() => console.log('woot')}
+          // tslint:disable-next-line
+          onDeleted={() => console.log('woot')}
+          draw={{rectangle: false}}
+        />
+        <Circle center={[0, 0]} radius={10} />
+      </FeatureGroup>
+
     </Map>
   );
 }
