@@ -44,7 +44,17 @@ export class SegmentImage extends React.Component {
   }
 
   render() {
-    const {imageUrl, imageSize: {width, height}, drawColor, selectedTool} = this.props;
+    const {
+      imageUrl,
+      imageSize: {width, height},
+      drawColor,
+      selectedTool,
+      onNewAnnotation
+    } = this.props;
+
+    const toPixelLocation = ({lat, lng}: {lat: number, lng: number}) => {
+      return {y: lat, x: lng};
+    };
 
     // TODO improve zooming
     return (
@@ -64,7 +74,7 @@ export class SegmentImage extends React.Component {
             // tslint:disable-next-line
             onEdited={() => console.log('woot')}
             // tslint:disable-next-line
-            onCreated={() => console.log('woot')}
+            onCreated={(e: any) => onNewAnnotation(e.layer.getLatLngs()[0].map(toPixelLocation))}
             // tslint:disable-next-line
             onDeleted={() => console.log('woot')}
             draw={{

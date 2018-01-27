@@ -32,6 +32,10 @@ class App extends React.Component {
 
   componentWillMount () {
     this.next();
+    /* window.addEventListener('keydown', (e) => console.log(e.keyCode));*/
+    /* window.addEventListener('keyup', (e) => console.log(e.keyCode));*/
+    /* */
+    /* addHotkey('space', () => this.setState())*/
   }
 
   next(label?: string) {
@@ -56,9 +60,9 @@ class App extends React.Component {
   render() {
     const tools: {name: string, color: string, tool: ToolNames}[] = [
       {name: 'Vegetation', color: 'pink', tool: 'polygon'},
-      {name: 'Paved Road', color: 'purple', tool: 'line'},
-      {name: 'Sidewalk', color: 'green', tool: 'rectangle'},
-      {name: 'Buildings', color: 'orange', tool: undefined},
+      {name: 'Paved Road', color: 'purple', tool: 'polygon'},
+      {name: 'Buildings', color: 'orange', tool: 'rectangle'},
+      {name: 'Sidewalk', color: 'green', tool: 'line'},
     ];
 
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
@@ -67,12 +71,15 @@ class App extends React.Component {
         annotationsByTool: {
           ...this.state.annotationsByTool,
           [this.state.currentToolIndex]: [
-            ...(this.state.annotationsByTool[this.state.currentToolIndex] || {}),
+            ...(this.state.annotationsByTool[this.state.currentToolIndex] || []),
             annotation
           ]
         }
       });
     };
+
+    // tslint:disable-next-line
+    console.log(this.state.annotationsByTool);
 
     return (
       <MuiThemeProvider theme={theme}>
