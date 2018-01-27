@@ -116,7 +116,7 @@ class App extends React.Component {
     };
 
     const toggleVisiblityOfTool = (toolIndex: number) => {
-      const removeItem = (arr: number[], index: number) => [...arr.slice(0, index), ...arr.slice(index+1)];
+      const removeItem = (arr: number[], index: number) => [ ...arr.slice(0, index), ...arr.slice(index + 1) ];
       const currentHiddenTools = this.state.hiddenTools || [];
       const foundIndex = currentHiddenTools.indexOf(toolIndex);
       const hiddenTools = foundIndex === -1 ?
@@ -125,7 +125,6 @@ class App extends React.Component {
 
       this.setState({...this.state, hiddenTools});
     };
-
 
     return (
       <MuiThemeProvider theme={theme}>
