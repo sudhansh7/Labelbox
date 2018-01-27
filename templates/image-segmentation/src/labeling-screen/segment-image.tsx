@@ -1,7 +1,8 @@
 import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, Marker, Popup } from 'react-leaflet';
+import { CRS } from 'leaflet';
 
 interface Props {
   imageUrl: string;
@@ -24,8 +25,7 @@ export function SegmentImage ({imageUrl, imageSize: {width, height}}: Props) {
   console.log('render this image', imageUrl, width, height);
 
   return (
-    <Map center={position} zoom={position.zoom}>
-      <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"/>
+    <Map zoom={position.zoom} crs={CRS.Simple} bounds={[[0, 0], [height, width]]}>
       <Marker position={position}>
         <Popup>
           <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
