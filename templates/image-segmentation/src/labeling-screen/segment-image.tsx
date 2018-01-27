@@ -15,7 +15,7 @@ interface Props {
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
 }
 
-export function SegmentImage ({imageUrl, imageSize: {width, height}}: Props) {
+export function SegmentImage ({imageUrl, imageSize: {width, height}, drawColor}: Props) {
 
   // tslint:disable-next-line
   console.log('render th s image', imageUrl, width, height);
@@ -39,7 +39,21 @@ export function SegmentImage ({imageUrl, imageSize: {width, height}}: Props) {
           onCreated={() => console.log('woot')}
           // tslint:disable-next-line
           onDeleted={() => console.log('woot')}
-          draw={{rectangle: false}}
+          draw={{
+            circle: false,
+            marker: false,
+            circleMarker: false,
+            polygon: {
+              shapeOptions: {
+                color: drawColor
+              }
+            },
+            rectangle: {
+              shapeOptions: {
+                color: drawColor
+              }
+            }
+          }}
         />
         <Circle center={[0, 0]} radius={10} />
       </FeatureGroup>

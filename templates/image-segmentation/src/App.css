@@ -59,3 +59,8 @@
 .sr-only {
   display: none;
 }
+
+/* will be display none in the future */
+.leaflet-draw.leaflet-control{
+  opacity: 0.2;
+}
