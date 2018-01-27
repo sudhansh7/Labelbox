@@ -3,6 +3,9 @@ import { LinearProgress } from 'material-ui/Progress';
 import Icon from 'material-ui/Icon';
 import { getSizeOnImage } from './image-size';
 
+import { render } from 'react-dom'
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+
 interface Props {
   imageUrl: string,
   showPolygonTool: boolean,
@@ -21,10 +24,23 @@ export class SegmentImage extends React.Component {
   public props: Props;
 
   render() {
+    const position = {
+      lat: 51.505,
+      lng: -0.09,
+      zoom: 13
+    };
     return (
-      <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'} as any}>
-        hello
-      </div>
+      <Map center={position} zoom={position.zoom}>
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+        />
+        <Marker position={position}>
+          <Popup>
+            <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+          </Popup>
+        </Marker>
+      </Map>
     );
   }
 }

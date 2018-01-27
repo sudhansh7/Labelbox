@@ -12,6 +12,11 @@
   flex-grow: 1;
 }
 
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+}
+
 .sidebar{
   width: 300px;
   display: flex;
