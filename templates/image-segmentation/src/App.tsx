@@ -60,10 +60,11 @@ class App extends React.Component {
     imageInfo: {url: string, height: number, width: number} | undefined,
     currentToolIndex: number,
     annotationsByTool: AnnotationsByTool,
+    hiddenTools?: number[],
   } = {
     imageInfo: undefined,
     currentToolIndex: 0,
-    annotationsByTool: {}
+    annotationsByTool: {},
   };
 
   componentWillMount () {
@@ -72,6 +73,7 @@ class App extends React.Component {
     /* window.addEventListener('keyup', (e) => console.log(e.keyCode));*/
     /* */
     /* addHotkey('space', () => this.setState())*/
+    return true;
   }
 
   next(label?: string) {
@@ -94,6 +96,8 @@ class App extends React.Component {
   }
 
   render() {
+    // tslint:disable
+    console.log('hidden', this.state.hiddenTools, (this.state as any).test)
 
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
       this.setState({
@@ -108,6 +112,13 @@ class App extends React.Component {
       });
     };
 
+    const toggleVisiblityOfTool = (hiddenTools: number) => {
+      // tslint:disable
+      console.log({...this.state, hiddenTools, test: hiddenTools})
+      this.setState({...this.state, hiddenTools, test: hiddenTools});
+    };
+
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
@@ -118,6 +129,7 @@ class App extends React.Component {
                 tools={selectToolbarState(tools, this.state.annotationsByTool)}
                 currentTool={this.state.currentToolIndex}
                 toolChange={(currentToolIndex: number) => this.setState({...this.state, currentToolIndex})}
+                visibilityToggle={toggleVisiblityOfTool}
               />
             </div>
             <div className="labeling-frame">

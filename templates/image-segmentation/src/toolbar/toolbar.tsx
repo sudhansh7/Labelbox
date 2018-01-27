@@ -3,10 +3,11 @@ import { Tool } from './tool';
 import Button from 'material-ui/Button';
 
 export function Toolbar(
-  {tools, toolChange, currentTool}: {
+  {tools, toolChange, currentTool, visibilityToggle}: {
     tools: {name: string, color: string, count: number, visible: boolean}[],
     toolChange: (index: number) => void,
     currentTool: number,
+    visibilityToggle: (toolIndex: number) => void;
   }) {
   return (
     <div className="toolbar">
@@ -20,6 +21,7 @@ export function Toolbar(
             color={color}
             count={count}
             visible={visible}
+            visibilityToggle={() => visibilityToggle(index)}
             onClick={() => toolChange(index)}
             selected={index === currentTool}
           />

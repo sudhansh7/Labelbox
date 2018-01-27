@@ -1,16 +1,16 @@
-// tslint:disable
 import * as React from 'react';
 import { Circle } from './circle';
 import Icon from 'material-ui/Icon';
 
 export function Tool(
-  { color, name, count, onClick, selected, visible }: {
+  { color, name, count, onClick, selected, visible, visibilityToggle }: {
     color: string,
     name: string,
     count: number,
     onClick: Function,
     selected: boolean,
     visible: boolean,
+    visibilityToggle: () => void
   }
 ) {
   return (
@@ -40,8 +40,10 @@ export function Tool(
             color: 'grey',
             marginRight: '10px'
           }}
-          onClick={() => console.log('Visbility change')}
-        >visibility</Icon>
+          onClick={() => visibilityToggle()}
+        >
+          visibility
+        </Icon>
       </div>
     </div>
   );
