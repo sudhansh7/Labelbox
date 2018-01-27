@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Circle } from './circle';
 import Icon from 'material-ui/Icon';
 
@@ -14,14 +14,14 @@ export function Tool({color, name, count, onClick, selected}) {
       padding: '10px 0px',
       cursor: 'pointer',
       backgroundColor: selected ? '#e4e4e4ad' : 'inherit'
-    }}
+    } as any}
     onClick={onClick}
   >
-      <div style={{display: 'flex', flexGrow: '1', alignItems: 'center', margin: '0px 15px'}}>
+      <div style={{display: 'flex', flexGrow: '1', alignItems: 'center', margin: '0px 15px'} as any}>
         <Circle color={color}/>
         <div style={{marginLeft: '15px'}}>{name}</div>
         <div style={{marginLeft: '5px'}}>({count})</div>
-        <div style={{display: 'flex', flexGrow: '1'}}></div>
+        <div style={{display: 'flex', flexGrow: '1'} as any}></div>
         <Icon style={{color: 'grey', marginRight: '10px'}}>visibility</Icon>
       </div>
     </div>

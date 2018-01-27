@@ -10,7 +10,7 @@ var type = undefined;
  https://github.com/Leaflet/Leaflet.draw
  http://leafletjs.com
  */
-! function(t, e, i) {
+! function(t:any, e, i) {
   function o(t:any, e:any) {
     for (;
       (t = t.parentElement) && !t.classList.contains(e););
@@ -1042,7 +1042,7 @@ var type = undefined;
         L.DomEvent.off(this._container, "touchstart", this._onTouchStart), L.DomEvent.off(this._container, "touchend", this._onTouchEnd), L.DomEvent.off(this._container, "touchmove", this._onTouchMove), this._detectIE() ? (L.DomEvent.off(this._container, "MSPointerDowm", this._onTouchStart), L.DomEvent.off(this._container, "MSPointerUp", this._onTouchEnd), L.DomEvent.off(this._container, "MSPointerMove", this._onTouchMove), L.DomEvent.off(this._container, "MSPointerCancel", this._onTouchCancel)) : (L.DomEvent.off(this._container, "touchcancel", this._onTouchCancel), L.DomEvent.off(this._container, "touchleave", this._onTouchLeave))
       },
       _touchEvent: function(t, e) {
-        var i = {};
+        var i:any = {};
         if (void 0 !== t.touches) {
           if (!t.touches.length) return;
           i = t.touches[0]
