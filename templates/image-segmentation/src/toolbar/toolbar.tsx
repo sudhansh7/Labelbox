@@ -4,7 +4,7 @@ import Button from 'material-ui/Button';
 
 export function Toolbar(
   {tools, toolChange, currentTool}: {
-    tools: {name: string, color: string}[],
+    tools: {name: string, color: string, count: number, visible: boolean}[],
     toolChange: (index: number) => void,
     currentTool: number,
   }) {
@@ -13,12 +13,13 @@ export function Toolbar(
       <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
         {/* tslint:disable-next-line */}
         <div style={{margin: '20px 15px 10px', fontWeight: '700'} as any}>Select a class below</div>
-        {tools.map(({name, color}, index) => (
+        {tools.map(({name, color, count, visible}, index) => (
           <Tool
             key={index}
             name={name}
             color={color}
-            count={1}
+            count={count}
+            visible={visible}
             onClick={() => toolChange(index)}
             selected={index === currentTool}
           />

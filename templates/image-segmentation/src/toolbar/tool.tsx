@@ -1,14 +1,16 @@
+// tslint:disable
 import * as React from 'react';
 import { Circle } from './circle';
 import Icon from 'material-ui/Icon';
 
 export function Tool(
-  { color, name, count, onClick, selected }: {
+  { color, name, count, onClick, selected, visible }: {
     color: string,
     name: string,
     count: number,
     onClick: Function,
-    selected: boolean
+    selected: boolean,
+    visible: boolean,
   }
 ) {
   return (
@@ -33,7 +35,13 @@ export function Tool(
         <div style={{marginLeft: '5px'}}>({count})</div>
         {/* tslint:disable-next-line */}
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
-        <Icon style={{color: 'grey', marginRight: '10px'}}>visibility</Icon>
+        <Icon
+          style={{
+            color: 'grey',
+            marginRight: '10px'
+          }}
+          onClick={() => console.log('Visbility change')}
+        >visibility</Icon>
       </div>
     </div>
   );

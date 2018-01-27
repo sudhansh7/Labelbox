@@ -19,11 +19,29 @@ export const theme = createMuiTheme({
   }
 });
 
+interface AnnotationsByTool {
+  [key: string]: {x: number, y: number}[][];
+}
+
+type Tool = {name: string, color: string, tool: ToolNames};
+const tools: Tool[] = [
+  {name: 'Vegetation', color: 'pink', tool: 'polygon'},
+  {name: 'Paved Road', color: 'purple', tool: 'polygon'},
+  {name: 'Buildings', color: 'orange', tool: 'rectangle'},
+  {name: 'Sidewalk', color: 'green', tool: 'line'},
+];
+
+function selectToolbarState(currentTools: Tool[], annotationsByTool: AnnotationsByTool) {
+  return currentTools.map(({name, color, tool}) => {
+    return {name, color, tool, count: 2, visible: true};
+  });
+}
+
 class App extends React.Component {
   public state: {
     imageInfo: {url: string, height: number, width: number} | undefined,
     currentToolIndex: number,
-    annotationsByTool: {},
+    annotationsByTool: AnnotationsByTool,
   } = {
     imageInfo: undefined,
     currentToolIndex: 0,
@@ -58,12 +76,6 @@ class App extends React.Component {
   }
 
   render() {
-    const tools: {name: string, color: string, tool: ToolNames}[] = [
-      {name: 'Vegetation', color: 'pink', tool: 'polygon'},
-      {name: 'Paved Road', color: 'purple', tool: 'polygon'},
-      {name: 'Buildings', color: 'orange', tool: 'rectangle'},
-      {name: 'Sidewalk', color: 'green', tool: 'line'},
-    ];
 
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
       this.setState({
@@ -88,7 +100,7 @@ class App extends React.Component {
             <div className="sidebar">
               <div className="header logo">Labelbox</div>
               <Toolbar
-                tools={tools}
+                tools={selectToolbarState(tools, this.state.annotationsByTool)}
                 currentTool={this.state.currentToolIndex}
                 toolChange={(currentToolIndex: number) => this.setState({...this.state, currentToolIndex})}
               />
