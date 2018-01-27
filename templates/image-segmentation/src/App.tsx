@@ -31,16 +31,17 @@ const tools: Tool[] = [
   {name: 'Sidewalk', color: 'green', tool: 'line'},
 ];
 
-function selectToolbarState(currentTools: Tool[], annotationsByTool: AnnotationsByTool) {
-  return currentTools.map(({name, color, tool}, index) => {
-    return {
-      name,
-      color,
-      tool,
-      count: annotationsByTool[index] ? annotationsByTool[index].length : 0,
-      visible: true
-    };
-  });
+function selectToolbarState(currentTools: Tool[], annotationsByTool: AnnotationsByTool, hiddenTools: number[]) {
+  return currentTools
+    .map(({name, color, tool}, index) => {
+      return {
+        name,
+        color,
+        tool,
+        count: annotationsByTool[index] ? annotationsByTool[index].length : 0,
+        visible: hiddenTools.indexOf(index) === -1
+      };
+    });
 }
 
 // TODO write test for this function
@@ -60,11 +61,12 @@ class App extends React.Component {
     imageInfo: {url: string, height: number, width: number} | undefined,
     currentToolIndex: number,
     annotationsByTool: AnnotationsByTool,
-    hiddenTools?: number[],
+    hiddenTools: number[],
   } = {
     imageInfo: undefined,
     currentToolIndex: 0,
     annotationsByTool: {},
+    hiddenTools: []
   };
 
   componentWillMount () {
@@ -131,7 +133,7 @@ class App extends React.Component {
             <div className="sidebar">
               <div className="header logo">Labelbox</div>
               <Toolbar
-                tools={selectToolbarState(tools, this.state.annotationsByTool)}
+                tools={selectToolbarState(tools, this.state.annotationsByTool, this.state.hiddenTools)}
                 currentTool={this.state.currentToolIndex}
                 toolChange={(currentToolIndex: number) => this.setState({...this.state, currentToolIndex})}
                 visibilityToggle={toggleVisiblityOfTool}
