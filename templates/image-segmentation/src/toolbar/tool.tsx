@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 import { Circle } from './circle';
 import Icon from 'material-ui/Icon';
@@ -26,25 +27,27 @@ export function Tool(
         backgroundColor: selected ? '#e4e4e4ad' : 'inherit'
         // tslint:disable-next-line
       } as any}
-      onClick={() => onClick()}
     >
       {/* tslint:disable-next-line */}
-      <div style={{display: 'flex', flexGrow: '1', alignItems: 'center', margin: '0px 15px'} as any}>
+      <div
+        style={{display: 'flex', flexGrow: '1', alignItems: 'center', marginLeft: '15px'} as any}
+        onClick={() => { console.log('click did register'); onClick()}}
+      >
         <Circle color={color}/>
         <div style={{marginLeft: '15px'}}>{name}</div>
         <div style={{marginLeft: '5px'}}>({count})</div>
         {/* tslint:disable-next-line */}
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
-        <Icon
-          style={{
-            color: 'grey',
-            marginRight: '10px'
-          }}
-          onClick={() => visibilityToggle()}
-        >
-          visibility
-        </Icon>
       </div>
+      <Icon
+        style={{
+          color: 'grey',
+          marginRight: '20px'
+        }}
+        onClick={(e) => visibilityToggle()}
+      >
+        visibility
+      </Icon>
     </div>
   );
 }
