@@ -3,23 +3,8 @@ import { Tool } from './tool';
 import Button from 'material-ui/Button';
 
 export class Toolbar extends React.Component {
-  state = {
-    selectedTool: 0
-  }
-
   render() {
-    const { colorChange } = this.props;
-    const tools = [
-      {name: "Vegetation", color: "pink"},
-      {name: "Paved Road", color: "purple"},
-      {name: "Sidewalk", color: "green"},
-      {name: "Buildings", color: "orange"},
-    ];
-
-    const changeTool = (color, index) => {
-      colorChange(color);
-      this.setState({...this.state, selectedTool: index})
-    };
+    const { tools, toolChange, currentTool } = this.props;
 
     return (
       <div className="toolbar">
@@ -32,8 +17,8 @@ export class Toolbar extends React.Component {
                 name={name}
                 color={color}
                 count={1}
-                onClick={() => changeTool(color, index)}
-                selected={index === this.state.selectedTool}
+                onClick={() => toolChange(index)}
+                selected={index === currentTool}
               />
             ))
           }

@@ -33,12 +33,12 @@ export class SegmentImage extends Component {
         polyline: false,
         polygon: this.props.showPolygonTool && {
           shapeOptions: {
-            color: this.props.color
+            color: this.props.drawColor
           }
         },
         rectangle: this.props.showRectangleTool && {
           shapeOptions: {
-            color: this.props.color
+            color: this.props.drawColor
           }
         },
         circle: false,

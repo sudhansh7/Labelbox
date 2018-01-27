@@ -48,7 +48,7 @@ export class LabelingScreen extends Component {
         showRectangleTool={removeTools ? false : showRectangleTool}
         style={{width: '100%'}}
         updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
-        color={this.props.color}
+        drawColor={this.props.drawColor}
       />
     );
   }

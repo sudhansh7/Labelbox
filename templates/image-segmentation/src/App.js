@@ -17,7 +17,10 @@ export const theme = createMuiTheme({
 });
 
 class App extends Component {
-  state = {}
+  state = {
+    currentToolIndex: 0,
+    annotationsByTool: {}
+  }
 
   componentWillMount () {
     this.next();
@@ -36,6 +39,26 @@ class App extends Component {
   }
 
   render() {
+    const tools = [
+      {name: "Vegetation", color: "pink"},
+      {name: "Paved Road", color: "purple"},
+      {name: "Sidewalk", color: "green"},
+      {name: "Buildings", color: "orange"},
+    ];
+
+    // TODO have an error state that all tools must have a unique color
+    // const onNewAnnotation = ({annotation}) => {
+    //   this.setState({
+    //     ...this.state,
+    //     annotations: {
+    //       ...annotations,
+
+    //     }
+    //   })
+
+    // }
+    // onNewAnnotation={onNewAnnotation}
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
@@ -43,7 +66,9 @@ class App extends Component {
             <div className="sidebar">
               <div className="header logo">Labelbox</div>
               <Toolbar
-                colorChange={(color) => this.setState({...this.state, color})}
+                tools={tools}
+                currentTool={this.state.currentToolIndex}
+                toolChange={(currentToolIndex) => this.setState({...this.state, currentToolIndex})}
               />
             </div>
             <div className="labeling-frame">
@@ -52,8 +77,9 @@ class App extends Component {
                 imageUrl={this.state && this.state.imageUrl}
                 onSkip={() => this.next()}
                 onSubmit={(label) => this.next(label)}
-                color={this.state.color}
-                />
+                drawColor={tools[this.state.currentToolIndex].color}
+                annotations={this.state.annotations}
+              />
             </div>
           </div>
         </div>
