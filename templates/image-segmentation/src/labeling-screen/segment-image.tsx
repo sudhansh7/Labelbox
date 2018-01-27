@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
@@ -67,7 +66,7 @@ export function SegmentImage({
   const onCreate = (e: any) => {
     let points = e.layerType === 'polyline' ?
       e.layer.getLatLngs() :
-      e.layer.getLatLngs()[0]
+      e.layer.getLatLngs()[0];
     onNewAnnotation(points.map(toPixelLocation));
     // In order to keep this pure
     // I'm removing the drawn shape and letting it get updated via props
