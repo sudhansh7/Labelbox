@@ -6,7 +6,7 @@ export class LabelingScreen extends React.Component {
   public state = {
     segmentation: [],
     customization: {
-      instructions: "Outline the car using the polygon tool",
+      instructions: 'Outline the car using the polygon tool',
       showPolygonTool: true,
       showRectangleTool: true,
       allowMultipleAnnotations: true
@@ -17,21 +17,22 @@ export class LabelingScreen extends React.Component {
     imageUrl: string | undefined,
     onSubmit: (label: string) => void,
     drawColor: string,
-    // TODO not any
+    // tslint:disable-next-line
     onNewAnnotation: (annotation: any) => void,
-  }
+  };
 
   customizationSubscription: {unsubscribe: () => {}};
 
-  componentWillMount(){
-    this.customizationSubscription = window['Labelbox'].getTemplateCustomization()
-      // TODO any
+  componentWillMount() {
+    // tslint:disable-next-line
+    this.customizationSubscription = (window as any).Labelbox.getTemplateCustomization()
+      // tslint:disable-next-line
       .subscribe((customization: any) => {
         this.setState({...this.state, customization});
       });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.customizationSubscription.unsubscribe();
   }
 

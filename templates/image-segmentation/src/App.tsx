@@ -25,19 +25,21 @@ class App extends React.Component {
     imageUrl: undefined,
     currentToolIndex: 0,
     annotationsByTool: {}
-  }
+  };
 
   componentWillMount () {
     this.next();
   }
 
-  next(label?: string){
+  next(label?: string) {
     const getNext = () => {
-      window['Labelbox'].fetchNextAssetToLabel()
+      // tslint:disable-next-line
+      (window as any).Labelbox.fetchNextAssetToLabel()
         .then((imageUrl: string) => this.setState({imageUrl}));
     };
     if (label) {
-      window['Labelbox'].setLabelForAsset(label).then(getNext);
+      // tslint:disable-next-line
+      (window as any).Labelbox.setLabelForAsset(label).then(getNext);
     } else {
       getNext();
     }
@@ -45,10 +47,10 @@ class App extends React.Component {
 
   render() {
     const tools = [
-      {name: "Vegetation", color: "pink"},
-      {name: "Paved Road", color: "purple"},
-      {name: "Sidewalk", color: "green"},
-      {name: "Buildings", color: "orange"},
+      {name: 'Vegetation', color: 'pink'},
+      {name: 'Paved Road', color: 'purple'},
+      {name: 'Sidewalk', color: 'green'},
+      {name: 'Buildings', color: 'orange'},
     ];
 
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
@@ -62,9 +64,7 @@ class App extends React.Component {
           ]
         }
       });
-    }
-
-    console.log(this.state.annotationsByTool);
+    };
 
     return (
       <MuiThemeProvider theme={theme}>
