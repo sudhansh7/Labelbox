@@ -46,18 +46,20 @@ class App extends Component {
       {name: "Buildings", color: "orange"},
     ];
 
-    // TODO have an error state that all tools must have a unique color
-    // const onNewAnnotation = ({annotation}) => {
-    //   this.setState({
-    //     ...this.state,
-    //     annotations: {
-    //       ...annotations,
+    const onNewAnnotation = (annotation) => {
+      this.setState({
+        ...this.state,
+        annotationsByTool: {
+          ...this.state.annotationsByTool,
+          [this.state.currentToolIndex]: [
+            ...(this.state.annotationsByTool[this.state.currentToolIndex] || {}),
+            annotation
+          ]
+        }
+      });
+    }
 
-    //     }
-    //   })
-
-    // }
-    // onNewAnnotation={onNewAnnotation}
+    console.log(this.state.annotationsByTool);
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -78,7 +80,7 @@ class App extends Component {
                 onSkip={() => this.next()}
                 onSubmit={(label) => this.next(label)}
                 drawColor={tools[this.state.currentToolIndex].color}
-                annotations={this.state.annotations}
+                onNewAnnotation={onNewAnnotation}
               />
             </div>
           </div>

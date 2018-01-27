@@ -86,6 +86,8 @@ export class SegmentImage extends Component {
 
 		  this.map.on(L.Draw.Event.CREATED, (e) => {
 			  this.drawnItems.addLayer(e.layer);
+        // TODO might not need these other items
+        this.props.onNewAnnotation(e.layer.getLatLngs());
         updateLabel();
 		  });
 

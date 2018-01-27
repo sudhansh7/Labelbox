@@ -49,6 +49,7 @@ export class LabelingScreen extends Component {
         style={{width: '100%'}}
         updateLabel={(segmentation) => this.setState({...this.state, segmentation})}
         drawColor={this.props.drawColor}
+        onNewAnnotation={this.props.onNewAnnotation}
       />
     );
   }
