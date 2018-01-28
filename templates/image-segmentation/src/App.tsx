@@ -63,14 +63,15 @@ function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hid
     });
 }
 
+interface AppState {
+  imageInfo: {url: string, height: number, width: number} | undefined,
+  currentToolId: string | undefined,
+  annotations: Annotation[],
+  hiddenTools: string[],
+}
 
 class App extends React.Component {
-  public state: {
-    imageInfo: {url: string, height: number, width: number} | undefined,
-    currentToolId: string | undefined,
-    annotations: Annotation[],
-    hiddenTools: string[],
-  } = {
+  public state: AppState = {
     imageInfo: undefined,
     currentToolId: undefined,
     annotations: [],
@@ -148,34 +149,37 @@ class App extends React.Component {
       this.setState({...this.state, hiddenTools});
     };
 
-    const editShape = (annotationId?: string) => {
+    const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
       const index = this.state.annotations.findIndex(({id}) => id === annotationId);
-      this.setState({
-        ...this.state,
+      if (!index) {
+        return state;
+      }
+      return {
+        ...state,
         annotations: [
-          ...this.state.annotations.slice(0, index),
+          ...state.annotations.slice(0, index),
           {
-            ...this.state.annotations.find(({id}) => annotationId == id),
-            editing: true
-          },
-          ...this.state.annotations.slice(index + 1),
+            ...state.annotations.find(({id}) => annotationId === id),
+            ...fields
+          } as Annotation,
+          ...state.annotations.slice(index + 1),
         ]
-      });
-    }
+      };
+    };
+
+    const editShape = (annotationId?: string) => {
+      let updatedState = this.state.annotations.filter(({editing}) => editing)
+        .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), this.state);
+
+      if (annotationId) {
+        updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
+      }
+
+      this.setState(updatedState);
+    };
 
     const onAnnotationEdit = (annotationId: string, newBounds: {x: number, y: number}[]) => {
-      const index = this.state.annotations.findIndex(({id}) => id === annotationId);
-      this.setState({
-        ...this.state,
-        annotations: [
-          ...this.state.annotations.slice(0, index),
-          {
-            ...this.state.annotations[index],
-            bounds: newBounds
-          },
-          ...this.state.annotations.slice(index + 1),
-        ]
-      });
+      this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
     };
 
     const currentTool = tools.find((tool) => tool.id === this.state.currentToolId);
