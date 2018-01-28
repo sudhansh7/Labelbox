@@ -125,10 +125,11 @@ export function SegmentImage({
       crs={CRS.Simple}
       bounds={[[0, 0], [height, width]]}
       maxZoom={100}
-      minZoom={-4}
+      minZoom={-2}
       zoomControl={false}
       editable={true}
       onClick={mapClick}
+      zoomSnap={0.1}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
