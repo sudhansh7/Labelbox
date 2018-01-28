@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SegmentImage, ToolNames } from './segment-image';
+import { Annotation } from '../App';
 
 export class LabelingScreen extends React.Component {
   // TODO move these all to props
@@ -21,13 +22,7 @@ export class LabelingScreen extends React.Component {
     // tslint:disable-next-line
     onNewAnnotation: (annotation: any) => void,
     selectedTool: ToolNames | undefined,
-    annotations: {
-      [key: string]: {
-        color: string;
-        bounds: {x: number, y: number}[];
-        editing: boolean;
-      }[]
-    };
+    annotations: Annotation[],
     editShape: (tool?: ToolNames, index?: number) => void,
     isEditing: boolean,
   };

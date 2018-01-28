@@ -11,6 +11,7 @@ import {
   Rectangle
 } from 'react-leaflet';
 import { CRS, latLngBounds, DomEvent } from 'leaflet';
+import { Annotation } from '../App';
 import { EditControl, } from 'react-leaflet-draw';
 import 'leaflet-editable';
 
@@ -24,13 +25,7 @@ interface Props {
   imageUrl: string;
   imageSize: {width: number, height: number};
   drawColor: string | undefined;
-  annotations: {
-    [key: string]: {
-      color: string;
-      bounds: {x: number, y: number}[];
-      editing: boolean;
-    }[]
-  };
+  annotations: Annotation[];
   onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
   onAnnotationEdit: (tool: ToolNames, index: number, annotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames | undefined;
@@ -165,7 +160,7 @@ export function SegmentImage({
           }}
         />
       </FeatureGroup>
-      {annotations.polygon && annotations.polygon.map(({color, bounds, editing}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'polygon').map(({color, bounds, editing}, index) => (
         <Polygon
           key={index}
           positions={bounds.map(toLatLngLocation)}
@@ -174,10 +169,10 @@ export function SegmentImage({
           onClick={(e: any) => { DomEvent.stop(e); editShape('polygon', index) }}
         />
       ))}
-      {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'rectangle').map(({color, bounds}, index) => (
         <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
       ))}
-      {annotations.line && annotations.line.map(({color, bounds}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'line').map(({color, bounds}, index) => (
         <Polyline key={index} positions={bounds.map(toLatLngLocation)} color={color} />
       ))}
     </Map>

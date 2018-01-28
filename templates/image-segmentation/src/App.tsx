@@ -57,6 +57,14 @@ function selectToolbarState(currentTools: Tool[], annotationsByTool: Annotations
     });
 }
 
+export interface Annotation {
+  color: string,
+  bounds: {x: number, y:number}[],
+  editing: boolean,
+  toolName: ToolNames,
+}
+
+
 // TODO write test for this function
 function selectAnnotations(
   currentTools: Tool[],
@@ -66,20 +74,19 @@ function selectAnnotations(
     toolName: ToolNames,
     toolId: string
   }
-) {
-  const mergeAnnotationsAndTools = (allAnnotations: AnnotationsByTool, {id, tool, color}: Tool) => {
+):Annotation[] {
+  const mergeAnnotationsAndTools = (allAnnotations: Annotation[], {id, tool, color}: Tool):Annotation[] => {
     if (hiddenTools.indexOf(id) !== -1) {
       return allAnnotations;
     }
 
     const isShapeBeingEdited = currentlyEditingShape && tool === currentlyEditingShape.toolName && id === currentlyEditingShape.toolId;
     const annotations = annotationsByTool[id] ?
-      annotationsByTool[id].map((bounds) => ({color, bounds, editing: isShapeBeingEdited})) :
+      annotationsByTool[id].map((bounds) => ({color, bounds, editing: Boolean(isShapeBeingEdited), toolName: tool})) :
       [];
-    const differentColorWithSameTool = allAnnotations[tool as string] ? allAnnotations[tool as string] : [];
-    return Object.assign(allAnnotations, {[tool as string]: [...differentColorWithSameTool, ...annotations]});
+    return [...allAnnotations, ...annotations];
   };
-  return currentTools.reduce(mergeAnnotationsAndTools, {});
+  return currentTools.reduce(mergeAnnotationsAndTools, []);
 }
 
 class App extends React.Component {
