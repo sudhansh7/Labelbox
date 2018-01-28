@@ -1,7 +1,8 @@
-// tslint:disable:no-any
+// tslint:disable
 import * as React from 'react';
-import { Circle } from './circle';
+/* import { Circle } from './circle';*/
 import Icon from 'material-ui/Icon';
+import Button from 'material-ui/Button';
 
 export function Tool(
   { color, name, count, onClick, selected, visible, visibilityToggle }: {
@@ -14,25 +15,34 @@ export function Tool(
     visibilityToggle: () => void
   }
 ) {
+  const handleClick = (e: any) => {
+    if (e.target.classList.contains('material-icons')) {
+      visibilityToggle()
+    } else {
+      onClick()
+    }
+  }
+
   return (
-    <div
+    <Button
       style={{
         display: 'flex',
         flexGrow: '1',
         alignItems: 'center',
         width: '100%',
-        borderBottom: '1px solid #c1c1c1',
         padding: '10px 0px',
         cursor: 'pointer',
-        backgroundColor: selected ? '#e4e4e4ad' : 'inherit'
+        textTransform: 'none'
         // tslint:disable-next-line
       } as any}
+      color={selected ? 'primary' : 'inherit'}
+      raised={selected}
+      onClick={handleClick}
     >
       <div
-        style={{display: 'flex', flexGrow: '1', alignItems: 'center', marginLeft: '15px'} as any}
-        onClick={() => onClick()}
+        style={{display: 'flex', flexGrow: '1', alignItems: 'center'} as any}
       >
-        <Circle color={color}/>
+        {/* <Circle color={color}/> */}
         <div style={{marginLeft: '15px'}}>{name}</div>
         <div style={{marginLeft: '5px'}}>({count})</div>
         {/* tslint:disable-next-line */}
@@ -40,14 +50,13 @@ export function Tool(
       </div>
       <Icon
         style={{
-          color: 'grey',
+          color: selected ? 'white' : color,
           marginRight: '20px',
           opacity: visible ? 1 : 0.2
         }}
-        onClick={(e) => visibilityToggle()}
       >
         visibility
       </Icon>
-    </div>
+    </Button>
   );
 }
