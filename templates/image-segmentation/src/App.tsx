@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 import './App.css';
 import './icons.css';
@@ -67,11 +68,15 @@ class App extends React.Component {
     currentToolIndex: number,
     annotationsByTool: AnnotationsByTool,
     hiddenTools: number[],
+    currentlyEditingShape?: {
+      toolName: ToolNames,
+      index: number
+    }
   } = {
     imageInfo: undefined,
     currentToolIndex: 0,
     annotationsByTool: {},
-    hiddenTools: []
+    hiddenTools: [],
   };
 
   componentWillMount () {
@@ -155,6 +160,7 @@ class App extends React.Component {
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}
                 selectedTool={tools[this.state.currentToolIndex].tool}
+                editShape={(toolName, index) => this.setState({...this.state, currentlyEditingShape: {toolName, index}})}
               />
             </div>
           </div>

@@ -33,6 +33,7 @@ interface Props {
   };
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames;
+  editShape: (tool: ToolNames, index: number) => void
 }
 
 function setTool(toolName: ToolNames) {
@@ -67,7 +68,8 @@ export function SegmentImage({
   drawColor,
   selectedTool,
   onNewAnnotation,
-  annotations
+  annotations,
+  editShape
 }: Props) {
 
   // tslint:disable-next-line
@@ -128,8 +130,8 @@ export function SegmentImage({
           enableEdit={true}
           edit={true}
           editing={true}
-          ref={(shape: any) => editing && shape.leafletElement.enableEdit()}
-        /* onClick={(shapeClick: any) => shapeClick.target.enableEdit()}*/
+          ref={(shape: any) => shape && editing && shape.leafletElement.enableEdit()}
+          onClick={() => editShape('polygon', index)}
         />
       ))}
       {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (
