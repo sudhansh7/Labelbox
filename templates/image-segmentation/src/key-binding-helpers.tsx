@@ -6,7 +6,7 @@ const keyMap = {
   escape: 27,
   z: 90,
   ctrl: 17,
-  del: 127,
+  del: 8,
 };
 
 type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'escape' | 'z' | 'del';

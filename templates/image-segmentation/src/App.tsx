@@ -130,6 +130,19 @@ class App extends React.Component {
       }
     });
 
+    keyDownSteam('del').subscribe(() => {
+      const editAnnotationIndex = this.state.annotations.findIndex(({editing}) => editing === true);
+      if (editAnnotationIndex !== undefined) {
+        this.setState({
+          ...this.state,
+          annotations: [
+            this.state.annotations.slice(0, editAnnotationIndex),
+            this.state.annotations.slice(editAnnotationIndex + 1),
+          ]
+        });
+      }
+    });
+
   }
 
   next(label?: string) {
