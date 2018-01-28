@@ -11,6 +11,7 @@ import { getSizeOnImage } from './utils/image-size';
 import { ToolNames } from './labeling-screen/segment-image';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
+import { screenText } from './customization';
 
 export interface Annotation {
   id: string,
@@ -73,12 +74,6 @@ export const theme = createMuiTheme({
 });
 
 type Tool = {id: string, name: string, color: string, tool: ToolNames};
-const tools: Tool[] = [
-  {id: guid(), name: 'Vegetation', color: 'pink', tool: 'polygon'},
-  {id: guid(), name: 'Paved Road', color: 'purple', tool: 'polygon'},
-  {id: guid(), name: 'Buildings', color: 'orange', tool: 'rectangle'},
-  {id: guid(), name: 'Sidewalk', color: 'green', tool: 'line'},
-];
 
 function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hiddenTools: string[]) {
   return currentTools
@@ -100,6 +95,7 @@ interface AppState {
   annotations: Annotation[],
   hiddenTools: string[],
   deletedAnnotations: Annotation[],
+  tools: Tool[]
 }
 
 const defaultState = {
@@ -107,11 +103,15 @@ const defaultState = {
   currentToolId: undefined,
   annotations: [],
   hiddenTools: [],
-  deletedAnnotations: []
+  deletedAnnotations: [],
+  tools: []
 };
 
 class App extends React.Component {
-  public state: AppState = defaultState;
+  public state: AppState = {
+    ...defaultState,
+    tools: screenText.tools.map((tool) => ({id: guid(), ...tool})) as Tool[]
+  };
 
   componentWillMount () {
     this.next();
@@ -176,6 +176,7 @@ class App extends React.Component {
           const updateImageInfo = ({height, width}: {height: number, width: number}) => {
             this.setState({
               ...defaultState,
+              tools: this.state.tools,
               imageInfo: {width, height, url: imageUrl}
             });
           };
@@ -192,7 +193,7 @@ class App extends React.Component {
 
   render() {
     const onNewAnnotation = (bounds: {x: number, y: number}[]) => {
-      const currentTool = tools.find(({id}) => id === this.state.currentToolId);
+      const currentTool = this.state.tools.find(({id}) => id === this.state.currentToolId);
       if (currentTool === undefined) {
         throw new Error('should not be able to add an annotation without a tool');
       }
@@ -234,7 +235,7 @@ class App extends React.Component {
       this.next(JSON.stringify(this.state.annotations));
     }
 
-    const currentTool = tools.find((tool) => tool.id === this.state.currentToolId);
+    const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
     const isEditing = this.state.annotations.some(({editing}) => editing === true);
     return (
       <MuiThemeProvider theme={theme}>
@@ -245,7 +246,7 @@ class App extends React.Component {
                 <img src={logo} width="100px" />
               </div>
               <Toolbar
-                tools={selectToolbarState(tools, this.state.annotations, this.state.hiddenTools)}
+                tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={toggleVisiblityOfTool}
