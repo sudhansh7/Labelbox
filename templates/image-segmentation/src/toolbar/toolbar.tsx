@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tool } from './tool';
 import Button from 'material-ui/Button';
+import { ToolNames } from '../labeling-screen/segment-image';
 
 export function Toolbar(
   {
@@ -11,7 +12,7 @@ export function Toolbar(
     disableSubmit,
     onSubmit
   }: {
-    tools: {id: string, name: string, color: string, count: number, visible: boolean}[];
+    tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolNames}[];
     toolChange: (id: string | undefined) => void;
     currentTool: string | undefined;
     visibilityToggle: (toolIndex: string) => void;
@@ -23,10 +24,11 @@ export function Toolbar(
       <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
         {/* tslint:disable-next-line */}
         <div style={{margin: '20px 15px 10px', fontWeight: '700'} as any}>Select a class below</div>
-        {tools.map(({id, name, color, count, visible}, index) => (
+        {tools.map(({id, name, color, count, visible, tool}, index) => (
           <Tool
             key={index}
             name={name}
+            toolName={tool}
             color={color}
             count={count}
             visible={visible}

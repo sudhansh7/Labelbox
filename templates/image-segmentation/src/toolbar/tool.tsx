@@ -3,11 +3,13 @@ import * as React from 'react';
 /* import { Circle } from './circle';*/
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
+import { ToolNames } from '../labeling-screen/segment-image';
 
 export function Tool(
-  { color, name, count, onClick, selected, visible, visibilityToggle }: {
+  { color, name, count, onClick, selected, visible, visibilityToggle, toolName }: {
     color: string,
     name: string,
+    toolName: ToolNames,
     count: number,
     onClick: Function,
     selected: boolean,
@@ -31,6 +33,7 @@ export function Tool(
         alignItems: 'center',
         width: '100%',
         padding: '10px 0px',
+        paddingBottom: selected ? '5px' : '10px',
         cursor: 'pointer',
         textTransform: 'none',
         borderRadius: '0px',
@@ -44,9 +47,17 @@ export function Tool(
       <div
         style={{display: 'flex', flexGrow: '1', alignItems: 'center'} as any}
       >
-        {/* <Circle color={color}/> */}
-        <div style={{marginLeft: '15px'}}>{name}</div>
-        <div style={{marginLeft: '5px'}}>({count})</div>
+        <div style={{display: 'flex', flexDirection: 'column', marginLeft: '15px', lineHeight: '15px', alignItems: 'start'} as any}>
+          <div style={{display: 'flex'}}>
+            <div >{name}</div>
+            <div style={{marginLeft: '5px'}}>({count})</div>
+          </div>
+          {
+            selected && <div style={{fontSize: '9px'}}>
+              Draw a {toolName}
+            </div>
+          }
+        </div>
         {/* tslint:disable-next-line */}
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
       </div>
