@@ -233,7 +233,7 @@ class App extends React.Component {
               <Toolbar
                 tools={selectToolbarState(tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
-                toolChange={(currentToolId: string) => this.setState({...this.state, currentToolId})}
+                toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={toggleVisiblityOfTool}
               />
             </div>
