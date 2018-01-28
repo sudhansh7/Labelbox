@@ -29,7 +29,7 @@ interface Props {
   onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
   onAnnotationEdit: (tool: ToolNames, index: number, annotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames | undefined;
-  editShape: (tool?: ToolNames, index?: number) => void,
+  editShape: (annotationId?: string) => void,
   isEditing: boolean,
 }
 
@@ -160,13 +160,13 @@ export function SegmentImage({
           }}
         />
       </FeatureGroup>
-      {annotations.filter(({toolName}) => toolName === 'polygon').map(({color, bounds, editing}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, bounds, editing}, index) => (
         <Polygon
           key={index}
           positions={bounds.map(toLatLngLocation)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); editShape('polygon', index) }}
+          onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
         />
       ))}
       {annotations.filter(({toolName}) => toolName === 'rectangle').map(({color, bounds}, index) => (

@@ -58,6 +58,7 @@ function selectToolbarState(currentTools: Tool[], annotationsByTool: Annotations
 }
 
 export interface Annotation {
+  id: string,
   color: string,
   bounds: {x: number, y:number}[],
   editing: boolean,
@@ -70,19 +71,15 @@ function selectAnnotations(
   currentTools: Tool[],
   annotationsByTool: AnnotationsByTool,
   hiddenTools: string[],
-  currentlyEditingShape: undefined | {
-    toolName: ToolNames,
-    toolId: string
-  }
+  currentlyEditingShape?: string
 ):Annotation[] {
   const mergeAnnotationsAndTools = (allAnnotations: Annotation[], {id, tool, color}: Tool):Annotation[] => {
     if (hiddenTools.indexOf(id) !== -1) {
       return allAnnotations;
     }
 
-    const isShapeBeingEdited = currentlyEditingShape && tool === currentlyEditingShape.toolName && id === currentlyEditingShape.toolId;
     const annotations = annotationsByTool[id] ?
-      annotationsByTool[id].map((bounds) => ({color, bounds, editing: Boolean(isShapeBeingEdited), toolName: tool})) :
+      annotationsByTool[id].map((bounds) => ({id, color, bounds, editing: currentlyEditingShape === id, toolName: tool})) :
       [];
     return [...allAnnotations, ...annotations];
   };
@@ -95,10 +92,7 @@ class App extends React.Component {
     currentToolId: string | undefined,
     annotationsByTool: AnnotationsByTool,
     hiddenTools: string[],
-    currentlyEditingShape?: {
-      toolName: ToolNames,
-      toolId: string
-    },
+    currentlyEditingShape?: string,
   } = {
     imageInfo: undefined,
     currentToolId: undefined,
@@ -154,6 +148,7 @@ class App extends React.Component {
         annotationsByTool: {
           ...this.state.annotationsByTool,
           [this.state.currentToolId]: [
+            // TODO this should just be bounds should be real annotation object
             ...(this.state.annotationsByTool[this.state.currentToolId] || []),
             annotation
           ]
@@ -172,10 +167,10 @@ class App extends React.Component {
       this.setState({...this.state, hiddenTools});
     };
 
-    const editShape = (toolName: ToolNames, index?: number) => {
+    const editShape = (annotationId?: string) => {
       this.setState({
         ...this.state,
-        currentlyEditingShape: toolName !== undefined && index !== undefined ? {toolName, index} : undefined
+        currentlyEditingShape: annotationId
       });
     }
 

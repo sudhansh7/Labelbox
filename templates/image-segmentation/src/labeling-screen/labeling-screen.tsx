@@ -23,7 +23,7 @@ export class LabelingScreen extends React.Component {
     onNewAnnotation: (annotation: any) => void,
     selectedTool: ToolNames | undefined,
     annotations: Annotation[],
-    editShape: (tool?: ToolNames, index?: number) => void,
+    editShape: (annotationId?: string) => void,
     isEditing: boolean,
   };
 
