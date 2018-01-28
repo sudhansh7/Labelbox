@@ -162,6 +162,10 @@ class App extends React.Component {
       });
     }
 
+    const onAnnotationEdit = (toolName: ToolNames, annotationIndex: number, updatedValue: {x: number, y: number}[]) => {
+      console.log('so happy', toolName, annotationIndex, updatedValue);
+    };
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
@@ -186,6 +190,7 @@ class App extends React.Component {
                 selectedTool={this.state.currentToolIndex !== undefined ? tools[this.state.currentToolIndex].tool : undefined}
                 editShape={editShape}
                 isEditing={Boolean(this.state.currentlyEditingShape)}
+                onAnnotationEdit={onAnnotationEdit}
               />
             </div>
           </div>

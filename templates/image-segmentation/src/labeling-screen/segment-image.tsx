@@ -31,7 +31,8 @@ interface Props {
       editing: boolean;
     }[]
   };
-  onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
+  onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
+  onAnnotationEdit: (tool: ToolNames, index: number, annotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames | undefined;
   editShape: (tool?: ToolNames, index?: number) => void,
   isEditing: boolean,
@@ -70,6 +71,7 @@ export function SegmentImage({
   drawColor,
   selectedTool,
   onNewAnnotation,
+  onAnnotationEdit,
   annotations,
   editShape,
   isEditing,
@@ -90,14 +92,10 @@ export function SegmentImage({
     e.layer.remove();
   };
 
-  const onAnnotationEdit = (e: any) => {
-    console.log('this needs to propage', getPointsFromEvent(e));
-  }
-
   const mapClick = (e:any) => {
     if (!selectedTool && isEditing){
       // Turn editing off if they click outside the editing
-      /* editShape();*/
+      editShape();
     }
   }
 
@@ -109,7 +107,11 @@ export function SegmentImage({
       // I.E. This function gets called multiple times and we don't want
       // multiple event listeners
       if (!shape.leafletElement.listens('editable:vertex:dragend')) {
-        shape.leafletElement.on('editable:vertex:dragend', onAnnotationEdit);
+        shape.leafletElement.on('editable:vertex:dragend', (e: any) => {
+          // TODO I need both these items
+          // Maybe switch to id so this isn't so troublesome
+          onAnnotationEdit('polygon', 0, getPointsFromEvent(e))
+        });
       }
 
       if (editingShape) {

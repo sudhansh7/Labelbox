@@ -14,6 +14,7 @@ export class LabelingScreen extends React.Component {
   };
 
   public props: {
+    onAnnotationEdit: (tool: ToolNames, index: number, annotation: {x: number, y: number}[]) => void;
     imageInfo: {url: string, height: number, width: number} | undefined,
     onSubmit: (label: string) => void,
     drawColor: string | undefined,
@@ -63,6 +64,7 @@ export class LabelingScreen extends React.Component {
         annotations={this.props.annotations}
         editShape={this.props.editShape}
         isEditing={this.props.isEditing}
+        onAnnotationEdit={this.props.onAnnotationEdit}
       />
     );
   }
