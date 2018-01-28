@@ -93,6 +93,20 @@ export function SegmentImage({
     }
   }
 
+  const onShapeCreation = (shape: any, editingShape: boolean) => {
+    console.log('my shape!', shape);
+    if (shape){
+      if (editingShape) {
+        shape.leafletElement.disableEdit();
+        shape.leafletElement.enableEdit();
+      } else {
+        shape.leafletElement.disableEdit();
+      }
+    } else {
+      console.log('what happend to the shape?', shape)
+    }
+  }
+
   // TODO improve zooming
   return (
     <Map
@@ -138,10 +152,7 @@ export function SegmentImage({
           key={index}
           positions={bounds.map(toLatLngLocation)}
           color={color}
-          enableEdit={true}
-          edit={true}
-          editing={true}
-          ref={(shape: any) => shape && editing && shape.leafletElement.enableEdit()}
+          ref={(shape: any) => onShapeCreation(shape, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape('polygon', index) }}
         />
       ))}
