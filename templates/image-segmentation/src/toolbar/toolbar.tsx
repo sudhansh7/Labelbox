@@ -8,13 +8,15 @@ export function Toolbar(
     toolChange,
     currentTool,
     visibilityToggle,
-    disableSubmit
+    disableSubmit,
+    onSubmit
   }: {
-    tools: {id: string, name: string, color: string, count: number, visible: boolean}[],
-    toolChange: (id: string | undefined) => void,
-    currentTool: string | undefined,
+    tools: {id: string, name: string, color: string, count: number, visible: boolean}[];
+    toolChange: (id: string | undefined) => void;
+    currentTool: string | undefined;
     visibilityToggle: (toolIndex: string) => void;
-    disableSubmit: boolean
+    disableSubmit: boolean;
+    onSubmit: () => void;
   }) {
   return (
     <div className="toolbar">
@@ -66,7 +68,7 @@ export function Toolbar(
       {/* tslint:disable-next-line */}
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'} as any}></div>
       <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px'}}>
-        <Button color="primary" raised={true} disabled={disableSubmit}>Submit</Button>
+        <Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button>
       </div>
     </div>
   );

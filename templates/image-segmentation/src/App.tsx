@@ -102,14 +102,16 @@ interface AppState {
   deletedAnnotations: Annotation[],
 }
 
+const defaultState = {
+  imageInfo: undefined,
+  currentToolId: undefined,
+  annotations: [],
+  hiddenTools: [],
+  deletedAnnotations: []
+};
+
 class App extends React.Component {
-  public state: AppState = {
-    imageInfo: undefined,
-    currentToolId: undefined,
-    annotations: [],
-    hiddenTools: [],
-    deletedAnnotations: []
-  };
+  public state: AppState = defaultState;
 
   componentWillMount () {
     this.next();
@@ -172,7 +174,10 @@ class App extends React.Component {
       (window as any).Labelbox.fetchNextAssetToLabel()
         .then((imageUrl: string) => {
           const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-            this.setState({...this.state, imageInfo: {width, height, url: imageUrl}});
+            this.setState({
+              ...defaultState,
+              imageInfo: {width, height, url: imageUrl}
+            });
           };
           getSizeOnImage(imageUrl).then(updateImageInfo);
         });
@@ -221,7 +226,13 @@ class App extends React.Component {
 
     const onAnnotationEdit = (annotationId: string, newBounds: {x: number, y: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
+
+
     };
+
+    const submit = () => {
+      this.next(JSON.stringify(this.state.annotations));
+    }
 
     const currentTool = tools.find((tool) => tool.id === this.state.currentToolId);
     const isEditing = this.state.annotations.some(({editing}) => editing === true);
@@ -239,6 +250,7 @@ class App extends React.Component {
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={toggleVisiblityOfTool}
                 disableSubmit={this.state.annotations.length === 0}
+                onSubmit={() => submit()}
               />
             </div>
             <div className="labeling-frame">
