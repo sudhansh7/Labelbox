@@ -137,9 +137,8 @@ export function SegmentImage({
   }
 
   const mapInit = (map: any) => {
-    console.log('adding dragstart event listener');
     if (map && map.leafletElement) {
-      enableDraggingWhileDrawing(map && map.leafletElement);
+      enableDraggingWhileDrawing(map.leafletElement);
     }
   }
 

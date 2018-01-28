@@ -136,8 +136,8 @@ class App extends React.Component {
         this.setState({
           ...this.state,
           annotations: [
-            this.state.annotations.slice(0, editAnnotationIndex),
-            this.state.annotations.slice(editAnnotationIndex + 1),
+            ...this.state.annotations.slice(0, editAnnotationIndex),
+            ...this.state.annotations.slice(editAnnotationIndex + 1),
           ]
         });
       }
