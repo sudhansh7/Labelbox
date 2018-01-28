@@ -33,10 +33,11 @@ interface Props {
   };
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames;
-  editShape: (tool: ToolNames, index: number) => void
+  editShape: (tool: ToolNames, index: number) => void,
+  isEditing: boolean
 }
 
-function setTool(toolName: ToolNames) {
+function setTool(toolName: ToolNames, isEditing: boolean) {
   const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
   const toolSelector = {
     'cancel': '.leaflet-draw-actions a[title="Cancel drawing"]',
@@ -45,7 +46,7 @@ function setTool(toolName: ToolNames) {
     'rectangle': '.leaflet-draw-draw-rectangle',
   }[toolName || 'cancel'];
 
-  if (toolbar) {
+  if (toolbar && !isEditing) {
     const tool: HTMLElement | null = toolbar.querySelector(toolSelector);
     if (tool) {
       tool.click();
@@ -69,7 +70,8 @@ export function SegmentImage({
   selectedTool,
   onNewAnnotation,
   annotations,
-  editShape
+  editShape,
+  isEditing
 }: Props) {
 
   // tslint:disable-next-line
@@ -83,6 +85,12 @@ export function SegmentImage({
     e.layer.remove();
   };
 
+
+  const mapClick = (e:any) => {
+    console.log('map click event', e);
+    console.log(isEditing);
+  }
+
   // TODO improve zooming
   return (
     <Map
@@ -92,12 +100,13 @@ export function SegmentImage({
       minZoom={-4}
       zoomControl={false}
       editable={true}
+      onClick={mapClick}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
         <EditControl
           // tslint:disable-next-line
-          ref={() => setTool(selectedTool)}
+          ref={() => setTool(selectedTool, isEditing)}
           position="topright"
           // tslint:disable-next-line
           onEdited={() => console.log('woot')}

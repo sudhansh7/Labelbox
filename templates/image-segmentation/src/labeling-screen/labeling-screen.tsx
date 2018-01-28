@@ -27,7 +27,8 @@ export class LabelingScreen extends React.Component {
         editing: boolean;
       }[]
     };
-    editShape: (tool: ToolNames, index: number) => void
+    editShape: (tool: ToolNames, index: number) => void,
+    isEditing: boolean,
   };
 
   customizationSubscription: {unsubscribe: () => {}};
@@ -61,6 +62,7 @@ export class LabelingScreen extends React.Component {
         selectedTool={this.props.selectedTool}
         annotations={this.props.annotations}
         editShape={this.props.editShape}
+        isEditing={this.props.isEditing}
       />
     );
   }

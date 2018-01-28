@@ -170,6 +170,7 @@ class App extends React.Component {
                 onNewAnnotation={onNewAnnotation}
                 selectedTool={tools[this.state.currentToolIndex].tool}
                 editShape={(toolName, index) => this.setState({...this.state, currentlyEditingShape: {toolName, index}})}
+                isEditing={Boolean(this.state.currentlyEditingShape)}
               />
             </div>
           </div>
