@@ -5,7 +5,7 @@ import './icons.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
-import { LabelingScreen } from './labeling-screen/labeling-screen';
+import { SegmentImage } from './labeling-screen/segment-image';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { ToolNames } from './labeling-screen/segment-image';
@@ -242,17 +242,19 @@ class App extends React.Component {
             </div>
             <div className="labeling-frame">
               <div className="header" style={{fontWeight: '100'} as any}>Outline all listed objects</div>
-              <LabelingScreen
-                imageInfo={this.state.imageInfo}
-                annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
-                onSubmit={(label: string) => this.next(label)}
-                drawColor={currentTool ? currentTool.color : undefined}
-                onNewAnnotation={onNewAnnotation}
-                selectedTool={currentTool ? currentTool.tool : undefined}
-                editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
-                isEditing={isEditing}
-                onAnnotationEdit={onAnnotationEdit}
-              />
+              {
+                this.state.imageInfo && <SegmentImage
+                  imageUrl={this.state.imageInfo.url}
+                  imageSize={this.state.imageInfo}
+                  annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
+                  drawColor={currentTool ? currentTool.color : undefined}
+                  onNewAnnotation={onNewAnnotation}
+                  selectedTool={currentTool ? currentTool.tool : undefined}
+                  editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
+                  isEditing={isEditing}
+                  onAnnotationEdit={onAnnotationEdit}
+                />
+              }
             </div>
           </div>
         </div>
