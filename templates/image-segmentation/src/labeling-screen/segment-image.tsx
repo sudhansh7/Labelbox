@@ -75,16 +75,24 @@ export function SegmentImage({
   isEditing,
 }: Props) {
 
-  // tslint:disable-next-line
-  const onCreate = (e: any) => {
+  const getPointsFromEvent = (e: any) => {
     let points = e.layerType === 'polyline' ?
       e.layer.getLatLngs() :
       e.layer.getLatLngs()[0];
-    onNewAnnotation(points.map(toPixelLocation));
+    return points.map(toPixelLocation);
+  }
+
+  // tslint:disable-next-line
+  const onCreate = (e: any) => {
+    onNewAnnotation(getPointsFromEvent(e));
     // In order to keep this pure
     // I'm removing the drawn shape and letting it get updated via props
     e.layer.remove();
   };
+
+  const onAnnotationEdit = (e: any) => {
+    console.log('this needs to propage', getPointsFromEvent(e));
+  }
 
   const mapClick = (e:any) => {
     if (!selectedTool && isEditing){
@@ -94,9 +102,19 @@ export function SegmentImage({
   }
 
   const onShapeCreation = (shape: any, editingShape: boolean) => {
-    console.log('my shape!', shape);
+    console.log('my shape! only call me once', shape);
     if (shape){
+
+      // Diffcult to keep leaflet pure...
+      // I.E. This function gets called multiple times and we don't want
+      // multiple event listeners
+      if (!shape.leafletElement.listens('editable:vertex:dragend')) {
+        shape.leafletElement.on('editable:vertex:dragend', onAnnotationEdit);
+      }
+
       if (editingShape) {
+        // Leaflet editable has some strange state problems
+        // disable and then renable will force a redraw
         shape.leafletElement.disableEdit();
         shape.leafletElement.enableEdit();
       } else {
