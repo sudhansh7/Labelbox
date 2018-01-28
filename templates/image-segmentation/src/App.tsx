@@ -21,6 +21,37 @@ export interface Annotation {
 }
 
 
+const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
+  const index = state.annotations.findIndex(({id}) => id === annotationId);
+  if (!index) {
+    return state;
+  }
+  return {
+    ...state,
+    annotations: [
+      ...state.annotations.slice(0, index),
+      {
+        ...state.annotations.find(({id}) => annotationId === id),
+        ...fields
+      } as Annotation,
+      ...state.annotations.slice(index + 1),
+    ]
+  };
+};
+
+
+const editShape = (state: AppState, annotationId?: string) => {
+  let updatedState = state.annotations.filter(({editing}) => editing)
+    .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), state);
+
+  if (annotationId) {
+    updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
+  }
+
+  return state;
+};
+
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -89,10 +120,11 @@ class App extends React.Component {
         undo.click();
       }
     };
-    keyComboStream(['cmd', 'ctrl', 'space'], 'z').subscribe(clickDeleteLastPoint);
+
+    keyComboStream(['cmd', 'ctrl'], 'z').subscribe(clickDeleteLastPoint);
 
     keyDownSteam('space').subscribe(() => {
-      this.setState({...this.state, currentToolId: undefined});
+      this.setState(editShape(this.state));
     });
 
   }
@@ -149,34 +181,6 @@ class App extends React.Component {
       this.setState({...this.state, hiddenTools});
     };
 
-    const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
-      const index = this.state.annotations.findIndex(({id}) => id === annotationId);
-      if (!index) {
-        return state;
-      }
-      return {
-        ...state,
-        annotations: [
-          ...state.annotations.slice(0, index),
-          {
-            ...state.annotations.find(({id}) => annotationId === id),
-            ...fields
-          } as Annotation,
-          ...state.annotations.slice(index + 1),
-        ]
-      };
-    };
-
-    const editShape = (annotationId?: string) => {
-      let updatedState = this.state.annotations.filter(({editing}) => editing)
-        .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), this.state);
-
-      if (annotationId) {
-        updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
-      }
-
-      this.setState(updatedState);
-    };
 
     const onAnnotationEdit = (annotationId: string, newBounds: {x: number, y: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
@@ -206,7 +210,7 @@ class App extends React.Component {
                 drawColor={currentTool ? currentTool.color : undefined}
                 onNewAnnotation={onNewAnnotation}
                 selectedTool={currentTool ? currentTool.tool : undefined}
-                editShape={editShape}
+                editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
                 isEditing={isEditing}
                 onAnnotationEdit={onAnnotationEdit}
               />
