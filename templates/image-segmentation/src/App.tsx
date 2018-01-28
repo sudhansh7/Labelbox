@@ -107,10 +107,12 @@ const defaultState = {
   tools: []
 };
 
+const addId = (item: any) => ({id: guid(), ...item});
+
 class App extends React.Component {
   public state: AppState = {
     ...defaultState,
-    tools: screenText.tools.map((tool) => ({id: guid(), ...tool})) as Tool[]
+    tools: screenText.tools.map(addId) as Tool[]
   };
 
   componentWillMount () {
@@ -140,6 +142,7 @@ class App extends React.Component {
         }
       }
 
+
     };
 
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
@@ -166,6 +169,12 @@ class App extends React.Component {
       }
     });
 
+    // TODO will probably need erro handleing here
+    (window as any).Labelbox.getTemplateCustomization()
+      .subscribe((customization: any) => {
+        console.log(customization);
+        this.setState({defaultState, tools: customization.tools.map(addId)});
+      });
   }
 
   next(label?: string) {
