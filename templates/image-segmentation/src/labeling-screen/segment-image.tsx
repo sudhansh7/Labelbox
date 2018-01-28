@@ -107,11 +107,11 @@ export function SegmentImage({
       // I.E. This function gets called multiple times and we don't want
       // multiple event listeners
       if (!shape.leafletElement.listens('editable:vertex:dragend')) {
-        shape.leafletElement.on('editable:vertex:dragend', (e: any) => {
-          // TODO I need both these items
-          // Maybe switch to id so this isn't so troublesome
+        const listenToDrags = (e: any) => {
           onAnnotationEdit('polygon', 0, getPointsFromEvent(e))
-        });
+        }
+
+        shape.leafletElement.on('editable:vertex:dragend', listenToDrags);
       }
 
       if (editingShape) {
@@ -126,6 +126,8 @@ export function SegmentImage({
       console.log('what happend to the shape?', shape)
     }
   }
+
+  console.log('RENDERING', annotations.polygon);
 
   // TODO improve zooming
   return (

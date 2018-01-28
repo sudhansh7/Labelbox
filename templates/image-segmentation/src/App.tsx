@@ -175,7 +175,7 @@ class App extends React.Component {
       // Thats why I should use an ID
       console.log(this.state.annotationsByTool);
       console.log(toolName);
-      const tool = tools.find(({tool}) => tool === toolName)
+      const tool = tools.find(({tool}) => tool === toolName);
       if (!tool) {
         throw new Error(`tool not found ${toolName}`);
       }
@@ -185,13 +185,12 @@ class App extends React.Component {
         annotationsByTool: {
           ...this.state.annotationsByTool,
           [toolIndex]: [
-            this.state.annotationsByTool[toolIndex].slice(0, annotationIndex),
+            ...this.state.annotationsByTool[toolIndex].slice(0, annotationIndex),
             updatedValue,
-            this.state.annotationsByTool[toolIndex].slice(annotationIndex+1),
+            ...this.state.annotationsByTool[toolIndex].slice(annotationIndex+1),
           ]
         }
       });
-      console.log('so happy', toolName, annotationIndex, updatedValue);
     };
 
     return (
