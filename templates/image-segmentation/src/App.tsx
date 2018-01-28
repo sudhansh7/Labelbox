@@ -142,11 +142,8 @@ class App extends React.Component {
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
 
     keyDownSteam('escape').subscribe(() => {
-      if (this.state.currentToolId) {
-        this.setState({...this.state, currentToolId: undefined});
-      } else {
-        this.setState(editShape(this.state));
-      }
+      // Turn off current tool and editing
+      this.setState({...editShape(this.state), currentToolId: undefined});
     });
 
     keyDownSteam('del').subscribe(() => {
