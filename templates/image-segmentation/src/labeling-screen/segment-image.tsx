@@ -27,7 +27,7 @@ interface Props {
   drawColor: string | undefined;
   annotations: Annotation[];
   onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
-  onAnnotationEdit: (tool: ToolNames, index: number, annotation: {x: number, y: number}[]) => void;
+  onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]) => void;
   selectedTool: ToolNames | undefined;
   editShape: (annotationId?: string) => void,
   isEditing: boolean,
@@ -93,7 +93,7 @@ export function SegmentImage({
     }
   }
 
-  const onShapeCreation = (shape: any, editingShape: boolean) => {
+  const onShapeCreation = (shape: any, annotationId: string, editingShape: boolean) => {
     if (shape){
 
       // Diffcult to keep leaflet pure...
@@ -101,7 +101,7 @@ export function SegmentImage({
       // multiple event listeners
       if (!shape.leafletElement.listens('editable:vertex:dragend')) {
         const listenToDrags = (e: any) => {
-          onAnnotationEdit('polygon', 0, getPointsFromEvent(e))
+          onAnnotationEdit(annotationId, getPointsFromEvent(e))
         }
 
         shape.leafletElement.on('editable:vertex:dragend', listenToDrags);
@@ -165,7 +165,7 @@ export function SegmentImage({
           key={index}
           positions={bounds.map(toLatLngLocation)}
           color={color}
-          ref={(shape: any) => onShapeCreation(shape, editing)}
+          ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
         />
       ))}

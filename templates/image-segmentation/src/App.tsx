@@ -149,45 +149,33 @@ class App extends React.Component {
     };
 
     const editShape = (annotationId?: string) => {
+      const index = this.state.annotations.findIndex(({id}) => id === annotationId);
       this.setState({
         ...this.state,
         annotations: [
-          ...this.state.annotations,
+          ...this.state.annotations.slice(0, index),
           {
             ...this.state.annotations.find(({id}) => annotationId == id),
             editing: true
-          }
+          },
+          ...this.state.annotations.slice(index + 1),
         ]
       });
     }
 
-    const onAnnotationEdit = (toolName: ToolNames, annotationIndex: number, updatedValue: {x: number, y: number}[]) => {
-      /* if (toolName === undefined){*/
-      /* throw new Error('Cant edit a polygon that wasnt made with a tool');*/
-      /* }*/
-      /* TODO need to make this an id*/
-      /* If someone make one annotation*/
-      /* make a second annotation*/
-      /* then delets the first one*/
-      /* updates the second one*/
-      /* This function will error bause the annotationIndex has changed*/
-      /* Thats why I should use an ID*/
-      /* const tool = tools.find(({tool}) => tool === toolName);*/
-      /* if (!tool) {*/
-      /* throw new Error(`tool not found ${toolName}`);*/
-      /* }*/
-      /* this.setState({*/
-      /* ...this.state,*/
-      /* annotations: {*/
-      /* ...this.state.annotations,*/
-      /* [tool.id]: [*/
-      /* ...this.state.annotationsByTool[tool.id].slice(0, annotationIndex),*/
-      /* updatedValue,*/
-      /* ...this.state.annotationsByTool[tool.id].slice(annotationIndex+1),*/
-      /* ]*/
-      /* }*/
-      /* });*/
-      console.log('come back to these updates');
+    const onAnnotationEdit = (annotationId: string, newBounds: {x: number, y: number}[]) => {
+      const index = this.state.annotations.findIndex(({id}) => id === annotationId);
+      this.setState({
+        ...this.state,
+        annotations: [
+          ...this.state.annotations.slice(0, index),
+          {
+            ...this.state.annotations[index],
+            bounds: newBounds
+          },
+          ...this.state.annotations.slice(index + 1),
+        ]
+      });
     };
 
     const currentTool = tools.find((tool) => tool.id === this.state.currentToolId);
