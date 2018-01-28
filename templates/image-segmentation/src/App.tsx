@@ -11,6 +11,16 @@ import { getSizeOnImage } from './utils/image-size';
 import { ToolNames } from './labeling-screen/segment-image';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -25,23 +35,24 @@ interface AnnotationsByTool {
   [key: string]: {x: number, y: number}[][];
 }
 
-type Tool = {name: string, color: string, tool: ToolNames};
+type Tool = {id: string, name: string, color: string, tool: ToolNames};
 const tools: Tool[] = [
-  {name: 'Vegetation', color: 'pink', tool: 'polygon'},
-  {name: 'Paved Road', color: 'purple', tool: 'polygon'},
-  {name: 'Buildings', color: 'orange', tool: 'rectangle'},
-  {name: 'Sidewalk', color: 'green', tool: 'line'},
+  {id: guid(), name: 'Vegetation', color: 'pink', tool: 'polygon'},
+  {id: guid(), name: 'Paved Road', color: 'purple', tool: 'polygon'},
+  {id: guid(), name: 'Buildings', color: 'orange', tool: 'rectangle'},
+  {id: guid(), name: 'Sidewalk', color: 'green', tool: 'line'},
 ];
 
-function selectToolbarState(currentTools: Tool[], annotationsByTool: AnnotationsByTool, hiddenTools: number[]) {
+function selectToolbarState(currentTools: Tool[], annotationsByTool: AnnotationsByTool, hiddenTools: string[]) {
   return currentTools
-    .map(({name, color, tool}, index) => {
+    .map(({id, name, color, tool}) => {
       return {
+        id,
         name,
         color,
         tool,
-        count: annotationsByTool[index] ? annotationsByTool[index].length : 0,
-        visible: hiddenTools.indexOf(index) === -1
+        count: annotationsByTool[id] ? annotationsByTool[id].length : 0,
+        visible: hiddenTools.indexOf(id) === -1
       };
     });
 }
@@ -50,20 +61,20 @@ function selectToolbarState(currentTools: Tool[], annotationsByTool: Annotations
 function selectAnnotations(
   currentTools: Tool[],
   annotationsByTool: AnnotationsByTool,
-  hiddenTools: number[],
+  hiddenTools: string[],
   currentlyEditingShape: undefined | {
     toolName: ToolNames,
-    index: number
+    toolId: string
   }
 ) {
-  const mergeAnnotationsAndTools = (allAnnotations: AnnotationsByTool, {tool, color}: Tool, index: number) => {
-    if (hiddenTools.indexOf(index) !== -1) {
+  const mergeAnnotationsAndTools = (allAnnotations: AnnotationsByTool, {id, tool, color}: Tool) => {
+    if (hiddenTools.indexOf(id) !== -1) {
       return allAnnotations;
     }
 
-    const isShapeBeingEdited = currentlyEditingShape && tool === currentlyEditingShape.toolName && index === currentlyEditingShape.index;
-    const annotations = annotationsByTool[index] ?
-      annotationsByTool[index].map((bounds) => ({color, bounds, editing: isShapeBeingEdited})) :
+    const isShapeBeingEdited = currentlyEditingShape && tool === currentlyEditingShape.toolName && id === currentlyEditingShape.toolId;
+    const annotations = annotationsByTool[id] ?
+      annotationsByTool[id].map((bounds) => ({color, bounds, editing: isShapeBeingEdited})) :
       [];
     const differentColorWithSameTool = allAnnotations[tool as string] ? allAnnotations[tool as string] : [];
     return Object.assign(allAnnotations, {[tool as string]: [...differentColorWithSameTool, ...annotations]});
@@ -74,16 +85,16 @@ function selectAnnotations(
 class App extends React.Component {
   public state: {
     imageInfo: {url: string, height: number, width: number} | undefined,
-    currentToolIndex: number | undefined,
+    currentToolId: string | undefined,
     annotationsByTool: AnnotationsByTool,
-    hiddenTools: number[],
+    hiddenTools: string[],
     currentlyEditingShape?: {
       toolName: ToolNames,
-      index: number
+      toolId: string
     },
   } = {
     imageInfo: undefined,
-    currentToolIndex: 0,
+    currentToolId: undefined,
     annotationsByTool: {},
     hiddenTools: [],
   };
@@ -102,7 +113,7 @@ class App extends React.Component {
     keyComboStream(['cmd', 'ctrl', 'space'], 'z').subscribe(clickDeleteLastPoint);
 
     keyDownSteam('space').subscribe(() => {
-      this.setState({...this.state, currentToolIndex: undefined});
+      this.setState({...this.state, currentToolId: undefined});
     });
 
   }
@@ -127,29 +138,28 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('new state', this.state);
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
-      if (this.state.currentToolIndex === undefined) {
+      if (this.state.currentToolId === undefined) {
         throw new Error('should not be able to add an annotation without a tool');
       }
       this.setState({
         ...this.state,
         annotationsByTool: {
           ...this.state.annotationsByTool,
-          [this.state.currentToolIndex]: [
-            ...(this.state.annotationsByTool[this.state.currentToolIndex] || []),
+          [this.state.currentToolId]: [
+            ...(this.state.annotationsByTool[this.state.currentToolId] || []),
             annotation
           ]
         }
       });
     };
 
-    const toggleVisiblityOfTool = (toolIndex: number) => {
-      const removeItem = (arr: number[], index: number) => [ ...arr.slice(0, index), ...arr.slice(index + 1) ];
+    const toggleVisiblityOfTool = (toolId: string) => {
+      const removeItem = (arr: string[], index: number) => [ ...arr.slice(0, index), ...arr.slice(index + 1) ];
       const currentHiddenTools = this.state.hiddenTools || [];
-      const foundIndex = currentHiddenTools.indexOf(toolIndex);
+      const foundIndex = currentHiddenTools.indexOf(toolId);
       const hiddenTools = foundIndex === -1 ?
-        [...currentHiddenTools, toolIndex] :
+        [...currentHiddenTools, toolId] :
         removeItem(currentHiddenTools, foundIndex);
 
       this.setState({...this.state, hiddenTools});
@@ -173,26 +183,24 @@ class App extends React.Component {
       // updates the second one
       // This function will error bause the annotationIndex has changed
       // Thats why I should use an ID
-      console.log(this.state.annotationsByTool);
-      console.log(toolName);
       const tool = tools.find(({tool}) => tool === toolName);
       if (!tool) {
         throw new Error(`tool not found ${toolName}`);
       }
-      const toolIndex = tools.indexOf(tool);
       this.setState({
         ...this.state,
         annotationsByTool: {
           ...this.state.annotationsByTool,
-          [toolIndex]: [
-            ...this.state.annotationsByTool[toolIndex].slice(0, annotationIndex),
+          [tool.id]: [
+            ...this.state.annotationsByTool[tool.id].slice(0, annotationIndex),
             updatedValue,
-            ...this.state.annotationsByTool[toolIndex].slice(annotationIndex+1),
+            ...this.state.annotationsByTool[tool.id].slice(annotationIndex+1),
           ]
         }
       });
     };
 
+    const currentTool = tools.find((tool) => tool.id === this.state.currentToolId);
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
@@ -201,8 +209,8 @@ class App extends React.Component {
               <div className="header logo">Labelbox</div>
               <Toolbar
                 tools={selectToolbarState(tools, this.state.annotationsByTool, this.state.hiddenTools)}
-                currentTool={this.state.currentToolIndex}
-                toolChange={(currentToolIndex: number) => this.setState({...this.state, currentToolIndex})}
+                currentTool={this.state.currentToolId}
+                toolChange={(currentToolId: string) => this.setState({...this.state, currentToolId})}
                 visibilityToggle={toggleVisiblityOfTool}
               />
             </div>
@@ -212,9 +220,9 @@ class App extends React.Component {
                 imageInfo={this.state.imageInfo}
                 annotations={selectAnnotations(tools, this.state.annotationsByTool, this.state.hiddenTools, this.state.currentlyEditingShape)}
                 onSubmit={(label: string) => this.next(label)}
-                drawColor={this.state.currentToolIndex !== undefined ? tools[this.state.currentToolIndex].color : undefined}
+                drawColor={currentTool ? currentTool.color : undefined}
                 onNewAnnotation={onNewAnnotation}
-                selectedTool={this.state.currentToolIndex !== undefined ? tools[this.state.currentToolIndex].tool : undefined}
+                selectedTool={currentTool ? currentTool.tool : undefined}
                 editShape={editShape}
                 isEditing={Boolean(this.state.currentlyEditingShape)}
                 onAnnotationEdit={onAnnotationEdit}

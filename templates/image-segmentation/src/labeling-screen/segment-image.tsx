@@ -39,7 +39,6 @@ interface Props {
 }
 
 function setTool(toolName: ToolNames) {
-  console.log('setting tool', toolName)
   const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
   const toolSelector = {
     'cancel': '.leaflet-draw-actions a[title="Cancel drawing"]',
@@ -100,7 +99,6 @@ export function SegmentImage({
   }
 
   const onShapeCreation = (shape: any, editingShape: boolean) => {
-    console.log('my shape! only call me once', shape);
     if (shape){
 
       // Diffcult to keep leaflet pure...
@@ -126,8 +124,6 @@ export function SegmentImage({
       console.log('what happend to the shape?', shape)
     }
   }
-
-  console.log('RENDERING', annotations.polygon);
 
   // TODO improve zooming
   return (

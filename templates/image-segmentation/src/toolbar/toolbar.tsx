@@ -4,26 +4,26 @@ import Button from 'material-ui/Button';
 
 export function Toolbar(
   {tools, toolChange, currentTool, visibilityToggle}: {
-    tools: {name: string, color: string, count: number, visible: boolean}[],
-    toolChange: (index: number) => void,
-    currentTool: number | undefined,
-    visibilityToggle: (toolIndex: number) => void;
+    tools: {id: string, name: string, color: string, count: number, visible: boolean}[],
+    toolChange: (id: string) => void,
+    currentTool: string | undefined,
+    visibilityToggle: (toolIndex: string) => void;
   }) {
   return (
     <div className="toolbar">
       <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
         {/* tslint:disable-next-line */}
         <div style={{margin: '20px 15px 10px', fontWeight: '700'} as any}>Select a class below</div>
-        {tools.map(({name, color, count, visible}, index) => (
+        {tools.map(({id, name, color, count, visible}, index) => (
           <Tool
             key={index}
             name={name}
             color={color}
             count={count}
             visible={visible}
-            visibilityToggle={() => visibilityToggle(index)}
-            onClick={() => toolChange(index)}
-            selected={index === currentTool}
+            visibilityToggle={() => visibilityToggle(id)}
+            onClick={() => toolChange(id)}
+            selected={id === currentTool}
           />
         ))}
       </div>
