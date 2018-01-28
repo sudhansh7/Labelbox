@@ -117,8 +117,6 @@ export function SegmentImage({
       } else {
         shape.leafletElement.disableEdit();
       }
-    } else {
-      console.log('what happend to the shape?', shape)
     }
   }
 
@@ -183,7 +181,7 @@ export function SegmentImage({
       {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
         <Polyline
           key={index}
-          positions={bounds.map(toLatLngLocation)}
+          positions={Array.isArray(bounds) ? bounds.map(toLatLngLocation) : toLatLngLocation(bounds)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
