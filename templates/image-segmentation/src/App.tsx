@@ -98,6 +98,7 @@ interface AppState {
   currentToolId: string | undefined,
   annotations: Annotation[],
   hiddenTools: string[],
+  deletedAnnotations: Annotation[],
 }
 
 class App extends React.Component {
@@ -106,21 +107,39 @@ class App extends React.Component {
     currentToolId: undefined,
     annotations: [],
     hiddenTools: [],
+    deletedAnnotations: []
   };
 
   componentWillMount () {
     this.next();
 
     // TODO kinda of of a hack to have this function here
-    const clickDeleteLastPoint = () => {
-      const selector = '.leaflet-draw-actions a[title="Delete last point drawn"]';
-      const undo: HTMLElement | null = document.querySelector(selector);
-      if (undo) {
-        undo.click();
+    const undo = () => {
+      if (this.state.currentToolId){
+
+        const selector = '.leaflet-draw-actions a[title="Delete last point drawn"]';
+        const undo: HTMLElement | null = document.querySelector(selector);
+        if (undo) {
+          undo.click();
+        }
+      } else {
+        if (this.state.deletedAnnotations.length > 0) {
+          this.setState({
+            ...this.state,
+            annotations: [
+              ...this.state.annotations,
+              this.state.deletedAnnotations[0]
+            ],
+            deletedAnnotations: [
+              ...this.state.deletedAnnotations.slice(1)
+            ]
+          });
+        }
       }
+
     };
 
-    keyComboStream(['cmd', 'ctrl'], 'z').subscribe(clickDeleteLastPoint);
+    keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
 
     keyDownSteam('escape').subscribe(() => {
       if (this.state.currentToolId) {
@@ -131,13 +150,17 @@ class App extends React.Component {
     });
 
     keyDownSteam('del').subscribe(() => {
-      const editAnnotationIndex = this.state.annotations.findIndex(({editing}) => editing === true);
-      if (editAnnotationIndex !== undefined) {
+      const deleteAnnotationIndex = this.state.annotations.findIndex(({editing}) => editing === true);
+      if (deleteAnnotationIndex !== undefined) {
         this.setState({
           ...this.state,
           annotations: [
-            ...this.state.annotations.slice(0, editAnnotationIndex),
-            ...this.state.annotations.slice(editAnnotationIndex + 1),
+            ...this.state.annotations.slice(0, deleteAnnotationIndex),
+            ...this.state.annotations.slice(deleteAnnotationIndex + 1),
+          ],
+          deletedAnnotations: [
+            {...this.state.annotations[deleteAnnotationIndex], editing: false},
+            ...this.state.deletedAnnotations
           ]
         });
       }
