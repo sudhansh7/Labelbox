@@ -13,6 +13,7 @@ import {
 import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { Annotation } from '../App';
 import { EditControl, } from 'react-leaflet-draw';
+import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
 
 // TODO hack to add editing onto the interface
@@ -20,25 +21,6 @@ const Map: any = MapTyped;
 const Polygon: any = PolygonTyped;
 const Rectangle: any = RectangleTyped;
 const Polyline: any = PolylineTyped;
-
-const once = (func: Function) => {
-  let calls = 0;
-  return (...args: any[]) => {
-    if (calls === 0){
-      calls += 1;
-      func(...args);
-    }
-  }
-}
-
-const enableDraggingWhileDrawing = once((leafletMap: any) => {
-  leafletMap.on('dragstart', () => {
-    const removePoint: HTMLElement | null = document.querySelector('a[title="Delete last point drawn"]');
-    if (removePoint !== null){
-      removePoint.click();
-    }
-  });
-});
 
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
@@ -136,16 +118,10 @@ export function SegmentImage({
     }
   }
 
-  const mapInit = (map: any) => {
-    if (map && map.leafletElement) {
-      enableDraggingWhileDrawing(map.leafletElement);
-    }
-  }
-
   // TODO improve zooming
   return (
     <Map
-      ref={mapInit}
+      ref={improveDragging}
       crs={CRS.Simple}
       bounds={[[0, 0], [height, width]]}
       maxZoom={100}
