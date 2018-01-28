@@ -238,6 +238,7 @@ class App extends React.Component {
                 currentTool={this.state.currentToolId}
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={toggleVisiblityOfTool}
+                disableSubmit={this.state.annotations.length === 0}
               />
             </div>
             <div className="labeling-frame">

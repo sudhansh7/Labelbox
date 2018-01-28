@@ -3,11 +3,18 @@ import { Tool } from './tool';
 import Button from 'material-ui/Button';
 
 export function Toolbar(
-  {tools, toolChange, currentTool, visibilityToggle}: {
+  {
+    tools,
+    toolChange,
+    currentTool,
+    visibilityToggle,
+    disableSubmit
+  }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean}[],
     toolChange: (id: string | undefined) => void,
     currentTool: string | undefined,
     visibilityToggle: (toolIndex: string) => void;
+    disableSubmit: boolean
   }) {
   return (
     <div className="toolbar">
@@ -59,7 +66,7 @@ export function Toolbar(
       {/* tslint:disable-next-line */}
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'} as any}></div>
       <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px'}}>
-        <Button color="primary" raised={true}>Submit</Button>
+        <Button color="primary" raised={true} disabled={disableSubmit}>Submit</Button>
       </div>
     </div>
   );
