@@ -155,6 +155,11 @@ export function SegmentImage({
               shapeOptions: {
                 color: drawColor
               }
+            },
+            polyline: {
+              shapeOptions: {
+                color: drawColor
+              }
             }
           }}
         />
