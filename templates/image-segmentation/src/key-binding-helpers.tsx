@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'z';
 
-export function keyComboStream(modifierKey: mappedKeys, withKey: mappedKeys) {
+export function keyComboStream(modifierKey: mappedKeys | mappedKeys[], withKey: mappedKeys) {
   const keyMap = {
     space: 32,
     cmd: 91,
@@ -21,5 +21,7 @@ export function keyComboStream(modifierKey: mappedKeys, withKey: mappedKeys) {
       return keyDown(withKeyCode).takeUntil(keyUp(modifierKeyCode));
     });
 
-  return keyCombo(keyMap[modifierKey], keyMap[withKey]);
+  return Array.isArray(modifierKey) ?
+    Observable.merge(...modifierKey.map((modifier) => keyCombo(keyMap[modifier], keyMap[withKey]))) :
+    keyCombo(keyMap[modifierKey], keyMap[withKey]);
 }

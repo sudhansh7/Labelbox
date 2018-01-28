@@ -39,6 +39,14 @@ export function Toolbar(
             <div style={{flex: '40'}}>Spacebar</div>
           </div>
         </div>
+        {/* tslint:disable-next-line */}
+        <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey'} as any}>
+          {/* tslint:disable-next-line */}
+          <div style={{display: 'flex', flexGrow: '1'} as any}>
+            <div style={{flex: '60'}}>Undo</div>
+            <div style={{flex: '40'}}>cmd/ctrl z</div>
+          </div>
+        </div>
       </div>
       {/* tslint:disable-next-line */}
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'} as any}></div>

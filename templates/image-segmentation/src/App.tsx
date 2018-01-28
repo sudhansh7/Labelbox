@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 import './App.css';
 import './icons.css';
@@ -78,8 +77,15 @@ class App extends React.Component {
   componentWillMount () {
     this.next();
 
-    keyComboStream('cmd', 'z')
-      .subscribe(() => console.log('boom cmd z'));
+    // TODO kinda of of a hack to have this function here
+    const clickDeleteLastPoint = () => {
+      const selector = '.leaflet-draw-actions a[title="Delete last point drawn"]';
+      const undo: HTMLElement | null = document.querySelector(selector);
+      if (undo) {
+        undo.click();
+      }
+    };
+    keyComboStream(['cmd', 'ctrl', 'space'], 'z').subscribe(clickDeleteLastPoint);
 
   }
 
