@@ -12,6 +12,7 @@ import { ToolNames } from './labeling-screen/segment-image';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
 import { screenText } from './customization';
+import { LinearProgress } from 'material-ui/Progress';
 
 export interface Annotation {
   id: string,
@@ -95,10 +96,12 @@ interface AppState {
   annotations: Annotation[],
   hiddenTools: string[],
   deletedAnnotations: Annotation[],
+  loading: boolean,
   tools: Tool[]
 }
 
 const defaultState = {
+  loading: true,
   imageInfo: undefined,
   currentToolId: undefined,
   annotations: [],
@@ -182,11 +185,13 @@ class App extends React.Component {
       // tslint:disable-next-line
       (window as any).Labelbox.fetchNextAssetToLabel()
         .then((imageUrl: string) => {
+          this.setState({...this.state, loading: true});
           const updateImageInfo = ({height, width}: {height: number, width: number}) => {
             this.setState({
               ...defaultState,
               tools: this.state.tools,
-              imageInfo: {width, height, url: imageUrl}
+              imageInfo: {width, height, url: imageUrl},
+              loading: false,
             });
           };
           getSizeOnImage(imageUrl).then(updateImageInfo);
@@ -249,6 +254,9 @@ class App extends React.Component {
     const isEditing = this.state.annotations.some(({editing}) => editing === true);
     return (
       <MuiThemeProvider theme={theme}>
+        {
+          this.state.loading && <LinearProgress color="primary" style={{position: 'absolute', top: '0px', width: '100vw'}} />
+        }
         <div className="app">
           <div className="content">
             <div className="sidebar">
