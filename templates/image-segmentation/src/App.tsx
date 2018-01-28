@@ -57,7 +57,7 @@ function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hid
         name,
         color,
         tool,
-        count: annotations.filter(({toolId}) => id === id).length,
+        count: annotations.filter(({toolId}) => toolId === id).length,
         visible: hiddenTools.indexOf(id) === -1
       };
     });
@@ -131,7 +131,8 @@ class App extends React.Component {
             bounds,
             color: currentTool.color,
             editing: false,
-            toolName: currentTool.tool
+            toolName: currentTool.tool,
+            toolId: currentTool.id
           }
         ]
       });
