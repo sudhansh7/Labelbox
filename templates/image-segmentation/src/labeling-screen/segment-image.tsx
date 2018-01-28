@@ -11,6 +11,7 @@ import {
   Rectangle
 } from 'react-leaflet';
 import { CRS, latLngBounds } from 'leaflet';
+/* import { CRS, latLngBounds, DomEvent } from 'leaflet';*/
 import { EditControl, } from 'react-leaflet-draw';
 import 'leaflet-editable';
 
@@ -33,8 +34,10 @@ interface Props {
   };
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
   selectedTool: ToolNames;
-  editShape: (tool: ToolNames, index: number) => void,
-  isEditing: boolean
+  editShape: (tool?: ToolNames, index?: number) => void,
+  isEditing: boolean,
+  drawingNewShape: () => void,
+  isDrawingNewShape: boolean
 }
 
 function setTool(toolName: ToolNames, isEditing: boolean) {
@@ -71,7 +74,9 @@ export function SegmentImage({
   onNewAnnotation,
   annotations,
   editShape,
-  isEditing
+  isEditing,
+  drawingNewShape,
+  isDrawingNewShape
 }: Props) {
 
   // tslint:disable-next-line
@@ -86,9 +91,13 @@ export function SegmentImage({
   };
 
 
+
   const mapClick = (e:any) => {
-    console.log('map click event', e);
-    console.log(isEditing);
+    if (!isDrawingNewShape && isEditing){
+      console.log('cacneling drawing');
+      // Turn editing off if they click outside the editing
+      /* editShape()*/
+    }
   }
 
   // TODO improve zooming
@@ -109,7 +118,7 @@ export function SegmentImage({
           ref={() => setTool(selectedTool, isEditing)}
           position="topright"
           // tslint:disable-next-line
-          onEdited={() => console.log('woot')}
+          onEdited={(e:any) => console.log('woot')}
           // tslint:disable-next-line
           onCreated={onCreate}
           // tslint:disable-next-line
@@ -140,7 +149,7 @@ export function SegmentImage({
           edit={true}
           editing={true}
           ref={(shape: any) => shape && editing && shape.leafletElement.enableEdit()}
-          onClick={() => editShape('polygon', index)}
+          onClick={(e: any) => editShape('polygon', index)}
         />
       ))}
       {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (

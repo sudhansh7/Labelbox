@@ -80,8 +80,10 @@ class App extends React.Component {
     currentlyEditingShape?: {
       toolName: ToolNames,
       index: number
-    }
+    },
+    isDrawingNewShape: boolean
   } = {
+    isDrawingNewShape: false,
     imageInfo: undefined,
     currentToolIndex: 0,
     annotationsByTool: {},
@@ -123,6 +125,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('new state', this.state);
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
       this.setState({
         ...this.state,
@@ -147,6 +150,13 @@ class App extends React.Component {
       this.setState({...this.state, hiddenTools});
     };
 
+    const editShape = (toolName: ToolNames, index?: number) => {
+      this.setState({
+        ...this.state,
+        currentlyEditingShape: toolName !== undefined && index !== undefined ? {toolName, index} : undefined
+      });
+    }
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
@@ -169,8 +179,10 @@ class App extends React.Component {
                 drawColor={tools[this.state.currentToolIndex].color}
                 onNewAnnotation={onNewAnnotation}
                 selectedTool={tools[this.state.currentToolIndex].tool}
-                editShape={(toolName, index) => this.setState({...this.state, currentlyEditingShape: {toolName, index}})}
+                editShape={editShape}
                 isEditing={Boolean(this.state.currentlyEditingShape)}
+                drawingNewShape={() => this.setState({...this.state, isDrawingNewShape: true})}
+                isDrawingNewShape={this.state.isDrawingNewShape}
               />
             </div>
           </div>
