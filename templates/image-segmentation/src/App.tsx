@@ -10,6 +10,7 @@ import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { ToolNames } from './labeling-screen/segment-image';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
+import { logo } from './logo';
 
 export interface Annotation {
   id: string,
@@ -229,7 +230,9 @@ class App extends React.Component {
         <div className="app">
           <div className="content">
             <div className="sidebar">
-              <div className="header logo">Labelbox</div>
+              <div className="header logo">
+                <img src={logo} width="100px" />
+              </div>
               <Toolbar
                 tools={selectToolbarState(tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
@@ -238,7 +241,7 @@ class App extends React.Component {
               />
             </div>
             <div className="labeling-frame">
-              <div className="header">Outline all listed objects</div>
+              <div className="header" style={{fontWeight: '100'} as any}>Outline all listed objects</div>
               <LabelingScreen
                 imageInfo={this.state.imageInfo}
                 annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
