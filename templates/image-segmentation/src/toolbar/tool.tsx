@@ -32,7 +32,9 @@ export function Tool(
         width: '100%',
         padding: '10px 0px',
         cursor: 'pointer',
-        textTransform: 'none'
+        textTransform: 'none',
+        borderRadius: '0px',
+        borderBottom: '1px solid #c1c1c1'
         // tslint:disable-next-line
       } as any}
       color={selected ? 'primary' : 'inherit'}

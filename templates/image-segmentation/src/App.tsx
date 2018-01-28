@@ -208,6 +208,7 @@ class App extends React.Component {
       }
       this.setState({
         ...this.state,
+        currentToolId: undefined,
         annotations: [
           ...this.state.annotations,
           {
