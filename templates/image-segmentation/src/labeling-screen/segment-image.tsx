@@ -36,8 +36,6 @@ interface Props {
   selectedTool: ToolNames | undefined;
   editShape: (tool?: ToolNames, index?: number) => void,
   isEditing: boolean,
-  drawingNewShape: () => void,
-  isDrawingNewShape: boolean
 }
 
 function setTool(toolName: ToolNames) {
@@ -76,8 +74,6 @@ export function SegmentImage({
   annotations,
   editShape,
   isEditing,
-  drawingNewShape,
-  isDrawingNewShape
 }: Props) {
 
   // tslint:disable-next-line
@@ -90,8 +86,6 @@ export function SegmentImage({
     // I'm removing the drawn shape and letting it get updated via props
     e.layer.remove();
   };
-
-
 
   const mapClick = (e:any) => {
     if (!selectedTool && isEditing){

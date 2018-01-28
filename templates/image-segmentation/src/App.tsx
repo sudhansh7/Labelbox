@@ -81,9 +81,7 @@ class App extends React.Component {
       toolName: ToolNames,
       index: number
     },
-    isDrawingNewShape: boolean
   } = {
-    isDrawingNewShape: false,
     imageInfo: undefined,
     currentToolIndex: 0,
     annotationsByTool: {},
@@ -188,8 +186,6 @@ class App extends React.Component {
                 selectedTool={this.state.currentToolIndex !== undefined ? tools[this.state.currentToolIndex].tool : undefined}
                 editShape={editShape}
                 isEditing={Boolean(this.state.currentlyEditingShape)}
-                drawingNewShape={() => this.setState({...this.state, isDrawingNewShape: true})}
-                isDrawingNewShape={this.state.isDrawingNewShape}
               />
             </div>
           </div>
