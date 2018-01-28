@@ -70,7 +70,6 @@ class App extends React.Component {
     currentToolId: string | undefined,
     annotations: Annotation[],
     hiddenTools: string[],
-    currentlyEditingShape?: string,
   } = {
     imageInfo: undefined,
     currentToolId: undefined,
@@ -152,7 +151,13 @@ class App extends React.Component {
     const editShape = (annotationId?: string) => {
       this.setState({
         ...this.state,
-        currentlyEditingShape: annotationId
+        annotations: [
+          ...this.state.annotations,
+          {
+            ...this.state.annotations.find(({id}) => annotationId == id),
+            editing: true
+          }
+        ]
       });
     }
 
@@ -186,6 +191,7 @@ class App extends React.Component {
     };
 
     const currentTool = tools.find((tool) => tool.id === this.state.currentToolId);
+    const isEditing = this.state.annotations.some(({editing}) => editing === true);
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
@@ -209,7 +215,7 @@ class App extends React.Component {
                 onNewAnnotation={onNewAnnotation}
                 selectedTool={currentTool ? currentTool.tool : undefined}
                 editShape={editShape}
-                isEditing={Boolean(this.state.currentlyEditingShape)}
+                isEditing={isEditing}
                 onAnnotationEdit={onAnnotationEdit}
               />
             </div>
