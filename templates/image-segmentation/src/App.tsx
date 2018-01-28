@@ -203,7 +203,7 @@ class App extends React.Component {
               <div className="header">Outline all listed objects</div>
               <LabelingScreen
                 imageInfo={this.state.imageInfo}
-                annotations={this.state.annotations}
+                annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
                 onSubmit={(label: string) => this.next(label)}
                 drawColor={currentTool ? currentTool.color : undefined}
                 onNewAnnotation={onNewAnnotation}
