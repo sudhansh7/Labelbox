@@ -35,8 +35,8 @@ export function Toolbar(
         <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey'} as any}>
           {/* tslint:disable-next-line */}
           <div style={{display: 'flex', flexGrow: '1'} as any}>
-            <div style={{flex: '60'}}>Toggle Annotation</div>
-            <div style={{flex: '40'}}>Spacebar</div>
+            <div style={{flex: '60'}}>Deselect Tool</div>
+            <div style={{flex: '40'}}>escape</div>
           </div>
         </div>
         {/* tslint:disable-next-line */}
