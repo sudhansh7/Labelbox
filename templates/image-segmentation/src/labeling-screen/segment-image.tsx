@@ -21,6 +21,24 @@ const Polygon: any = PolygonTyped;
 const Rectangle: any = RectangleTyped;
 const Polyline: any = PolylineTyped;
 
+const once = (func: Function) => {
+  let calls = 0;
+  return (...args: any[]) => {
+    if (calls === 0){
+      calls += 1;
+      func(...args);
+    }
+  }
+}
+
+const enableDraggingWhileDrawing = once((leafletMap: any) => {
+  leafletMap.on('dragstart', () => {
+    const removePoint: HTMLElement | null = document.querySelector('a[title="Delete last point drawn"]');
+    if (removePoint !== null){
+      removePoint.click();
+    }
+  });
+});
 
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
@@ -118,9 +136,17 @@ export function SegmentImage({
     }
   }
 
+  const mapInit = (map: any) => {
+    console.log('adding dragstart event listener');
+    if (map && map.leafletElement) {
+      enableDraggingWhileDrawing(map && map.leafletElement);
+    }
+  }
+
   // TODO improve zooming
   return (
     <Map
+      ref={mapInit}
       crs={CRS.Simple}
       bounds={[[0, 0], [height, width]]}
       maxZoom={100}
