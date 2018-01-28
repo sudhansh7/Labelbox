@@ -7,8 +7,8 @@ import {
   ImageOverlay,
   FeatureGroup,
   Polygon as PolygonTyped,
-  Polyline,
-  Rectangle
+  Polyline as PolylineTyped,
+  Rectangle as RectangleTyped
 } from 'react-leaflet';
 import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { Annotation } from '../App';
@@ -18,6 +18,8 @@ import 'leaflet-editable';
 // TODO hack to add editing onto the interface
 const Map: any = MapTyped;
 const Polygon: any = PolygonTyped;
+const Rectangle: any = RectangleTyped;
+const Polyline: any = PolylineTyped;
 
 
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
@@ -26,8 +28,8 @@ interface Props {
   imageSize: {width: number, height: number};
   drawColor: string | undefined;
   annotations: Annotation[];
-  onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
-  onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]) => void;
+  onNewAnnotation: (annotation: {x: number, y: number}[] | {x: number, y: number}) => void;
+  onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]  | {x: number, y: number}) => void;
   selectedTool: ToolNames | undefined;
   editShape: (annotationId?: string) => void,
   isEditing: boolean,
@@ -75,7 +77,7 @@ export function SegmentImage({
     let points = e.layerType === 'polyline' ?
       e.layer.getLatLngs() :
       e.layer.getLatLngs()[0];
-    return points.map(toPixelLocation);
+    return Array.isArray(points) ? points.map(toPixelLocation) : toPixelLocation(points);
   }
 
   // tslint:disable-next-line
@@ -169,11 +171,23 @@ export function SegmentImage({
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
         />
       ))}
-      {annotations.filter(({toolName}) => toolName === 'rectangle').map(({color, bounds}, index) => (
-        <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
+      {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (
+        <Rectangle
+          key={index}
+          bounds={latLngBounds(bounds.map(toLatLngLocation))}
+          color={color}
+          ref={(shape: any) => onShapeCreation(shape, id, editing)}
+          onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
+        />
       ))}
-      {annotations.filter(({toolName}) => toolName === 'line').map(({color, bounds}, index) => (
-        <Polyline key={index} positions={bounds.map(toLatLngLocation)} color={color} />
+      {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
+        <Polyline
+          key={index}
+          positions={bounds.map(toLatLngLocation)}
+          color={color}
+          ref={(shape: any) => onShapeCreation(shape, id, editing)}
+          onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
+        />
       ))}
     </Map>
   );

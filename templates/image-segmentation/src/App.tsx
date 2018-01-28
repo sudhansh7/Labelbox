@@ -20,10 +20,9 @@ export interface Annotation {
   toolId: string,
 }
 
-
 const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
   const index = state.annotations.findIndex(({id}) => id === annotationId);
-  if (!index) {
+  if (index === undefined) {
     return state;
   }
   return {
@@ -48,7 +47,7 @@ const editShape = (state: AppState, annotationId?: string) => {
     updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
   }
 
-  return state;
+  return updatedState;
 };
 
 
@@ -123,8 +122,12 @@ class App extends React.Component {
 
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(clickDeleteLastPoint);
 
-    keyDownSteam('space').subscribe(() => {
-      this.setState(editShape(this.state));
+    keyDownSteam('escape').subscribe(() => {
+      if (this.state.currentToolId) {
+        this.setState({...this.state, currentToolId: undefined});
+      } else {
+        this.setState(editShape(this.state));
+      }
     });
 
   }
@@ -149,7 +152,7 @@ class App extends React.Component {
   }
 
   render() {
-    const onNewAnnotation = (bounds: {x: number, y: number}[]) => {
+    const onNewAnnotation = (bounds: {x: number, y: number}[] | {x: number, y: number}) => {
       const currentTool = tools.find(({id}) => id === this.state.currentToolId);
       if (currentTool === undefined) {
         throw new Error('should not be able to add an annotation without a tool');

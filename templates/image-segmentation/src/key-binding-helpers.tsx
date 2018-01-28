@@ -3,11 +3,13 @@ import { Observable } from 'rxjs';
 const keyMap = {
   space: 32,
   cmd: 91,
-  ctrl: 27,
+  escape: 27,
   z: 90,
+  ctrl: 17,
+  del: 127,
 };
 
-type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'z';
+type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'escape' | 'z' | 'del';
 const keyEvent = (keyCode: number, event: string) => Observable.fromEvent(document, event)
   .filter((e: KeyboardEvent) => e.keyCode === keyCode);
 
