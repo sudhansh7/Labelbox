@@ -53,7 +53,7 @@ function selectAnnotations(currentTools: Tool[], annotationsByTool: AnnotationsB
     }
 
     const annotations = annotationsByTool[index] ?
-      annotationsByTool[index].map((bounds) => ({ color, bounds })) :
+      annotationsByTool[index].map((bounds) => ({ color, bounds, editing: true })) :
       [];
     const differentColorWithSameTool = allAnnotations[tool as string] ? allAnnotations[tool as string] : [];
     return Object.assign(allAnnotations, {[tool as string]: [...differentColorWithSameTool, ...annotations]});

@@ -3,15 +3,21 @@ import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
 import {
-  Map,
+  Map as MapTyped,
   ImageOverlay,
   FeatureGroup,
-  Polygon,
+  Polygon as PolygonTyped,
   Polyline,
   Rectangle
 } from 'react-leaflet';
 import { CRS, latLngBounds } from 'leaflet';
 import { EditControl, } from 'react-leaflet-draw';
+import 'leaflet-editable';
+
+// TODO hack to add editing onto the interface
+const Map: any = MapTyped;
+const Polygon: any = PolygonTyped;
+
 
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
@@ -22,6 +28,7 @@ interface Props {
     [key: string]: {
       color: string;
       bounds: {x: number, y: number}[];
+      editing: boolean;
     }[]
   };
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
@@ -82,6 +89,7 @@ export function SegmentImage({
       maxZoom={100}
       minZoom={-4}
       zoomControl={false}
+      editable={true}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
@@ -112,12 +120,16 @@ export function SegmentImage({
           }}
         />
       </FeatureGroup>
-      {annotations.polygon && annotations.polygon.map(({color, bounds}, index) => (
+      {annotations.polygon && annotations.polygon.map(({color, bounds, editing}, index) => (
         <Polygon
           key={index}
           positions={bounds.map(toLatLngLocation)}
           color={color}
-          ref={(e: any) => console.log(e)}
+          enableEdit={true}
+          edit={true}
+          editing={true}
+          ref={(shape: any) => editing && shape.leafletElement.enableEdit()}
+        /* onClick={(shapeClick: any) => shapeClick.target.enableEdit()}*/
         />
       ))}
       {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (

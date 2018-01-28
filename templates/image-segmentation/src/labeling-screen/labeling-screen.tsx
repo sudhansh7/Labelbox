@@ -24,6 +24,7 @@ export class LabelingScreen extends React.Component {
       [key: string]: {
         color: string;
         bounds: {x: number, y: number}[];
+        editing: boolean;
       }[]
     };
   };
