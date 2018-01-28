@@ -16,10 +16,10 @@ export class LabelingScreen extends React.Component {
   public props: {
     imageInfo: {url: string, height: number, width: number} | undefined,
     onSubmit: (label: string) => void,
-    drawColor: string,
+    drawColor: string | undefined,
     // tslint:disable-next-line
     onNewAnnotation: (annotation: any) => void,
-    selectedTool: ToolNames,
+    selectedTool: ToolNames | undefined,
     annotations: {
       [key: string]: {
         color: string;

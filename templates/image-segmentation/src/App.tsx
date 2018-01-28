@@ -9,7 +9,7 @@ import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { ToolNames } from './labeling-screen/segment-image';
-import { keyComboStream } from './key-binding-helpers';
+import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
@@ -74,7 +74,7 @@ function selectAnnotations(
 class App extends React.Component {
   public state: {
     imageInfo: {url: string, height: number, width: number} | undefined,
-    currentToolIndex: number,
+    currentToolIndex: number | undefined,
     annotationsByTool: AnnotationsByTool,
     hiddenTools: number[],
     currentlyEditingShape?: {
@@ -103,6 +103,10 @@ class App extends React.Component {
     };
     keyComboStream(['cmd', 'ctrl', 'space'], 'z').subscribe(clickDeleteLastPoint);
 
+    keyDownSteam('space').subscribe(() => {
+      this.setState({...this.state, currentToolIndex: undefined});
+    });
+
   }
 
   next(label?: string) {
@@ -127,6 +131,9 @@ class App extends React.Component {
   render() {
     console.log('new state', this.state);
     const onNewAnnotation = (annotation: {x: number, y: number}[]) => {
+      if (this.state.currentToolIndex === undefined) {
+        throw new Error('should not be able to add an annotation without a tool');
+      }
       this.setState({
         ...this.state,
         annotationsByTool: {
@@ -176,9 +183,9 @@ class App extends React.Component {
                 imageInfo={this.state.imageInfo}
                 annotations={selectAnnotations(tools, this.state.annotationsByTool, this.state.hiddenTools, this.state.currentlyEditingShape)}
                 onSubmit={(label: string) => this.next(label)}
-                drawColor={tools[this.state.currentToolIndex].color}
+                drawColor={this.state.currentToolIndex ? tools[this.state.currentToolIndex].color : undefined}
                 onNewAnnotation={onNewAnnotation}
-                selectedTool={tools[this.state.currentToolIndex].tool}
+                selectedTool={this.state.currentToolIndex ? tools[this.state.currentToolIndex].tool : undefined}
                 editShape={editShape}
                 isEditing={Boolean(this.state.currentlyEditingShape)}
                 drawingNewShape={() => this.setState({...this.state, isDrawingNewShape: true})}

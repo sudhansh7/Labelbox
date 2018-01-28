@@ -6,7 +6,7 @@ export function Toolbar(
   {tools, toolChange, currentTool, visibilityToggle}: {
     tools: {name: string, color: string, count: number, visible: boolean}[],
     toolChange: (index: number) => void,
-    currentTool: number,
+    currentTool: number | undefined,
     visibilityToggle: (toolIndex: number) => void;
   }) {
   return (

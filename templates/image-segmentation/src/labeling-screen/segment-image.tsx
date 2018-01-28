@@ -24,7 +24,7 @@ export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
   imageUrl: string;
   imageSize: {width: number, height: number};
-  drawColor: string;
+  drawColor: string | undefined;
   annotations: {
     [key: string]: {
       color: string;
@@ -33,7 +33,7 @@ interface Props {
     }[]
   };
   onNewAnnotation: (anotation: {x: number, y: number}[]) => void;
-  selectedTool: ToolNames;
+  selectedTool: ToolNames | undefined;
   editShape: (tool?: ToolNames, index?: number) => void,
   isEditing: boolean,
   drawingNewShape: () => void,
@@ -93,7 +93,7 @@ export function SegmentImage({
 
 
   const mapClick = (e:any) => {
-    if (!isDrawingNewShape && isEditing){
+    if (!selectedTool && isEditing){
       console.log('cacneling drawing');
       // Turn editing off if they click outside the editing
       /* editShape()*/
