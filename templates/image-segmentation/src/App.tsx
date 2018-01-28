@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 import './App.css';
 import './icons.css';
@@ -8,6 +9,7 @@ import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { ToolNames } from './labeling-screen/segment-image';
+import { keyComboStream } from './key-binding-helpers';
 
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
@@ -75,11 +77,10 @@ class App extends React.Component {
 
   componentWillMount () {
     this.next();
-    /* window.addEventListener('keydown', (e) => console.log(e.keyCode));*/
-    /* window.addEventListener('keyup', (e) => console.log(e.keyCode));*/
-    /* */
-    /* addHotkey('space', () => this.setState())*/
-    return true;
+
+    keyComboStream('cmd', 'z')
+      .subscribe(() => console.log('boom cmd z'));
+
   }
 
   next(label?: string) {

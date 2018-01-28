@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 /* import { LinearProgress } from 'material-ui/Progress';*/
 /* import Icon from 'material-ui/Icon';*/
@@ -81,6 +82,7 @@ export function SegmentImage({
       maxZoom={100}
       minZoom={-4}
       zoomControl={false}
+      ref={(e) => console.log(e)}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
@@ -112,7 +114,12 @@ export function SegmentImage({
         />
       </FeatureGroup>
       {annotations.polygon && annotations.polygon.map(({color, bounds}, index) => (
-        <Polygon key={index} positions={bounds.map(toLatLngLocation)} color={color} />
+        <Polygon
+          key={index}
+          positions={bounds.map(toLatLngLocation)}
+          color={color}
+          ref={(e: any) => console.log(e)}
+        />
       ))}
       {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (
         <Rectangle key={index} bounds={latLngBounds(bounds.map(toLatLngLocation))} color={color} />
