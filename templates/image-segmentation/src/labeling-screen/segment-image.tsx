@@ -40,7 +40,8 @@ interface Props {
   isDrawingNewShape: boolean
 }
 
-function setTool(toolName: ToolNames, isEditing: boolean) {
+function setTool(toolName: ToolNames) {
+  console.log('setting tool', toolName)
   const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
   const toolSelector = {
     'cancel': '.leaflet-draw-actions a[title="Cancel drawing"]',
@@ -49,7 +50,7 @@ function setTool(toolName: ToolNames, isEditing: boolean) {
     'rectangle': '.leaflet-draw-draw-rectangle',
   }[toolName || 'cancel'];
 
-  if (toolbar && !isEditing) {
+  if (toolbar) {
     const tool: HTMLElement | null = toolbar.querySelector(toolSelector);
     if (tool) {
       tool.click();
@@ -115,7 +116,7 @@ export function SegmentImage({
       <FeatureGroup>
         <EditControl
           // tslint:disable-next-line
-          ref={() => setTool(selectedTool, isEditing)}
+          ref={() => setTool(selectedTool)}
           position="topright"
           // tslint:disable-next-line
           onEdited={(e:any) => console.log('woot')}

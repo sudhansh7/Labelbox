@@ -183,9 +183,9 @@ class App extends React.Component {
                 imageInfo={this.state.imageInfo}
                 annotations={selectAnnotations(tools, this.state.annotationsByTool, this.state.hiddenTools, this.state.currentlyEditingShape)}
                 onSubmit={(label: string) => this.next(label)}
-                drawColor={this.state.currentToolIndex ? tools[this.state.currentToolIndex].color : undefined}
+                drawColor={this.state.currentToolIndex !== undefined ? tools[this.state.currentToolIndex].color : undefined}
                 onNewAnnotation={onNewAnnotation}
-                selectedTool={this.state.currentToolIndex ? tools[this.state.currentToolIndex].tool : undefined}
+                selectedTool={this.state.currentToolIndex !== undefined ? tools[this.state.currentToolIndex].tool : undefined}
                 editShape={editShape}
                 isEditing={Boolean(this.state.currentlyEditingShape)}
                 drawingNewShape={() => this.setState({...this.state, isDrawingNewShape: true})}
