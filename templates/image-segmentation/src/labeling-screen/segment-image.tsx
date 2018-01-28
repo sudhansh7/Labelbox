@@ -10,8 +10,7 @@ import {
   Polyline,
   Rectangle
 } from 'react-leaflet';
-import { CRS, latLngBounds } from 'leaflet';
-/* import { CRS, latLngBounds, DomEvent } from 'leaflet';*/
+import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { EditControl, } from 'react-leaflet-draw';
 import 'leaflet-editable';
 
@@ -89,9 +88,8 @@ export function SegmentImage({
 
   const mapClick = (e:any) => {
     if (!selectedTool && isEditing){
-      console.log('cacneling drawing');
       // Turn editing off if they click outside the editing
-      /* editShape()*/
+      /* editShape();*/
     }
   }
 
@@ -144,7 +142,7 @@ export function SegmentImage({
           edit={true}
           editing={true}
           ref={(shape: any) => shape && editing && shape.leafletElement.enableEdit()}
-          onClick={(e: any) => editShape('polygon', index)}
+          onClick={(e: any) => { DomEvent.stop(e); editShape('polygon', index) }}
         />
       ))}
       {annotations.rectangle && annotations.rectangle.map(({color, bounds}, index) => (
