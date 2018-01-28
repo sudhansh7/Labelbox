@@ -28,8 +28,8 @@ interface Props {
   imageSize: {width: number, height: number};
   drawColor: string | undefined;
   annotations: Annotation[];
-  onNewAnnotation: (annotation: {x: number, y: number}[] | {x: number, y: number}) => void;
-  onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]  | {x: number, y: number}) => void;
+  onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
+  onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]) => void;
   selectedTool: ToolNames | undefined;
   editShape: (annotationId?: string) => void,
   isEditing: boolean,
@@ -74,10 +74,8 @@ export function SegmentImage({
 }: Props) {
 
   const getPointsFromEvent = (e: any) => {
-    let points = e.layerType === 'polyline' ?
-      e.layer.getLatLngs() :
-      e.layer.getLatLngs()[0];
-    return Array.isArray(points) ? points.map(toPixelLocation) : toPixelLocation(points);
+    let points = e.layer.getLatLngs();
+    return (Array.isArray(points[0]) ? points[0] : points).map(toPixelLocation);
   }
 
   // tslint:disable-next-line
@@ -181,7 +179,7 @@ export function SegmentImage({
       {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
         <Polyline
           key={index}
-          positions={Array.isArray(bounds) ? bounds.map(toLatLngLocation) : toLatLngLocation(bounds)}
+          positions={bounds.map(toLatLngLocation)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}

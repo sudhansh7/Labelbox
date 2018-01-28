@@ -152,7 +152,7 @@ class App extends React.Component {
   }
 
   render() {
-    const onNewAnnotation = (bounds: {x: number, y: number}[] | {x: number, y: number}) => {
+    const onNewAnnotation = (bounds: {x: number, y: number}[]) => {
       const currentTool = tools.find(({id}) => id === this.state.currentToolId);
       if (currentTool === undefined) {
         throw new Error('should not be able to add an annotation without a tool');

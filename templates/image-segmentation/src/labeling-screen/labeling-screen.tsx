@@ -15,11 +15,11 @@ export class LabelingScreen extends React.Component {
   };
 
   public props: {
-    onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]  | {x: number, y: number}) => void;
+    onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]) => void;
     imageInfo: {url: string, height: number, width: number} | undefined,
     onSubmit: (label: string) => void,
     drawColor: string | undefined,
-    onNewAnnotation: (annotation: {x: number, y: number}[] | {x: number, y: number}) => void;
+    onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
     selectedTool: ToolNames | undefined,
     annotations: Annotation[],
     editShape: (annotationId?: string) => void,
