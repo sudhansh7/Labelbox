@@ -82,7 +82,6 @@ export function SegmentImage({
       maxZoom={100}
       minZoom={-4}
       zoomControl={false}
-      ref={(e) => console.log(e)}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
