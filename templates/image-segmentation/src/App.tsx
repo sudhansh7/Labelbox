@@ -14,6 +14,7 @@ import { logo } from './logo';
 import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
 import * as wkt from 'terraformer-wkt-parser';
+import Icon from 'material-ui/Icon';
 
 export interface Annotation {
   id: string,
@@ -98,7 +99,8 @@ interface AppState {
   hiddenTools: string[],
   deletedAnnotations: Annotation[],
   loading: boolean,
-  tools: Tool[]
+  tools: Tool[],
+  errorLoadingImage?: string
 }
 
 const defaultState = {
@@ -202,7 +204,10 @@ class App extends React.Component {
               loading: false,
             });
           };
-          getSizeOnImage(imageUrl).then(updateImageInfo);
+          getSizeOnImage(imageUrl).then(
+            updateImageInfo,
+            () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
+          );
         });
     };
     if (label) {
@@ -322,6 +327,18 @@ class App extends React.Component {
             </div>
             <div className="labeling-frame">
               <div className="header" style={{fontWeight: '100'} as any}>Outline all listed objects</div>
+              {
+                this.state.errorLoadingImage && (
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', alignItems: 'center', maxWidth: '400px'} as any}>
+                      <Icon style={{color: 'grey', fontSize: '200px'}}>broken_image</Icon>
+                      <div style={{color: 'grey', fontStyle: 'italic',}}>
+                        Error loading <a href={this.state.errorLoadingImage} target="_blank">{this.state.errorLoadingImage}</a>. Please confirm that this url is live and a direct link to an image. Webpage links are not supported.
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
               {
                 this.state.imageInfo && <SegmentImage
                   imageUrl={this.state.imageInfo.url}
