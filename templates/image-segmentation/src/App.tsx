@@ -261,7 +261,7 @@ class App extends React.Component {
 
     const submit = () => {
       const getPoints = ({bounds}: Annotation) => {
-        const toPoint = ({x, y}: {x: number, y: number}) => [y, x];
+        const toPoint = ({x, y}: {x: number, y: number}) => [x, y];
         return [
           ...bounds.map(toPoint),
           toPoint(bounds[0])
@@ -271,7 +271,7 @@ class App extends React.Component {
       const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
         return wkt.convert({
           "type": "MultiPolygon",
-          "coordinates": [annotations.map(getPoints)]
+          "coordinates": annotations.map(getPoints).map((polygon) => [polygon])
         });
       };
 
@@ -299,8 +299,11 @@ class App extends React.Component {
           [tool.name]: turnAnnotationsIntoWktString(annotationsByTool[toolId])
         }
       }, {})
+
+      console.log('redrawn this label on to the map');
       console.log(label);
-      this.next(JSON.stringify(label));
+
+      /* this.next(JSON.stringify(label));*/
     }
 
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);

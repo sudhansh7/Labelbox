@@ -53,11 +53,11 @@ function setTool(toolName: ToolNames) {
 }
 
 const toPixelLocation = ({lat, lng}: {lat: number, lng: number}) => {
-  return {y: lat, x: lng};
+  return {y: lng, x:lat};
 };
 
 const toLatLngLocation = ({x, y}: {x: number, y: number}) => {
-  return {lat: y, lng: x};
+  return {lat: x, lng: y};
 };
 
 // TODO make this a function again
