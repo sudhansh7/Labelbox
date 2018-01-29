@@ -255,7 +255,13 @@ class App extends React.Component {
     };
 
     const submit = () => {
-      const getPoints = ({bounds}: Annotation) => bounds.map(({x, y}) => [y, x]);
+      const getPoints = ({bounds}: Annotation) => {
+        const toPoint = ({x, y}: {x: number, y: number}) => [y, x];
+        return [
+          ...bounds.map(toPoint),
+          ...bounds.slice(-1).map(toPoint)
+        ];
+      };
 
       const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
         return wkt.convert({
