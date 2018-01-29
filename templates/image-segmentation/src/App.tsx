@@ -13,6 +13,8 @@ import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
 import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
+/* import { LatLng, Polygon } from 'leaflet';*/
+import * as wkt from 'terraformer-wkt-parser';
 
 export interface Annotation {
   id: string,
@@ -254,7 +256,64 @@ class App extends React.Component {
     };
 
     const submit = () => {
-      this.next(JSON.stringify(this.state.annotations));
+      /* const toLatLngs = ({bounds}:Annotation) => bounds.map(({x, y}) => new LatLng(y, x));*/
+      /* const latLngs = this.state.annotations.map(toLatLngs);*/
+      /* const geoJson = new (Polygon as any)(...latLngs).toGeoJSON();*/
+      /* console.log(geoJson);*/
+
+      /* const annotationsTo*/
+
+      const getPoints = ({bounds}: Annotation) => bounds.map(({x, y}) => [y, x]);
+
+      const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
+        return wkt.convert({
+          "type": "Polygon",
+          "coordinates": this.state.annotations.map(getPoints)
+        });
+      };
+
+      const annotationsByTool = this.state.annotations.reduce((annotationsByTool, annotation) => {
+        if (!annotationsByTool[annotation.toolId]) {
+          annotationsByTool[annotation.toolId] = []
+        }
+
+        return {
+          ...annotationsByTool,
+          [annotation.toolId]: [
+            ...annotationsByTool[annotation.toolId],
+            annotation
+          ]
+        };
+      }, {})
+
+      const label = Object.keys(annotationsByTool).reduce((label, toolId) => {
+        const tool = this.state.tools.find(({id}) => id === toolId);
+        if (!tool) {
+          throw new Error('tool not foudn' + toolId);
+        }
+        return {
+          ...label,
+          [tool.name]: turnAnnotationsIntoWktString(annotationsByTool[toolId])
+        }
+      }, {})
+
+      console.log(label);
+
+      /* this.tools.reduce((label, {id, tool}) => {*/
+      /* */
+      /* })*/
+
+      /* turnAnnotationsIntoWktString*/
+
+      /* [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ],*/
+      /* [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]*/
+
+      /* const result = wkx.Geometry.parseGeoJSON(geoJson);*/
+      /* console.log(geoJson, wkt);*/
+      /* wkt*/
+      /* const result = (window as any).Terraformer.WKT.convert(geoJson);*/
+      /* console.log(result);*/
+      /* this.next(JSON.stringify());*/
     }
 
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
