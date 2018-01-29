@@ -259,7 +259,7 @@ class App extends React.Component {
         const toPoint = ({x, y}: {x: number, y: number}) => [y, x];
         return [
           ...bounds.map(toPoint),
-          ...bounds.slice(-1).map(toPoint)
+          toPoint(bounds[0])
         ];
       };
 
