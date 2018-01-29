@@ -266,7 +266,7 @@ class App extends React.Component {
       const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
         return wkt.convert({
           "type": "MultiPolygon",
-          "coordinates": [this.state.annotations.map(getPoints)]
+          "coordinates": [annotations.map(getPoints)]
         });
       };
 
