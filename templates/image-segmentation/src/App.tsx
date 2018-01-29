@@ -19,7 +19,7 @@ import Icon from 'material-ui/Icon';
 export interface Annotation {
   id: string,
   color: string,
-  bounds: {x: number, y:number}[],
+  bounds: {lat: number, lng:number}[],
   editing: boolean,
   toolName: ToolNames,
   toolId: string,
@@ -219,7 +219,7 @@ class App extends React.Component {
   }
 
   render() {
-    const onNewAnnotation = (bounds: {x: number, y: number}[]) => {
+    const onNewAnnotation = (bounds: {lat: number, lng: number}[]) => {
       const currentTool = this.state.tools.find(({id}) => id === this.state.currentToolId);
       if (currentTool === undefined) {
         throw new Error('should not be able to add an annotation without a tool');
@@ -253,7 +253,7 @@ class App extends React.Component {
     };
 
 
-    const onAnnotationEdit = (annotationId: string, newBounds: {x: number, y: number}[]) => {
+    const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
 
 
@@ -261,7 +261,7 @@ class App extends React.Component {
 
     const submit = () => {
       const getPoints = ({bounds}: Annotation) => {
-        const toPoint = ({x, y}: {x: number, y: number}) => [x, y];
+        const toPoint = ({lat, lng}: {lat: number, lng: number}) => [lat, lng];
         return [
           ...bounds.map(toPoint),
           toPoint(bounds[0])

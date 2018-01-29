@@ -28,8 +28,8 @@ interface Props {
   imageSize: {width: number, height: number};
   drawColor: string | undefined;
   annotations: Annotation[];
-  onNewAnnotation: (annotation: {x: number, y: number}[]) => void;
-  onAnnotationEdit: (annotationId: string, newBounds: {x: number, y: number}[]) => void;
+  onNewAnnotation: (annotation: {lat: number, lng: number}[]) => void;
+  onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
   selectedTool: ToolNames | undefined;
   editShape: (annotationId?: string) => void,
   isEditing: boolean,
@@ -52,14 +52,6 @@ function setTool(toolName: ToolNames) {
   }
 }
 
-const toPixelLocation = ({lat, lng}: {lat: number, lng: number}) => {
-  return {y: lng, x:lat};
-};
-
-const toLatLngLocation = ({x, y}: {x: number, y: number}) => {
-  return {lat: x, lng: y};
-};
-
 // TODO make this a function again
 export function SegmentImage({
   imageUrl,
@@ -75,7 +67,7 @@ export function SegmentImage({
 
   const getPointsFromEvent = (e: any) => {
     let points = e.layer.getLatLngs();
-    return (Array.isArray(points[0]) ? points[0] : points).map(toPixelLocation);
+    return (Array.isArray(points[0]) ? points[0] : points);
   }
 
   // tslint:disable-next-line
@@ -168,7 +160,7 @@ export function SegmentImage({
       {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, bounds, editing}, index) => (
         <Polygon
           key={index}
-          positions={bounds.map(toLatLngLocation)}
+          positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
@@ -177,7 +169,7 @@ export function SegmentImage({
       {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (
         <Rectangle
           key={index}
-          bounds={latLngBounds(bounds.map(toLatLngLocation))}
+          bounds={latLngBounds(bounds)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
@@ -186,7 +178,7 @@ export function SegmentImage({
       {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
         <Polyline
           key={index}
-          positions={bounds.map(toLatLngLocation)}
+          positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
