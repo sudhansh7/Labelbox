@@ -1,5 +1,5 @@
 {
-  "name": "image-segmentation-ts",
+  "name": "image-segmentation-advanced",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,13 +16,18 @@
     "react-leaflet-draw": "^0.18.0",
     "react-scripts-ts": "2.13.0",
     "rxjs": "^5.5.6",
+    "serve": "^6.4.9",
     "terraformer-wkt-parser": "^1.1.2"
   },
   "scripts": {
+    "now-start": "cd build && serve -c 0 -s ./",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
+  },
+  "now": {
+    "alias": "image-segmentation-advanced"
   },
   "devDependencies": {
     "@types/jest": "^22.1.0",
