@@ -261,7 +261,7 @@ class App extends React.Component {
 
     const submit = () => {
       const getPoints = ({bounds}: Annotation) => {
-        const toPoint = ({lat, lng}: {lat: number, lng: number}) => [lat, lng];
+        const toPoint = ({lat, lng}: {lat: number, lng: number}) => [lng, lat];
         return [
           ...bounds.map(toPoint),
           toPoint(bounds[0])
@@ -300,10 +300,7 @@ class App extends React.Component {
         }
       }, {})
 
-      console.log('redrawn this label on to the map');
-      console.log(label);
-
-      /* this.next(JSON.stringify(label));*/
+      this.next(JSON.stringify(label));
     }
 
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
