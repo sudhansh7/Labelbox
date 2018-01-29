@@ -21,6 +21,7 @@
   },
   "scripts": {
     "now-start": "cd build && serve -c 0 -s ./",
+    "deploy": "now && now alias",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
