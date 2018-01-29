@@ -13,7 +13,6 @@ import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
 import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
-/* import { LatLng, Polygon } from 'leaflet';*/
 import * as wkt from 'terraformer-wkt-parser';
 
 export interface Annotation {
@@ -256,19 +255,12 @@ class App extends React.Component {
     };
 
     const submit = () => {
-      /* const toLatLngs = ({bounds}:Annotation) => bounds.map(({x, y}) => new LatLng(y, x));*/
-      /* const latLngs = this.state.annotations.map(toLatLngs);*/
-      /* const geoJson = new (Polygon as any)(...latLngs).toGeoJSON();*/
-      /* console.log(geoJson);*/
-
-      /* const annotationsTo*/
-
       const getPoints = ({bounds}: Annotation) => bounds.map(({x, y}) => [y, x]);
 
       const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
         return wkt.convert({
-          "type": "Polygon",
-          "coordinates": this.state.annotations.map(getPoints)
+          "type": "MultiPolygon",
+          "coordinates": [this.state.annotations.map(getPoints)]
         });
       };
 
@@ -296,24 +288,8 @@ class App extends React.Component {
           [tool.name]: turnAnnotationsIntoWktString(annotationsByTool[toolId])
         }
       }, {})
-
       console.log(label);
-
-      /* this.tools.reduce((label, {id, tool}) => {*/
-      /* */
-      /* })*/
-
-      /* turnAnnotationsIntoWktString*/
-
-      /* [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ],*/
-      /* [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]*/
-
-      /* const result = wkx.Geometry.parseGeoJSON(geoJson);*/
-      /* console.log(geoJson, wkt);*/
-      /* wkt*/
-      /* const result = (window as any).Terraformer.WKT.convert(geoJson);*/
-      /* console.log(result);*/
-      /* this.next(JSON.stringify());*/
+      this.next(JSON.stringify(label));
     }
 
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
