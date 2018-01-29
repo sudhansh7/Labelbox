@@ -175,9 +175,16 @@ class App extends React.Component {
     // TODO will probably need erro handleing here
     (window as any).Labelbox.getTemplateCustomization()
       .subscribe((customization: any) => {
-        console.log(customization);
         this.setState({defaultState, tools: customization.tools.map(addId)});
       });
+
+    window.onbeforeunload = () => {
+      if (this.state.annotations.length > 0 || this.state.currentToolId) {
+        return "Are you sure that you want to leave this page?";
+      } else {
+        return
+      }
+    }
   }
 
   next(label?: string) {
