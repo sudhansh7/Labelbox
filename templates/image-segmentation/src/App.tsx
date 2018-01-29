@@ -300,6 +300,7 @@ class App extends React.Component {
         }
       }, {})
 
+      // TODO line tool is not supported right now
       this.next(JSON.stringify(label));
     }
 
