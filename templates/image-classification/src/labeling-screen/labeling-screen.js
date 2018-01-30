@@ -45,7 +45,6 @@ export class LabelingScreen extends Component {
                 </div>
               </div>
             )
-
           }
           <div className="form-controls">
             <div className="classification">
