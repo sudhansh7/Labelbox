@@ -1,5 +1,5 @@
 # Labelbox
-Labelbox (www.labelbox.io) is a cloud based data labeling tool designed for enterprises for machine learning applications. 
+[Labelbox](www.labelbox.io) is a cloud based data labeling tool designed for enterprises for machine learning applications. 
 
 ### Benefits of using Labelbox
 - Simple Image Labeling: Labelbox makes it really easy to do basic image classification or segmentation tasks. To get started, simply upload your data or a CSV file containing URLs of data that is already hosted in a cloud, select an image classification or segmentation labeling template, invite collaborators and start labeling.
