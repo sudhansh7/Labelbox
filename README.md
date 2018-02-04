@@ -109,9 +109,7 @@ Labelbox is data agnostic and all labeling projects share the theme of "data in 
 Please see [labeling frontend templates](#labeling-frontend-templates) for templates relevant to your labeling task.
 
 
-### Image Classification
-
-[Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
+### [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
 
 <img src="./images/classification.png" width="400">
 
