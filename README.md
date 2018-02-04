@@ -6,29 +6,29 @@ Table of Contents
       * [Getting started](#getting-started)
          * [Uploading dataset](#uploading-dataset)
          * [Customizing labeling template](#customizing-labeling-template)
-            * [Image Segmentation Template](#image-segmentation-template)
-            * [Image Classification Template](#image-classification-template)
-            * [Text Classification Template](#text-classification-template)
+            * [Image segmentation template](#image-segmentation-template)
+            * [Image classification template](#image-classification-template)
+            * [Text classification template](#text-classification-template)
          * [Exporting labels](#exporting-labels)
-      * [Developing Labeling Templates](#developing-labeling-templates)
+      * [Developing labeling templates](#developing-labeling-templates)
          * [Architecture](#architecture)
       * [Using labeling-api.js](#using-labeling-apijs)
-         * [Attach the Labelbox's client side api.](#attach-the-labelboxs-client-side-api)
+         * [Attach the Labelbox's client side api](#attach-the-labelboxs-client-side-api)
          * [Get a row to label](#get-a-row-to-label)
          * [Save the label for a row](#save-the-label-for-a-row)
-         * [Full Example](#full-example)
-         * [Available Templates](#available-templates)
+         * [Full example](#full-example)
+         * [Available templates](#available-templates)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification">Image Classification Template Source Code</a>](#image-classification-template-source-code)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation">Image Segmentation Template Source Code</a>](#image-segmentation-template-source-code)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification">Text Classification Template Source Code</a>](#text-classification-template-source-code)
-      * [Local Labeling Frontend Development](#local-labeling-frontend-development)
+      * [Local labeling frontend development](#local-labeling-frontend-development)
          * [Run localhost server](#run-localhost-server)
-      * [Installing Labeling Frontend in Labelbox.io](#installing-labeling-frontend-in-labelboxio)
+      * [Installing Labeling frontend in <a href="http://www.labelbox.io" rel="nofollow">www.labelbox.io</a>](#installing-labeling-frontend-in-wwwlabelboxio)
          * [Install Now](#install-now)
          * [Deploy labeling frontend](#deploy-labeling-frontend)
          * [Add labeling frontend to your Labelbox project](#add-labeling-frontend-to-your-labelbox-project)
-      * [Request Features](#request-features)
-      
+      * [Request features](#request-features)
+            
 # Labelbox
 [Labelbox](https://www.labelbox.io/) is a cloud based data labeling tool designed for enterprises for machine learning applications.
 
@@ -57,7 +57,7 @@ To immediately benefit from Labelbox, you must have a dataset ready to be labele
 ### Customizing labeling template
 Labelbox has the following few pre installed labeling templates for out of the box labeling of most common data types.
 
-#### Image Segmentation Template
+#### Image segmentation template
  Labelbox image segmentation template can be used to label multiples classes of objects in an image. Supported annotation tools are:
  - Rectangle
  - Polygon
@@ -84,10 +84,10 @@ Labelbox has the following few pre installed labeling templates for out of the b
 ![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/gifs/Editing+Template.gif)
 
 
-#### Image Classification Template
+#### Image classification template
  Assign an input image one label from a fixed set of categories. Categories can be customized similarly to the example above.
 
-#### Text Classification Template
+#### Text classification template
  Assign an input text one label from a fixed set of categories. Categories can be customized similarly to the example above.
 
 ### Exporting labels
@@ -100,7 +100,7 @@ Labelbox generates image mask per label class i.e. If there are 2 car and 2 tree
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/image-masks.png)
 
-## Developing Labeling Templates
+## Developing labeling templates
 All the available labeling templates are open source under MIT license.
 
 ### Architecture
@@ -115,7 +115,7 @@ Please see [labeling frontend templates](#labeling-frontend-templates) for templ
 ## Using labeling-api.js
 To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data.
 
-### Attach the Labelbox's client side api.
+### Attach the Labelbox's client side api
 
 ```html
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
@@ -135,7 +135,7 @@ Labelbox.fetchNextAssetToLabel().then((dataToLabel) => {
 Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 ```
 
-### Full Example
+### Full example
 Full Example
 
 ```html
@@ -164,7 +164,7 @@ next();
 </script>
 ```
 
-### Available Templates
+### Available templates
 
 #### [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/classification.png" width="400">
@@ -175,7 +175,7 @@ next();
 #### [Text Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/text-classification.png" width="400">
 
-## Local Labeling Frontend Development
+## Local labeling frontend development
 
 ### Run localhost server
 1. Start the localhost server in a directory containing your labeling frontend files. For example, run the server inside labelingfrontend if you have index.html (labeling frontend) inside it.
@@ -189,7 +189,7 @@ python2 -m SimpleHTTPServer
  ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
 
-## Installing Labeling Frontend in Labelbox.io
+## Installing Labeling frontend in www.labelbox.io
 At Labelbox, we are fan of https://zeit.co/now for cloud deployment.
 
 ### Install Now
@@ -203,7 +203,7 @@ Paste the link under custom labeling interface tab, as shown in the video below.
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_cloud_deploy.gif)
 
-## Request Features
+## Request features
 Have a feature request or you'd like us to make a labeling template for you?
 
 Create an issue here: https://github.com/Labelbox/Labelbox/issues or contact us at support@labelbox.io
