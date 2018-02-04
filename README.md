@@ -1,3 +1,33 @@
+Table of Contents
+=================
+
+   * [Labelbox](#labelbox)
+      * [Benefits](#benefits)
+      * [Architecture](#architecture)
+      * [Getting started](#getting-started)
+         * [Uploading dataset](#uploading-dataset)
+         * [Customizing labeling template](#customizing-labeling-template)
+            * [Image Segmentation Template](#image-segmentation-template)
+            * [Image Classification Template](#image-classification-template)
+            * [Text Classification Template](#text-classification-template)
+         * [Exporting labels](#exporting-labels)
+      * [Developing Labeling Templates](#developing-labeling-templates)
+         * [Image Classification](#image-classification)
+         * [Image Segmentation](#image-segmentation)
+         * [Text Classification](#text-classification)
+      * [Using labeling-api.js](#using-labeling-apijs)
+         * [Attach the Labelbox's client side api.](#attach-the-labelboxs-client-side-api)
+         * [Get a row to label](#get-a-row-to-label)
+         * [Save the label for a row](#save-the-label-for-a-row)
+         * [Full Example](#full-example)
+      * [Local Labeling Frontend Development](#local-labeling-frontend-development)
+         * [Run localhost server](#run-localhost-server)
+      * [Installing Labeling Frontend in Labelbox.io](#installing-labeling-frontend-in-labelboxio)
+         * [Install Now](#install-now)
+         * [Deploy labeling frontend](#deploy-labeling-frontend)
+         * [Add labeling frontend to your Labelbox project](#add-labeling-frontend-to-your-labelbox-project)
+      * [Request Features](#request-features)
+
 # Labelbox
 [Labelbox](https://www.labelbox.io/) is a cloud based data labeling tool designed for enterprises for machine learning applications.
 
@@ -36,7 +66,7 @@ To immediately benefit from Labelbox, you must have a dataset ready to be labele
 ### Customizing labeling template
 Labelbox has the following few pre installed labeling templates for out of the box labeling of most common data types.
 
-1. **Image Segmentation**
+#### Image Segmentation Template
  Labelbox image segmentation template can be used to label multiples classes of objects in an image. Supported annotation tools are:
  - Rectangle
  - Polygon
@@ -60,15 +90,16 @@ Labelbox has the following few pre installed labeling templates for out of the b
  }
  ```
 
-2. **Image Classification**
+#### Image Classification Template
  Assign an input image one label from a fixed set of categories. Categories can be customized similarly to the example above.
-3. **Text Classification**
+
+#### Text Classification Template
  Assign an input text one label from a fixed set of categories. Categories can be customized similarly to the example above.
 
 ### Exporting labels
 All labels can be exported in a CSV or JSON format.
 
-#### Generating Segmentation Masks
+**Generating Segmentation Masks**
 Image masks are great way to know what pixels in the image belong to a label class. Using image masks means less data preparation on your end for training machine learning model.
 
 Labelbox generates image mask per label class i.e. If there are 2 car and 2 tree labels in an image, we will generate 2 image masks in total (car and tree). White pixels in the image mask represent the object.
