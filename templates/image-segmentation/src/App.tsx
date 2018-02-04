@@ -41,6 +41,7 @@ const defaultState = {
   imageInfo: undefined,
   currentToolId: undefined,
   annotations: [],
+  drawnAnnotationBounds: [],
   hiddenTools: [],
   deletedAnnotations: [],
   tools: []
@@ -92,7 +93,9 @@ class App extends React.Component {
     });
 
     keyDownSteam('enter').subscribe(() => {
-      console.log('enter');
+      if (this.state.currentToolId) {
+        console.log('stop drawing and put this into state', this.state.drawnAnnotationBounds);
+      }
     });
 
     keyDownSteam('del').subscribe(() => {
@@ -183,6 +186,7 @@ class App extends React.Component {
                   editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
                   isEditing={isEditing}
                   onAnnotationEdit={onAnnotationEdit}
+                  onDrawnAnnotationUpdate={(drawnAnnotationBounds) => console.log({...this.state, drawnAnnotationBounds})}
                 />
               }
             </div>

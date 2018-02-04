@@ -2,10 +2,12 @@
 import { ToolNames } from './labeling-screen/segment-image';
 import * as wkt from 'terraformer-wkt-parser';
 
+type Bounds = {lat: number, lng:number}[];
+
 export interface Annotation {
   id: string;
   color: string;
-  bounds: {lat: number, lng:number}[];
+  bounds: Bounds;
   editing: boolean;
   toolName: ToolNames;
   toolId: string;
@@ -26,6 +28,7 @@ export interface AppState {
   deletedAnnotations: Annotation[];
   loading: boolean;
   tools: Tool[];
+  drawnAnnotationBounds: Bounds;
   errorLoadingImage?: string;
 }
 
@@ -59,6 +62,7 @@ export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: numb
   return {
     ...state,
     currentToolId: undefined,
+    drawnAnnotationBounds: [],
     annotations: [
       ...state.annotations,
       {

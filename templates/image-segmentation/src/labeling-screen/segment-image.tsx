@@ -12,9 +12,9 @@ import {
 } from 'react-leaflet';
 import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { Annotation } from '../app.reducer';
-import { EditControl, } from 'react-leaflet-draw';
 import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
+import { LeafletDraw } from './draw-component';
 
 // TODO hack to add editing onto the interface
 const Map: any = MapTyped;
@@ -29,27 +29,11 @@ interface Props {
   drawColor: string | undefined;
   annotations: Annotation[];
   onNewAnnotation: (annotation: {lat: number, lng: number}[]) => void;
+  onDrawnAnnotationUpdate: (annotation: {lat: number, lng: number}[]) => void;
   onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
   selectedTool: ToolNames | undefined;
   editShape: (annotationId?: string) => void,
   isEditing: boolean,
-}
-
-function setTool(toolName: ToolNames) {
-  const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
-  const toolSelector = {
-    'cancel': '.leaflet-draw-actions a[title="Cancel drawing"]',
-    'line': '.leaflet-draw-draw-polyline',
-    'polygon': '.leaflet-draw-draw-polygon',
-    'rectangle': '.leaflet-draw-draw-rectangle',
-  }[toolName || 'cancel'];
-
-  if (toolbar) {
-    const tool: HTMLElement | null = toolbar.querySelector(toolSelector);
-    if (tool) {
-      tool.click();
-    }
-  }
 }
 
 // TODO make this a function again
@@ -59,6 +43,7 @@ export function SegmentImage({
   drawColor,
   selectedTool,
   onNewAnnotation,
+  onDrawnAnnotationUpdate,
   onAnnotationEdit,
   annotations,
   editShape,
@@ -70,13 +55,6 @@ export function SegmentImage({
     return (Array.isArray(points[0]) ? points[0] : points);
   }
 
-  // tslint:disable-next-line
-  const onCreate = (e: any) => {
-    onNewAnnotation(getPointsFromEvent(e));
-    // In order to keep this pure
-    // I'm removing the drawn shape and letting it get updated via props
-    e.layer.remove();
-  };
 
   const mapClick = (e:any) => {
     if (!selectedTool && isEditing){
@@ -125,37 +103,7 @@ export function SegmentImage({
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
-        <EditControl
-          // tslint:disable-next-line
-          ref={() => setTool(selectedTool)}
-          position="topright"
-          // tslint:disable-next-line
-          onEdited={(e:any) => console.log('woot')}
-          // tslint:disable-next-line
-          onCreated={onCreate}
-          // tslint:disable-next-line
-          onDeleted={() => console.log('woot')}
-          draw={{
-            circle: false,
-            marker: false,
-            circlemarker: false,
-            polygon: {
-              shapeOptions: {
-                color: drawColor
-              }
-            },
-            rectangle: {
-              shapeOptions: {
-                color: drawColor
-              }
-            },
-            polyline: {
-              shapeOptions: {
-                color: drawColor
-              }
-            }
-          }}
-        />
+        <LeafletDraw drawColor={drawColor} selectedTool={selectedTool} onNewAnnotation={onNewAnnotation} />
       </FeatureGroup>
       {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, bounds, editing}, index) => (
         <Polygon
