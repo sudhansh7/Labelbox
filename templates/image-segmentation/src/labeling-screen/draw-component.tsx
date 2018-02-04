@@ -35,6 +35,9 @@ interface Props {
 export class LeafletDraw extends React.Component{
   public props: Props;
 
+  // Since leaflet draw is not pure we need to stop it
+  // from rendering unless the props changed
+  // (otherwise it removes in progress drawn polygon)
   shouldComponentUpdate(nextProps: Props){
     return this.props.drawColor !== nextProps.drawColor || this.props.selectedTool !== nextProps.selectedTool;
   }
@@ -58,8 +61,6 @@ export class LeafletDraw extends React.Component{
       onNewAnnotation(getPointsFromEvent(e));
       e.layer.remove();
     };
-
-    console.log('rerednering and removing drawn element');
 
     return (
       <EditControl

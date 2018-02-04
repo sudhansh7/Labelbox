@@ -94,7 +94,7 @@ class App extends React.Component {
 
     keyDownSteam('enter').subscribe(() => {
       if (this.state.currentToolId) {
-        console.log('stop drawing and put this into state', this.state.drawnAnnotationBounds);
+        this.setState(onNewAnnotation(this.state, this.state.drawnAnnotationBounds))
       }
     });
 
