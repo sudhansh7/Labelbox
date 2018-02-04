@@ -108,27 +108,6 @@ Labelbox is data agnostic and all labeling projects share the theme of "data in 
 
 Please see [labeling frontend templates](#labeling-frontend-templates) for templates relevant to your labeling task.
 
-
-### [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
-
-<img src="./images/classification.png" width="400">
-
-
-
-### Image Segmentation
-
-[Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
-
-<img src="./images/segmentation.png" width="400">
-
-
-### Text Classification
-
-[Code Here](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
-
-<img src="./images/text-classification.png" width="400">
-
-
 ## Using labeling-api.js
 To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data.
 
@@ -180,6 +159,23 @@ function drawItem(dataToLabel){
 next();
 </script>
 ```
+
+### Available Templates
+
+#### [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
+
+<img src="./images/classification.png" width="400">
+
+
+
+#### [Image Segmentation Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
+
+<img src="./images/segmentation.png" width="400">
+
+
+#### [Text Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
+
+<img src="./images/text-classification.png" width="400">
 
 ## Local Labeling Frontend Development
 
