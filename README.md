@@ -76,8 +76,9 @@ Labelbox has the following few pre installed labeling templates for out of the b
   ]
  }
  ```
- 
- ![]("https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/editing-template.jpg")
+
+ <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/editing-template.jpg" width="100%">
+
 
 #### Image Classification Template
  Assign an input image one label from a fixed set of categories. Categories can be customized similarly to the example above.
