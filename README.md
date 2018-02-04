@@ -41,9 +41,9 @@ Labelbox has the following few pre installed labeling templates for out of the b
  - Rectangle
  - Polygon
 
- Let's say an organization wants to segment 2 objects in an image. One object is required to be labeled using a rectangle tool and other with a polygon tool. Simply edit the segmentation template with the JSON snippet below:
+  Let's say an organization wants to segment 2 objects in an image. One object is required to be labeled using a rectangle tool and other with a polygon tool. Simply edit the segmentation template with the JSON snippet below:
 
- ```
+  ```
 {
   "tools": [
     {
