@@ -3,7 +3,6 @@ Table of Contents
 
    * [Labelbox](#labelbox)
       * [Benefits](#benefits)
-      * [Architecture](#architecture)
       * [Getting started](#getting-started)
          * [Uploading dataset](#uploading-dataset)
          * [Customizing labeling template](#customizing-labeling-template)
@@ -12,14 +11,16 @@ Table of Contents
             * [Text Classification Template](#text-classification-template)
          * [Exporting labels](#exporting-labels)
       * [Developing Labeling Templates](#developing-labeling-templates)
-         * [Image Classification](#image-classification)
-         * [Image Segmentation](#image-segmentation)
-         * [Text Classification](#text-classification)
+         * [Architecture](#architecture)
       * [Using labeling-api.js](#using-labeling-apijs)
          * [Attach the Labelbox's client side api.](#attach-the-labelboxs-client-side-api)
          * [Get a row to label](#get-a-row-to-label)
          * [Save the label for a row](#save-the-label-for-a-row)
          * [Full Example](#full-example)
+         * [Available Templates](#available-templates)
+            * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification">Image Classification Template Source Code</a>](#image-classification-template-source-code)
+            * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation">Image Segmentation Template Source Code</a>](#image-segmentation-template-source-code)
+            * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification">Text Classification Template Source Code</a>](#text-classification-template-source-code)
       * [Local Labeling Frontend Development](#local-labeling-frontend-development)
          * [Run localhost server](#run-localhost-server)
       * [Installing Labeling Frontend in Labelbox.io](#installing-labeling-frontend-in-labelboxio)
@@ -27,7 +28,7 @@ Table of Contents
          * [Deploy labeling frontend](#deploy-labeling-frontend)
          * [Add labeling frontend to your Labelbox project](#add-labeling-frontend-to-your-labelbox-project)
       * [Request Features](#request-features)
-
+      
 # Labelbox
 [Labelbox](https://www.labelbox.io/) is a cloud based data labeling tool designed for enterprises for machine learning applications.
 
