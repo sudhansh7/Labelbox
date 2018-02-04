@@ -18,7 +18,9 @@ import {
   AppState,
   Tool,
   Annotation,
+  guid,
   toggleVisiblityOfTool,
+  onNewAnnotation
 } from './app.reducer';
 
 const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
@@ -52,15 +54,6 @@ const editShape = (state: AppState, annotationId?: string) => {
 };
 
 
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
 
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
@@ -208,27 +201,6 @@ class App extends React.Component {
   }
 
   render() {
-    const onNewAnnotation = (bounds: {lat: number, lng: number}[]) => {
-      const currentTool = this.state.tools.find(({id}) => id === this.state.currentToolId);
-      if (currentTool === undefined) {
-        throw new Error('should not be able to add an annotation without a tool');
-      }
-      this.setState({
-        ...this.state,
-        currentToolId: undefined,
-        annotations: [
-          ...this.state.annotations,
-          {
-            id: guid(),
-            bounds,
-            color: currentTool.color,
-            editing: false,
-            toolName: currentTool.tool,
-            toolId: currentTool.id
-          }
-        ]
-      });
-    };
 
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
@@ -321,7 +293,7 @@ class App extends React.Component {
                   imageSize={this.state.imageInfo}
                   annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
                   drawColor={currentTool ? currentTool.color : undefined}
-                  onNewAnnotation={onNewAnnotation}
+                  onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
                   isEditing={isEditing}
