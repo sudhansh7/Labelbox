@@ -110,7 +110,6 @@ Labelbox is data agnostic and all labeling projects share the theme of "data in 
 
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="100%">
 
-Please see [labeling frontend templates](#labeling-frontend-templates) for templates relevant to your labeling task.
 
 ## Using labeling-api.js
 To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data.
