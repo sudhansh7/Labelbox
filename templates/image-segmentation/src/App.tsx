@@ -20,7 +20,8 @@ import {
   Annotation,
   guid,
   toggleVisiblityOfTool,
-  onNewAnnotation
+  onNewAnnotation,
+  deleteSelectedAnnotation
 } from './app.reducer';
 
 const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
@@ -141,20 +142,7 @@ class App extends React.Component {
     });
 
     keyDownSteam('del').subscribe(() => {
-      const deleteAnnotationIndex = this.state.annotations.findIndex(({editing}) => editing === true);
-      if (deleteAnnotationIndex !== undefined) {
-        this.setState({
-          ...this.state,
-          annotations: [
-            ...this.state.annotations.slice(0, deleteAnnotationIndex),
-            ...this.state.annotations.slice(deleteAnnotationIndex + 1),
-          ],
-          deletedAnnotations: [
-            {...this.state.annotations[deleteAnnotationIndex], editing: false},
-            ...this.state.deletedAnnotations
-          ]
-        });
-      }
+      this.setState(deleteSelectedAnnotation(this.state));
     });
 
     // TODO will probably need erro handleing here
