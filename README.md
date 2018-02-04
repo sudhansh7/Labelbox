@@ -45,7 +45,7 @@ Labelbox streamlines entire workflow of creating and managing data labels. While
 
 Labelbox is data agnostic and all labeling projects share the theme of "data in and labels out".
 
-<img src="./documentation-assets/images/architecture.png" width="500">
+<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="500">
 
 
 
@@ -107,7 +107,7 @@ Labelbox generates image mask per label class i.e. If there are 2 car and 2 tree
 
 
 ## Developing Labeling Templates
-All the available labeling templates are open source under MIT license
+All the available labeling templates are open source under MIT license.
 
 ### Image Classification
 
