@@ -14,7 +14,12 @@ import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
 import * as wkt from 'terraformer-wkt-parser';
 import Icon from 'material-ui/Icon';
-import { AppState, Tool, Annotation } from './app.reducer';
+import {
+  AppState,
+  Tool,
+  Annotation,
+  toggleVisiblityOfTool,
+} from './app.reducer';
 
 const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
   const index = state.annotations.findIndex(({id}) => id === annotationId);
@@ -225,22 +230,8 @@ class App extends React.Component {
       });
     };
 
-    const toggleVisiblityOfTool = (toolId: string) => {
-      const removeItem = (arr: string[], index: number) => [ ...arr.slice(0, index), ...arr.slice(index + 1) ];
-      const currentHiddenTools = this.state.hiddenTools || [];
-      const foundIndex = currentHiddenTools.indexOf(toolId);
-      const hiddenTools = foundIndex === -1 ?
-        [...currentHiddenTools, toolId] :
-        removeItem(currentHiddenTools, foundIndex);
-
-      this.setState({...this.state, hiddenTools});
-    };
-
-
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
-
-
     };
 
     const submit = () => {
@@ -305,7 +296,7 @@ class App extends React.Component {
                 tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
-                visibilityToggle={toggleVisiblityOfTool}
+                visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
                 disableSubmit={this.state.annotations.length === 0}
                 onSubmit={() => submit()}
               />

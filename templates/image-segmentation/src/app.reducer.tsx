@@ -27,3 +27,14 @@ export interface AppState {
   tools: Tool[];
   errorLoadingImage?: string;
 }
+
+export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
+  const removeItem = (arr: string[], index: number) => [ ...arr.slice(0, index), ...arr.slice(index + 1) ];
+  const currentHiddenTools = state.hiddenTools || [];
+  const foundIndex = currentHiddenTools.indexOf(toolId);
+  const hiddenTools = foundIndex === -1 ?
+    [...currentHiddenTools, toolId] :
+    removeItem(currentHiddenTools, foundIndex);
+
+  return {...state, hiddenTools};
+};
