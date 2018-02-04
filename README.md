@@ -97,7 +97,7 @@ Image masks are great way to know what pixels in the image belong to a label cla
 
 Labelbox generates image mask per label class i.e. If there are 2 car and 2 tree labels in an image, we will generate 2 image masks in total (car and tree). White pixels in the image mask represent the object.
 
-
+![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/image-masks.png)
 
 ## Developing Labeling Templates
 All the available labeling templates are open source under MIT license.
@@ -165,20 +165,18 @@ next();
 
 ### Available Templates
 
-#### [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
-
-<img src="./images/classification.png" width="400">
-
+1. [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
+<!-- <img src="./images/classification.png" width="400"> -->
 
 
-#### [Image Segmentation Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
+2. [Image Segmentation Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
 
-<img src="./images/segmentation.png" width="400">
+<!-- <img src="./images/segmentation.png" width="400"> -->
 
 
-#### [Text Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
+3. [Text Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
 
-<img src="./images/text-classification.png" width="400">
+<!-- <img src="./images/text-classification.png" width="400"> -->
 
 ## Local Labeling Frontend Development
 
