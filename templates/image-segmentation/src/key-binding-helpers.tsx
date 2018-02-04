@@ -7,9 +7,10 @@ const keyMap = {
   z: 90,
   ctrl: 17,
   del: 8,
+  enter: 	13,
 };
 
-type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'escape' | 'z' | 'del';
+type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'escape' | 'z' | 'del' | 'enter';
 const keyEvent = (keyCode: number, event: string) => Observable.fromEvent(document, event)
   .filter((e: KeyboardEvent) => e.keyCode === keyCode);
 

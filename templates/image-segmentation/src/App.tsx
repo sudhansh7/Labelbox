@@ -8,22 +8,13 @@ import lightblue from 'material-ui/colors/blue';
 import { SegmentImage } from './labeling-screen/segment-image';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
-import { ToolNames } from './labeling-screen/segment-image';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
 import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
 import * as wkt from 'terraformer-wkt-parser';
 import Icon from 'material-ui/Icon';
-
-export interface Annotation {
-  id: string,
-  color: string,
-  bounds: {lat: number, lng:number}[],
-  editing: boolean,
-  toolName: ToolNames,
-  toolId: string,
-}
+import { AppState, Tool, Annotation } from './app.reducer';
 
 const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
   const index = state.annotations.findIndex(({id}) => id === annotationId);
@@ -76,7 +67,6 @@ export const theme = createMuiTheme({
   }
 });
 
-type Tool = {id: string, name: string, color: string, tool: ToolNames};
 
 function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hiddenTools: string[]) {
   return currentTools
@@ -92,16 +82,6 @@ function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hid
     });
 }
 
-interface AppState {
-  imageInfo: {url: string, height: number, width: number} | undefined,
-  currentToolId: string | undefined,
-  annotations: Annotation[],
-  hiddenTools: string[],
-  deletedAnnotations: Annotation[],
-  loading: boolean,
-  tools: Tool[],
-  errorLoadingImage?: string
-}
 
 const defaultState = {
   loading: true,
@@ -156,6 +136,10 @@ class App extends React.Component {
     keyDownSteam('escape').subscribe(() => {
       // Turn off current tool and editing
       this.setState({...editShape(this.state), currentToolId: undefined});
+    });
+
+    keyDownSteam('enter').subscribe(() => {
+      console.log('enter');
     });
 
     keyDownSteam('del').subscribe(() => {

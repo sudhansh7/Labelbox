@@ -11,7 +11,7 @@ import {
   Rectangle as RectangleTyped
 } from 'react-leaflet';
 import { CRS, latLngBounds, DomEvent } from 'leaflet';
-import { Annotation } from '../App';
+import { Annotation } from '../app.reducer';
 import { EditControl, } from 'react-leaflet-draw';
 import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
