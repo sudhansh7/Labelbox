@@ -12,7 +12,6 @@ import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
 import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
-import * as wkt from 'terraformer-wkt-parser';
 import Icon from 'material-ui/Icon';
 import {
   AppState,
@@ -21,7 +20,8 @@ import {
   guid,
   toggleVisiblityOfTool,
   onNewAnnotation,
-  deleteSelectedAnnotation
+  deleteSelectedAnnotation,
+  generateLabel
 } from './app.reducer';
 
 const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
@@ -104,6 +104,8 @@ class App extends React.Component {
     this.next();
 
     // TODO kinda of of a hack to have this function here
+    // would love to have the drawing be rendered by state
+    // not some dom click
     const undo = () => {
       if (this.state.currentToolId){
 
@@ -189,55 +191,9 @@ class App extends React.Component {
   }
 
   render() {
-
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
     };
-
-    const submit = () => {
-      const getPoints = ({bounds}: Annotation) => {
-        const toPoint = ({lat, lng}: {lat: number, lng: number}) => [lng, lat];
-        return [
-          ...bounds.map(toPoint),
-          toPoint(bounds[0])
-        ];
-      };
-
-      const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
-        return wkt.convert({
-          "type": "MultiPolygon",
-          "coordinates": annotations.map(getPoints).map((polygon) => [polygon])
-        });
-      };
-
-      const annotationsByTool = this.state.annotations.reduce((annotationsByTool, annotation) => {
-        if (!annotationsByTool[annotation.toolId]) {
-          annotationsByTool[annotation.toolId] = []
-        }
-
-        return {
-          ...annotationsByTool,
-          [annotation.toolId]: [
-            ...annotationsByTool[annotation.toolId],
-            annotation
-          ]
-        };
-      }, {})
-
-      const label = Object.keys(annotationsByTool).reduce((label, toolId) => {
-        const tool = this.state.tools.find(({id}) => id === toolId);
-        if (!tool) {
-          throw new Error('tool not foudn' + toolId);
-        }
-        return {
-          ...label,
-          [tool.name]: turnAnnotationsIntoWktString(annotationsByTool[toolId])
-        }
-      }, {})
-
-      // TODO line tool is not supported right now
-      this.next(JSON.stringify(label));
-    }
 
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
     const isEditing = this.state.annotations.some(({editing}) => editing === true);
@@ -258,7 +214,7 @@ class App extends React.Component {
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
                 disableSubmit={this.state.annotations.length === 0}
-                onSubmit={() => submit()}
+                onSubmit={() => this.next(generateLabel(this.state))}
               />
             </div>
             <div className="labeling-frame">

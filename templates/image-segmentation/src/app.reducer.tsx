@@ -1,5 +1,6 @@
 // tslint:disable
 import { ToolNames } from './labeling-screen/segment-image';
+import * as wkt from 'terraformer-wkt-parser';
 
 export interface Annotation {
   id: string;
@@ -89,4 +90,50 @@ export const deleteSelectedAnnotation = (state: AppState) => {
   } else {
     return state;
   }
+}
+
+export const generateLabel = (state: AppState) => {
+
+  const getPoints = ({bounds}: Annotation) => {
+    const toPoint = ({lat, lng}: {lat: number, lng: number}) => [lng, lat];
+    return [
+      ...bounds.map(toPoint),
+      toPoint(bounds[0])
+    ];
+  };
+
+  const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
+    return wkt.convert({
+      "type": "MultiPolygon",
+      "coordinates": annotations.map(getPoints).map((polygon) => [polygon])
+    });
+  };
+
+  const annotationsByTool = state.annotations.reduce((annotationsByTool, annotation) => {
+    if (!annotationsByTool[annotation.toolId]) {
+      annotationsByTool[annotation.toolId] = []
+    }
+
+    return {
+      ...annotationsByTool,
+      [annotation.toolId]: [
+        ...annotationsByTool[annotation.toolId],
+        annotation
+      ]
+    };
+  }, {})
+
+  const label = Object.keys(annotationsByTool).reduce((label, toolId) => {
+    const tool = state.tools.find(({id}) => id === toolId);
+    if (!tool) {
+      throw new Error('tool not foudn' + toolId);
+    }
+    return {
+      ...label,
+      [tool.name]: turnAnnotationsIntoWktString(annotationsByTool[toolId])
+    }
+
+  }, {})
+
+  return JSON.stringify(label);
 }
