@@ -45,7 +45,7 @@ Labelbox streamlines entire workflow of creating and managing data labels. While
 
 Labelbox is data agnostic and all labeling projects share the theme of "data in and labels out".
 
-<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="500">
+<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="100%">
 
 
 
