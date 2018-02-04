@@ -47,7 +47,7 @@ To immediately benefit from Labelbox, you must have a dataset ready to be labele
 1. **Uploading dataset from local computer**
  Select your data from your local computer to upload. Your data is uploaded in a secure cloud bucket and only you have access to it.
 2. **Importing dataset from cloud**
- If your data is already hosted in a cloud e.g. Amazon S3, you can import data into Labelbox by creating a CSV file with URLs to each data point. [Download an example CSV file for your reference](./documentation-assets/self-driving-images.csv).
+ If your data is already hosted in a cloud e.g. Amazon S3, you can import data into Labelbox by creating a CSV file with URLs to each data point. [Checkout an example CSV file containing image URLs](./documentation-assets/self-driving-images.csv).
 
 
 ### Customizing labeling template
@@ -76,6 +76,8 @@ Labelbox has the following few pre installed labeling templates for out of the b
   ]
  }
  ```
+ 
+ ![]("https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/editing-template.jpg")
 
 #### Image Classification Template
  Assign an input image one label from a fixed set of categories. Categories can be customized similarly to the example above.
