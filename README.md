@@ -166,17 +166,17 @@ next();
 ### Available Templates
 
 1. [Image Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
-<!-- <img src="./images/classification.png" width="400"> -->
+<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/classification.png" width="400">
 
 
 2. [Image Segmentation Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
 
-<!-- <img src="./images/segmentation.png" width="400"> -->
+<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/segmentation.png" width="400">
 
 
 3. [Text Classification Template Source Code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
 
-<!-- <img src="./images/text-classification.png" width="400"> -->
+<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/text-classification.png" width="400">
 
 ## Local Labeling Frontend Development
 
