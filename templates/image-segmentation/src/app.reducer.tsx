@@ -137,3 +137,48 @@ export const generateLabel = (state: AppState) => {
 
   return JSON.stringify(label);
 }
+
+
+export function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hiddenTools: string[]) {
+  return currentTools
+    .map(({id, name, color, tool}) => {
+      return {
+        id,
+        name,
+        color,
+        tool,
+        count: annotations.filter(({toolId}) => toolId === id).length,
+        visible: hiddenTools.indexOf(id) === -1
+      };
+    });
+}
+
+export const updateAnnotation = (state: AppState, annotationId: string, fields: Partial<Annotation>): AppState => {
+  const index = state.annotations.findIndex(({id}) => id === annotationId);
+  if (index === undefined) {
+    return state;
+  }
+  return {
+    ...state,
+    annotations: [
+      ...state.annotations.slice(0, index),
+      {
+        ...state.annotations.find(({id}) => annotationId === id),
+        ...fields
+      } as Annotation,
+      ...state.annotations.slice(index + 1),
+    ]
+  };
+};
+
+
+export const editShape = (state: AppState, annotationId?: string) => {
+  let updatedState = state.annotations.filter(({editing}) => editing)
+    .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), state);
+
+  if (annotationId) {
+    updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
+  }
+
+  return updatedState;
+};
