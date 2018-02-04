@@ -103,7 +103,12 @@ export function SegmentImage({
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
-        <LeafletDraw drawColor={drawColor} selectedTool={selectedTool} onNewAnnotation={onNewAnnotation} />
+        <LeafletDraw
+          drawColor={drawColor}
+          selectedTool={selectedTool}
+          onNewAnnotation={onNewAnnotation}
+          onDrawnAnnotationUpdate={onDrawnAnnotationUpdate}
+        />
       </FeatureGroup>
       {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, bounds, editing}, index) => (
         <Polygon

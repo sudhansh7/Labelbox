@@ -186,7 +186,7 @@ class App extends React.Component {
                   editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
                   isEditing={isEditing}
                   onAnnotationEdit={onAnnotationEdit}
-                  onDrawnAnnotationUpdate={(drawnAnnotationBounds) => console.log({...this.state, drawnAnnotationBounds})}
+                  onDrawnAnnotationUpdate={(drawnAnnotationBounds) => this.setState({...this.state, drawnAnnotationBounds})}
                 />
               }
             </div>
