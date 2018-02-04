@@ -26,14 +26,14 @@ Please see [labeling frontend templates](#labeling-frontend-templates) for templ
 ## Getting started
 To immediately benefit from Labelbox, you must have a dataset ready to be labeled.
 
-#### Uploading dataset
+### Uploading dataset
 1. **Uploading dataset from local computer**
  Select your data from your local computer to upload. Your data is uploaded in a secure cloud bucket and only you have access to it.
 2. **Importing dataset from cloud**
  If your data is already hosted in a cloud e.g. Amazon S3, you can import data into Labelbox by creating a CSV file with URLs to each data point. [Download an example CSV file for your reference]().
 
 
-#### Customizing labeling template
+### Customizing labeling template
 Labelbox has the following few pre installed labeling templates for out of the box labeling of most common data types.
 
 1. **Image Segmentation**
@@ -65,10 +65,10 @@ Labelbox has the following few pre installed labeling templates for out of the b
 3. **Text Classification**
  Assign an input text one label from a fixed set of categories. Categories can be customized similarly to the example above.
 
-#### Exporting labels
+### Exporting labels
 All labels can be exported in a CSV or JSON format.
 
-**Generating Segmentation Masks**
+#### Generating Segmentation Masks
 Image masks are great way to know what pixels in the image belong to a label class. Using image masks means less data preparation on your end for training machine learning model.
 
 Labelbox generates image mask per label class i.e. If there are 2 car and 2 tree labels in an image, we will generate 2 image masks in total (car and tree). White pixels in the image mask represent the object.
