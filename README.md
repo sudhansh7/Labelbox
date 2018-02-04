@@ -40,19 +40,6 @@ Table of Contents
 
 - Monitor Performance: Maintain the highest quality standards for your data by keeping track of labeling task performance of individuals and teams
 
-## Architecture
-Labelbox streamlines entire workflow of creating and managing data labels. While Labelbox makes it extremely simple to label most commonly used datatypes such as images and text, there are variety of other data types such as point clouds, maps, videos or medical DICOM imagery that requires bespoke labeling interface. With this in mind, Labelbox is designed such that an organization can simply create the frontend (with basic HTML/JS) and install it in Labelbox, without spending costly resources to develop user, team, data and label management features and worrying about deployment and maintenance.
-
-Labelbox is data agnostic and all labeling projects share the theme of "data in and labels out".
-
-<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="100%">
-
-
-
-Please see [labeling frontend templates](#labeling-frontend-templates) for templates relevant to your labeling task.
-
-
-
 ## Getting started
 To immediately benefit from Labelbox, you must have a dataset ready to be labeled.
 
@@ -60,7 +47,7 @@ To immediately benefit from Labelbox, you must have a dataset ready to be labele
 1. **Uploading dataset from local computer**
  Select your data from your local computer to upload. Your data is uploaded in a secure cloud bucket and only you have access to it.
 2. **Importing dataset from cloud**
- If your data is already hosted in a cloud e.g. Amazon S3, you can import data into Labelbox by creating a CSV file with URLs to each data point. [Download an example CSV file for your reference]().
+ If your data is already hosted in a cloud e.g. Amazon S3, you can import data into Labelbox by creating a CSV file with URLs to each data point. [Download an example CSV file for your reference](./documentation-assets/self-driving-images.csv).
 
 
 ### Customizing labeling template
@@ -108,6 +95,16 @@ Labelbox generates image mask per label class i.e. If there are 2 car and 2 tree
 
 ## Developing Labeling Templates
 All the available labeling templates are open source under MIT license.
+
+### Architecture
+Labelbox streamlines entire workflow of creating and managing data labels. While Labelbox makes it extremely simple to label most commonly used datatypes such as images and text, there are variety of other data types such as point clouds, maps, videos or medical DICOM imagery that requires bespoke labeling interface. With this in mind, Labelbox is designed such that an organization can simply create the frontend (with basic HTML/JS) and install it in Labelbox, without spending costly resources to develop user, team, data and label management features and worrying about deployment and maintenance.
+
+Labelbox is data agnostic and all labeling projects share the theme of "data in and labels out".
+
+<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="100%">
+
+Please see [labeling frontend templates](#labeling-frontend-templates) for templates relevant to your labeling task.
+
 
 ### Image Classification
 
