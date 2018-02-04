@@ -77,7 +77,7 @@ Labelbox has the following few pre installed labeling templates for out of the b
  }
  ```
 
- <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/editing-template.jpg" width="100%">
+![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/gifs/Editing+Template.gif)
 
 
 #### Image Classification Template
