@@ -65,7 +65,7 @@ Labelbox has the following few pre installed labeling templates for out of the b
 
   Let's say an organization wants to segment 2 objects in an image. One object is required to be labeled using a rectangle tool and other with a polygon tool. Simply edit the segmentation template with the JSON snippet below:
 
-  ```
+```
 {
   "tools": [
     {
@@ -79,8 +79,8 @@ Labelbox has the following few pre installed labeling templates for out of the b
       "tool": "rectangle"
     }
   ]
- }
- ```
+}
+```
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/gifs/Editing+Template.gif)
 
