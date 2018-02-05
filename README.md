@@ -135,7 +135,10 @@ Labelbox.fetchNextAssetToLabel().then((dataToLabel) => {
 Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 ```
 
-#### Full example
+#### Hello World example
+
+[Try it your browser](https://hello-world.labelbox.io)
+
 ```html
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 <div id="form"></div>
