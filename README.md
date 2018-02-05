@@ -21,14 +21,13 @@ Table of Contents
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification">Image classification template source code</a>](#image-classification-template-source-code)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation">Image segmentation template source code</a>](#image-segmentation-template-source-code)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification">Text classification template source code</a>](#text-classification-template-source-code)
-      * [Local labeling frontend development](#local-labeling-frontend-development)
-         * [Run localhost server](#run-localhost-server)
-      * [Installing labeling frontend in <a href="http://www.labelbox.io" rel="nofollow">www.labelbox.io</a>](#installing-labeling-frontend-in-wwwlabelboxio)
-         * [Install Now](#install-now)
-         * [Deploy labeling frontend](#deploy-labeling-frontend)
-         * [Add labeling frontend to your Labelbox project](#add-labeling-frontend-to-your-labelbox-project)
+         * [Local labeling frontend development](#local-labeling-frontend-development)
+         * [Installing labeling frontend in labelbox.io](#installing-labeling-frontend-in-labelboxio)
+            * [Install Now](#install-now)
+            * [Deploy labeling frontend](#deploy-labeling-frontend)
+            * [Add labeling frontend to your Labelbox project](#add-labeling-frontend-to-your-labelbox-project)
       * [Request features](#request-features)
-
+      
 # Labelbox
 [Labelbox](https://www.labelbox.io/) is a cloud based data labeling tool designed for enterprises for machine learning applications.
 
@@ -163,6 +162,7 @@ next();
 </script>
 ```
 
+
 ### Reference templates
 
 #### [Image classification template source code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
@@ -174,9 +174,9 @@ next();
 #### [Text classification template source code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/text-classification.png" width="400">
 
-## Local labeling frontend development
+### Local labeling frontend development
 
-### Run localhost server
+**Run localhost server**
 1. Start the localhost server in a directory containing your labeling frontend files. For example, run the server inside labelingfrontend if you have index.html (labeling frontend) inside it.
 ```
 python2 -m SimpleHTTPServer
@@ -187,17 +187,16 @@ python2 -m SimpleHTTPServer
 
  ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
-
-## Installing labeling frontend in www.labelbox.io
+### Installing labeling frontend in labelbox.io
 At Labelbox, we are fan of https://zeit.co/now for cloud deployment.
 
-### Install Now
+#### Install Now
 Create an account at Zeit, download and install Now here: https://zeit.co/download
 
-### Deploy labeling frontend
+#### Deploy labeling frontend
 In terminal, go to your labeling frontend directory and type: ```now``` and copy the link.
 
-### Add labeling frontend to your Labelbox project
+#### Add labeling frontend to your Labelbox project
 Paste the link under custom labeling interface tab, as shown in the video below. Now you are ready to label data with your team using the custom frontend.
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_cloud_deploy.gif)
