@@ -12,12 +12,12 @@ Table of Contents
          * [Exporting labels](#exporting-labels)
       * [Developing labeling templates](#developing-labeling-templates)
          * [Architecture](#architecture)
-      * [Using labeling-api.js](#using-labeling-apijs)
-         * [Attach the Labelbox's client side API](#attach-the-labelboxs-client-side-api)
-         * [Get a row to label](#get-a-row-to-label)
-         * [Save the label for a row](#save-the-label-for-a-row)
-         * [Full example](#full-example)
-         * [Available templates](#available-templates)
+         * [Using labeling-api.js](#using-labeling-apijs)
+            * [Attach the Labelbox's client side API](#attach-the-labelboxs-client-side-api)
+            * [Get a row to label](#get-a-row-to-label)
+            * [Save the label for a row](#save-the-label-for-a-row)
+            * [Full example](#full-example)
+         * [Reference templates](#reference-templates)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification">Image classification template source code</a>](#image-classification-template-source-code)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation">Image segmentation template source code</a>](#image-segmentation-template-source-code)
             * [<a href="https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification">Text classification template source code</a>](#text-classification-template-source-code)
@@ -111,16 +111,16 @@ Labelbox is data agnostic and all labeling projects share the theme of "data in 
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/architecture.jpg" width="100%">
 
 
-## Using labeling-api.js
+### Using labeling-api.js
 To develop a Labelbox frontend, import labeling-api.js and use the 2 APIs described below to **Fetch** and **Submit** an individual dataset row. Note that multiple data can be loaded in a single Fetch if a row in CSV file contains an array of data.
 
-### Attach the Labelbox's client side API
+#### Attach the Labelbox's client side API
 
 ```html
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 ```
 
-### Get a row to label
+#### Get a row to label
 
 ```javascript
 Labelbox.fetchNextAssetToLabel().then((dataToLabel) => {
@@ -128,13 +128,13 @@ Labelbox.fetchNextAssetToLabel().then((dataToLabel) => {
 });
 ```
 
-### Save the label for a row
+#### Save the label for a row
 
 ```javascript
 Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 ```
 
-### Full example
+#### Full example
 Full Example
 
 ```html
@@ -163,7 +163,7 @@ next();
 </script>
 ```
 
-### Available templates
+### Reference templates
 
 #### [Image classification template source code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/classification.png" width="400">
