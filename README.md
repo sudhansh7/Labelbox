@@ -191,7 +191,7 @@ python2 -m SimpleHTTPServer
  ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
 ### Installing labeling frontend in labelbox.io
-At Labelbox, we are fan of https://zeit.co/now for cloud deployment.
+In order to install your frontend on Labelbox you will first need to deploy it. We recommend https://zeit.co/now for deployments.
 
 #### Install Now
 Create an account at Zeit, download and install Now here: https://zeit.co/download
