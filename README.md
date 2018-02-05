@@ -137,7 +137,7 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 
 #### Hello World example
 
-[Try it your browser](https://hello-world.labelbox.io)
+[Try it in your browser](https://hello-world.labelbox.io)
 
 ```html
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
