@@ -27,7 +27,7 @@ Table of Contents
             * [Deploy labeling frontend](#deploy-labeling-frontend)
             * [Add labeling frontend to your Labelbox project](#add-labeling-frontend-to-your-labelbox-project)
       * [Request features](#request-features)
-      
+
 # Labelbox
 [Labelbox](https://www.labelbox.io/) is a cloud based data labeling tool designed for enterprises for machine learning applications.
 
@@ -134,8 +134,6 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 ```
 
 #### Full example
-Full Example
-
 ```html
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 <div id="form"></div>
