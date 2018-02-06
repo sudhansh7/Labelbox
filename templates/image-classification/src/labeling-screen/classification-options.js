@@ -12,7 +12,9 @@ export default class ClassificationForm extends React.Component {
   componentWillMount(){
     this.customizationSubscription = window.Labelbox.getTemplateCustomization()
       .subscribe((customization) => {
-        this.setState({...this.state, customization});
+        if (customization.options) {
+          this.setState({...this.state, customization});
+        }
       });
   }
 
@@ -34,9 +36,9 @@ export default class ClassificationForm extends React.Component {
                 <FormControlLabel value={value} control={<Radio />} label={label} key={value}/>
               ))
             }
-      </RadioGroup>
+          </RadioGroup>
         </FormControl>
-        </div>
+      </div>
     );
   }
 }

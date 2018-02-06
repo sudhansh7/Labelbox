@@ -105,7 +105,9 @@ class App extends React.Component {
     // TODO will probably need erro handleing here
     (window as any).Labelbox.getTemplateCustomization()
       .subscribe((customization: any) => {
-        this.setState({defaultState, tools: customization.tools.map(addId)});
+        if (customization.tools) {
+          this.setState({defaultState, tools: customization.tools.map(addId)});
+        }
       });
 
     window.onbeforeunload = () => {
