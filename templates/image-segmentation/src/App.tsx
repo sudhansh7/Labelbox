@@ -119,9 +119,8 @@ class App extends React.Component {
     }
   }
 
-  next(label?: string) {
+  next(label?: {label?: string, skip?: boolean}) {
     const getNext = () => {
-      // tslint:disable-next-line
       (window as any).Labelbox.fetchNextAssetToLabel()
         .then((imageUrl: string) => {
           this.setState({...this.state, loading: true});
@@ -139,11 +138,12 @@ class App extends React.Component {
           );
         });
     };
-    if (label) {
-      // tslint:disable-next-line
-      (window as any).Labelbox.setLabelForAsset(label).then(getNext);
-    } else {
+    if (!label) {
       getNext();
+    } else if (label.label) {
+      (window as any).Labelbox.setLabelForAsset(label.label).then(getNext);
+    } else if (label.skip) {
+      (window as any).Labelbox.skip().then(getNext);
     }
   }
 
@@ -171,7 +171,8 @@ class App extends React.Component {
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
                 disableSubmit={this.state.annotations.length === 0}
-                onSubmit={() => this.next(generateLabel(this.state))}
+                onSubmit={() => this.next({label: generateLabel(this.state)})}
+                onSkip={() => this.next({skip: true})}
               />
             </div>
             <div className="labeling-frame">

@@ -11,7 +11,8 @@ export function Toolbar(
     currentTool,
     visibilityToggle,
     disableSubmit,
-    onSubmit
+    onSubmit,
+    onSkip,
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolNames}[];
     toolChange: (id: string | undefined) => void;
@@ -19,6 +20,7 @@ export function Toolbar(
     visibilityToggle: (toolIndex: string) => void;
     disableSubmit: boolean;
     onSubmit: () => void;
+    onSkip: () => void;
   }) {
   return (
     <div className="toolbar">
@@ -69,6 +71,7 @@ export function Toolbar(
       </div>
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'} as any}></div>
       <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px'}}>
+        <Button onClick={() => onSkip()}>Skip</Button>
         <Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button>
       </div>
     </div>
