@@ -22,15 +22,17 @@ class App extends Component {
     this.next();
   }
 
-  next(label){
+  next(submission){
     const getNext = () => {
       window.Labelbox.fetchNextAssetToLabel()
         .then((imageUrl) => this.setState({imageUrl}));
     };
-    if (label) {
-      window.Labelbox.setLabelForAsset(label).then(getNext);
-    } else {
+    if (!submission) {
       getNext();
+    } else if (submission.label) {
+      window.Labelbox.setLabelForAsset(submission.label).then(getNext);
+    } else if (submission.skip) {
+      window.Labelbox.skip().then(getNext);
     }
   }
 
@@ -41,8 +43,8 @@ class App extends Component {
           <div className="labeling-frame">
             <LabelingScreen
               imageUrl={this.state && this.state.imageUrl}
-              onSkip={() => this.next()}
-              onSubmit={(label) => this.next(label)}
+              onSkip={() => this.next({skip: true})}
+              onSubmit={(label) => this.next({label})}
             />
           </div>
         </div>

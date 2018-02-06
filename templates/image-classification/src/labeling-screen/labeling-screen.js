@@ -21,6 +21,11 @@ export class LabelingScreen extends Component {
       this.setState({...this.state, label: undefined, loading: true});
     };
 
+    const onSkip = () => {
+      this.props.onSkip();
+      this.setState({...this.state, label: undefined, loading: true});
+    };
+
     return (
       <Card>
         <CardContent>
@@ -30,10 +35,11 @@ export class LabelingScreen extends Component {
           {
             this.props.imageUrl && !this.state.errorLoadingImage &&
               (<img
+                style={{width: '100%', opacity: this.state.loading ? '0.2' : '1'}}
                 src={this.props.imageUrl}
                 onLoad={(e) => this.setState({...this.state, loading: false})}
                 onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
-                alt="classify-data" style={{width: '100%'}}
+                alt="classify-data"
               />)
           }
           {
@@ -58,6 +64,7 @@ export class LabelingScreen extends Component {
           </div>
         </CardContent>
         <CardActions style={{justifyContent: 'flex-end'}}>
+          <Button onClick={onSkip} >Skip</Button>
           <Button
             raised={true}
             color="primary"
