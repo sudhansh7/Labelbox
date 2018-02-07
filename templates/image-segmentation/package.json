@@ -20,7 +20,7 @@
     "terraformer-wkt-parser": "^1.1.2"
   },
   "scripts": {
-    "now-start": "cd build && serve -c 0 -s ./",
+    "now-start": "cd build && serve -s ./",
     "deploy": "now && now alias",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
