@@ -189,7 +189,12 @@ class App extends React.Component {
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   isEditing={isEditing}
                   onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
-                  onMouseMove={(move: MouseMove) => this.setState(mouseMove(this.state, move))}
+                  onMouseMove={(move: MouseMove) => {
+                    const updatedStateFromMouseMove = mouseMove(this.state, move);
+                    if (updatedStateFromMouseMove){
+                      this.setState(updatedStateFromMouseMove)
+                    }
+                  }}
                   onMapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
                   onAnnotationEdit={onAnnotationEdit}
                   onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}

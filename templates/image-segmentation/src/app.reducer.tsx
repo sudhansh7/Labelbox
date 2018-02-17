@@ -30,6 +30,7 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Bounds;
+  rectangleInProgressId?: string;
   errorLoadingImage?: string;
 }
 
@@ -196,35 +197,50 @@ const isToolSelected = (state: AppState, tool: Tool) => {
   return tool.id === state.currentToolId;
 }
 
-const TEMP_RECT_ID = 'MOUSE_MOV_RECT';
+const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: mouseLng}}: MouseMove) => {
+  const rectangleTool = getRectangleTool(state);
+  if (!rectangleTool){
+    return state;
+  }
+  const rectId = state.rectangleInProgressId ? state.rectangleInProgressId : guid();
 
-const updateTempBoundingBox = (state: AppState, boundingBox: Annotation) => {
-  const index = state.annotations.findIndex(({id}) => id === TEMP_RECT_ID);
+  const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds;
+  const boxAnnotation:Annotation = {
+    id: rectId,
+    color: rectangleTool.color,
+    bounds: [
+      {lat: startLat, lng: startLng},
+      {lat: mouseLat, lng: startLng},
+      {lat: startLat, lng: mouseLng},
+      {lat: mouseLat, lng: mouseLng},
+    ],
+    editing: false,
+    toolName: 'rectangle',
+    toolId: rectangleTool.id
+  };
+
+  const index = state.annotations.findIndex(({id}) => state.rectangleInProgressId === id);
   const newAnnotations = index !== -1 ? [
     ...state.annotations.slice(0, index),
     ...state.annotations.slice(index + 1),
-    boundingBox
+    boxAnnotation
   ] : [
     ...state.annotations,
-    boundingBox
+    boxAnnotation
   ];
   return {
     ...state,
+    rectangleInProgressId: rectId,
     annotations: newAnnotations
   }
 }
 
 const finalizeTempBoundingBox = (state: AppState) => {
-  const index = state.annotations.findIndex(({id}) => id === TEMP_RECT_ID);
   return {
     ...state,
     drawnAnnotationBounds: [],
     currentToolId: undefined,
-    annotations: [
-      ...state.annotations.slice(0, index),
-      {...state.annotations[index], id: guid()},
-      ...state.annotations.slice(index + 1),
-    ]
+    rectangleInProgressId: undefined,
   }
 }
 
@@ -240,24 +256,10 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
   return state;
 }
 
-export const mouseMove = (state: AppState, {location: {lat: mouseLat, lng: mouseLng}}: MouseMove) => {
+export const mouseMove = (state: AppState, move: MouseMove):AppState | undefined => {
   const rectangleTool = getRectangleTool(state);
   if (rectangleTool && isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 1) {
-    const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds;
-    const boxAnnotation:Annotation = {
-      id: TEMP_RECT_ID,
-      color: rectangleTool.color,
-      bounds: [
-        {lat: startLat, lng: startLng},
-        {lat: mouseLat, lng: startLng},
-        {lat: startLat, lng: mouseLng},
-        {lat: mouseLat, lng: mouseLng},
-      ],
-      editing: false,
-      toolName: 'rectangle',
-      toolId: rectangleTool.id
-    };
-    return updateTempBoundingBox(state, boxAnnotation);
+    return updateTempBoundingBox(state, move);
   }
-  return state;
+  return;
 }
