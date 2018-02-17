@@ -195,7 +195,6 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
   const isRectangleTool = currentTool && currentTool.tool === 'rectangle';
   // When a user clicks the map with the rectangle tool
   // we want to draw a marker
-  console.log(click, isRectangleTool);
   if (isRectangleTool){
     return {...state, markers: [{location: click.location}]};
   } else if (!state.currentToolId && !click.shapeId){
