@@ -35,7 +35,7 @@ export class LabelingScreen extends Component {
           {
             this.props.imageUrl && !this.state.errorLoadingImage &&
               (<img
-                style={{'max-width': '100%', 'max-height': '100%', opacity: this.state.loading ? '0.2' : '1'}}
+                style={{width: '100%', opacity: this.state.loading ? '0.2' : '1', maxHeight: '50vh'}}
                 src={this.props.imageUrl}
                 onLoad={(e) => this.setState({...this.state, loading: false})}
                 onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
