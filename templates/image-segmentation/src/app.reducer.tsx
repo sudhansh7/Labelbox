@@ -1,7 +1,7 @@
 // tslint:disable
 import { ToolNames } from './labeling-screen/segment-image';
 import * as wkt from 'terraformer-wkt-parser';
-import { MapClick } from './labeling-screen/segment-image';
+import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
 type Bounds = {lat: number, lng:number}[];
 
@@ -203,4 +203,22 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
     return editShape(state, click.shapeId);
   }
   return state;
+}
+
+export const mouseMove = (state: AppState, {location: {lat, lng}}: MouseMove) => {
+  console.log('mousemove')
+  const boxAnnotation:Annotation = {
+    id: 'temporary-rectangle-bounding-box',
+    color: 'pink',
+    bounds: [
+      {lat: 0, lng: 0},
+      {lat, lng: 0},
+      {lat: 0, lng},
+      {lat, lng},
+    ],
+    editing: false,
+    toolName: 'rectangle',
+    toolId: 'probablyneedtherealtoolid'
+  };
+  return {...state, annotations: [boxAnnotation]};
 }

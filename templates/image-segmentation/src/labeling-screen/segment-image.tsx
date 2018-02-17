@@ -23,7 +23,7 @@ const Polygon: any = PolygonTyped;
 const Rectangle: any = RectangleTyped;
 const Polyline: any = PolylineTyped;
 
-interface LeafletClick extends Event {
+interface LeafletEvent extends Event {
   latlng: {
     lat: number;
     lng: number;
@@ -38,6 +38,13 @@ export interface MapClick {
   shapeId?: string;
 }
 
+export interface MouseMove {
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
+
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
   imageUrl: string;
@@ -49,8 +56,9 @@ interface Props {
   onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
   markers: {location: {lat: number, lng: number}}[];
   selectedTool: ToolNames | undefined;
-  isEditing: boolean,
-  mapClick: (click: MapClick) => void
+  isEditing: boolean;
+  mapClick: (click: MapClick) => void;
+  mouseMove: (move: MouseMove) => void;
 }
 
 // TODO make this a function again
@@ -66,6 +74,7 @@ export function SegmentImage({
   markers,
   isEditing,
   mapClick,
+  mouseMove,
 }: Props) {
 
   const getPointsFromEvent = (e: any) => {
@@ -113,7 +122,8 @@ export function SegmentImage({
       minZoom={-2}
       zoomControl={false}
       editable={true}
-      onClick={({latlng}:LeafletClick) => mapClick({location: latlng})}
+      onClick={({latlng}:LeafletEvent) => mapClick({location: latlng})}
+      onMousemove={({latlng}:LeafletEvent) => mouseMove({location: latlng})}
       zoomSnap={0.1}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
@@ -131,7 +141,7 @@ export function SegmentImage({
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: LeafletClick) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id})}}
+          onClick={(e: LeafletEvent) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id})}}
         />
       ))}
       {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (

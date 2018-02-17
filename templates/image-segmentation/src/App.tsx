@@ -5,7 +5,7 @@ import './icons.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
-import { SegmentImage, MapClick } from './labeling-screen/segment-image';
+import { SegmentImage, MapClick, MouseMove } from './labeling-screen/segment-image';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
@@ -23,7 +23,8 @@ import {
   selectToolbarState,
   updateAnnotation,
   editShape,
-  userClickedMap
+  userClickedMap,
+  mouseMove,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
 
@@ -189,6 +190,7 @@ class App extends React.Component {
                   onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   mapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
+                  mouseMove={(move: MouseMove) => this.setState(mouseMove(this.state, move))}
                   isEditing={isEditing}
                   onAnnotationEdit={onAnnotationEdit}
                   onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}
