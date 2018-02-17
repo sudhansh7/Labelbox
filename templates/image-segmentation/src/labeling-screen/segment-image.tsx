@@ -152,7 +152,7 @@ export function SegmentImage({
           onClick={(e: any) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
-      {markers.map(({location}) => (<Marker position={location} icon={icon} />))}
+      {markers.map(({location}, index) => (<Marker key={index} position={location} icon={icon} />))}
     </Map>
   );
 }

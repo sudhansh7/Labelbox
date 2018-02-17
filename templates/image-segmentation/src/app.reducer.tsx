@@ -190,7 +190,14 @@ export const editShape = (state: AppState, annotationId?: string) => {
 
 
 export const userClickedMap = (state: AppState, click: MapClick) => {
-  if (!state.currentToolId && !click.shapeId){
+  const currentTool = state.tools.find(({id}) => id === state.currentToolId);
+  const isRectangleTool = currentTool && currentTool.tool === 'rectangle';
+  // When a user clicks the map with the rectangle tool
+  // we want to draw a marker
+  console.log(click, isRectangleTool);
+  if (isRectangleTool){
+    return {...state, markers: [{location: click.location}]};
+  } else if (!state.currentToolId && !click.shapeId){
     return editShape(state);
   } else if (click.shapeId){
     return editShape(state, click.shapeId);
