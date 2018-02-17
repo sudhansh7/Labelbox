@@ -22,7 +22,8 @@ import {
   generateLabel,
   selectToolbarState,
   updateAnnotation,
-  editShape
+  editShape,
+  userClickedMap
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
 
@@ -186,7 +187,7 @@ class App extends React.Component {
                   drawColor={currentTool ? currentTool.color : undefined}
                   onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
                   selectedTool={currentTool ? currentTool.tool : undefined}
-                  mapClick={(e: MapClick) => console.log(e)}
+                  mapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
                   isEditing={isEditing}
                   onAnnotationEdit={onAnnotationEdit}
                   onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}

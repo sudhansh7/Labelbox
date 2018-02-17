@@ -1,6 +1,7 @@
 // tslint:disable
 import { ToolNames } from './labeling-screen/segment-image';
 import * as wkt from 'terraformer-wkt-parser';
+import { MapClick } from './labeling-screen/segment-image';
 
 type Bounds = {lat: number, lng:number}[];
 
@@ -175,6 +176,9 @@ export const updateAnnotation = (state: AppState, annotationId: string, fields: 
   };
 };
 
+export const userClickedMap = (state: AppState, click: MapClick) => {
+  return state;
+}
 
 export const editShape = (state: AppState, annotationId?: string) => {
   let updatedState = state.annotations.filter(({editing}) => editing)
