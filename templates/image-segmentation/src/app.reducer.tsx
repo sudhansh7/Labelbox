@@ -30,6 +30,7 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Bounds;
+  markers?: {location: {lat: number, lng: number}}[];
   errorLoadingImage?: string;
 }
 

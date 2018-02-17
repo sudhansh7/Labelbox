@@ -47,6 +47,7 @@ interface Props {
   onNewAnnotation: (annotation: {lat: number, lng: number}[]) => void;
   onDrawnAnnotationUpdate: (annotation: {lat: number, lng: number}[]) => void;
   onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
+  markers: {location: {lat: number, lng: number}}[];
   selectedTool: ToolNames | undefined;
   isEditing: boolean,
   mapClick: (click: MapClick) => void
@@ -62,6 +63,7 @@ export function SegmentImage({
   onDrawnAnnotationUpdate,
   onAnnotationEdit,
   annotations,
+  markers,
   isEditing,
   mapClick,
 }: Props) {
@@ -114,7 +116,6 @@ export function SegmentImage({
       onClick={({latlng}:LeafletClick) => mapClick({location: latlng})}
       zoomSnap={0.1}
     >
-      <Marker position={{lat: 500, lng: 500}} icon={icon} />
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
         <LeafletDraw
@@ -151,6 +152,7 @@ export function SegmentImage({
           onClick={(e: any) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
+      {markers.map(({location}) => (<Marker position={location} icon={icon} />))}
     </Map>
   );
 }
