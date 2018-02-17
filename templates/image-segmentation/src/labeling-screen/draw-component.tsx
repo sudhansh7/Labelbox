@@ -82,7 +82,8 @@ export class LeafletDraw extends React.Component{
           circlemarker: false,
           polygon: {
             shapeOptions: {
-              color: drawColor
+              color: drawColor,
+              opacity: selectedTool === "rectangle" ? 0 : 1,
             }
           },
           rectangle: {
