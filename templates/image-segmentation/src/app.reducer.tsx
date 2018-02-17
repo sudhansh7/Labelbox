@@ -82,7 +82,7 @@ export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: numb
 
 export const deleteSelectedAnnotation = (state: AppState) => {
   const deleteAnnotationIndex = state.annotations.findIndex(({editing}) => editing === true);
-  if (deleteAnnotationIndex !== undefined) {
+  if (deleteAnnotationIndex !== -1) {
     return {
       ...state,
       annotations: [

@@ -1,3 +1,4 @@
+// tslint:disable
 const once = (func: Function) => {
   let calls = 0;
   // tslint:disable-next-line
