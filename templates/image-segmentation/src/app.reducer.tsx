@@ -176,10 +176,6 @@ export const updateAnnotation = (state: AppState, annotationId: string, fields: 
   };
 };
 
-export const userClickedMap = (state: AppState, click: MapClick) => {
-  return state;
-}
-
 export const editShape = (state: AppState, annotationId?: string) => {
   let updatedState = state.annotations.filter(({editing}) => editing)
     .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), state);
@@ -190,3 +186,13 @@ export const editShape = (state: AppState, annotationId?: string) => {
 
   return updatedState;
 };
+
+
+export const userClickedMap = (state: AppState, click: MapClick) => {
+  if (!state.currentToolId && !click.shapeId){
+    return editShape(state);
+  } else if (click.shapeId){
+    return editShape(state, click.shapeId);
+  }
+  return state;
+}

@@ -72,15 +72,6 @@ export function SegmentImage({
   }
 
 
-  /* const mapClick = (e:any) => {*/
-  /* */
-  /* console.log(e.latlng);*/
-  /* if (!selectedTool && isEditing){*/
-  /* Turn editing off if they click outside the editing*/
-  /* editShape();*/
-  /* }*/
-  /* }*/
-
   const onShapeCreation = (shape: any, annotationId: string, editingShape: boolean) => {
     if (shape){
 
