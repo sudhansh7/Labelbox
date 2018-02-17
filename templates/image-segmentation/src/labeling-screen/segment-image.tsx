@@ -23,6 +23,21 @@ const Polygon: any = PolygonTyped;
 const Rectangle: any = RectangleTyped;
 const Polyline: any = PolylineTyped;
 
+interface LeafletClick extends Event {
+  latlng: {
+    lat: number;
+    lng: number;
+  };
+}
+
+export interface MapClick {
+  location: {
+    lat: number;
+    lng: number;
+  };
+  shapeId?: string;
+}
+
 export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
   imageUrl: string;
@@ -33,8 +48,8 @@ interface Props {
   onDrawnAnnotationUpdate: (annotation: {lat: number, lng: number}[]) => void;
   onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
   selectedTool: ToolNames | undefined;
-  editShape: (annotationId?: string) => void,
   isEditing: boolean,
+  mapClick: (click: MapClick) => void
 }
 
 // TODO make this a function again
@@ -47,8 +62,8 @@ export function SegmentImage({
   onDrawnAnnotationUpdate,
   onAnnotationEdit,
   annotations,
-  editShape,
   isEditing,
+  mapClick,
 }: Props) {
 
   const getPointsFromEvent = (e: any) => {
@@ -57,12 +72,14 @@ export function SegmentImage({
   }
 
 
-  const mapClick = (e:any) => {
-    if (!selectedTool && isEditing){
-      // Turn editing off if they click outside the editing
-      editShape();
-    }
-  }
+  /* const mapClick = (e:any) => {*/
+  /* */
+  /* console.log(e.latlng);*/
+  /* if (!selectedTool && isEditing){*/
+  /* Turn editing off if they click outside the editing*/
+  /* editShape();*/
+  /* }*/
+  /* }*/
 
   const onShapeCreation = (shape: any, annotationId: string, editingShape: boolean) => {
     if (shape){
@@ -103,7 +120,7 @@ export function SegmentImage({
       minZoom={-2}
       zoomControl={false}
       editable={true}
-      onClick={mapClick}
+      onClick={({latlng}:LeafletClick) => mapClick({location: latlng})}
       zoomSnap={0.1}
     >
       <Marker position={{lat: 500, lng: 500}} icon={icon} />
@@ -122,7 +139,7 @@ export function SegmentImage({
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
+          onClick={(e: LeafletClick) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id})}}
         />
       ))}
       {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (
@@ -131,7 +148,7 @@ export function SegmentImage({
           bounds={latLngBounds(bounds)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
+          onClick={(e: any) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
       {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
@@ -140,7 +157,7 @@ export function SegmentImage({
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); editShape(id) }}
+          onClick={(e: any) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
     </Map>

@@ -5,7 +5,7 @@ import './icons.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
-import { SegmentImage } from './labeling-screen/segment-image';
+import { SegmentImage, MapClick } from './labeling-screen/segment-image';
 import { Toolbar } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
@@ -186,10 +186,10 @@ class App extends React.Component {
                   drawColor={currentTool ? currentTool.color : undefined}
                   onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
                   selectedTool={currentTool ? currentTool.tool : undefined}
-                  editShape={(annotationId?: string) => this.setState(editShape(this.state, annotationId))}
+                  mapClick={(e: MapClick) => console.log(e)}
                   isEditing={isEditing}
                   onAnnotationEdit={onAnnotationEdit}
-                  onDrawnAnnotationUpdate={(drawnAnnotationBounds) => this.setState({...this.state, drawnAnnotationBounds})}
+                  onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}
                 />
               }
             </div>
