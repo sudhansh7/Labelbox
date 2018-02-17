@@ -1,7 +1,5 @@
 // tslint:disable
 import * as React from 'react';
-/* import { LinearProgress } from 'material-ui/Progress';*/
-/* import Icon from 'material-ui/Icon';*/
 import {
   Map as MapTyped,
   ImageOverlay,
@@ -9,9 +7,8 @@ import {
   Polygon as PolygonTyped,
   Polyline as PolylineTyped,
   Rectangle as RectangleTyped,
-  Marker,
 } from 'react-leaflet';
-import { CRS, latLngBounds, DomEvent, DivIcon, Point } from 'leaflet';
+import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { Annotation } from '../app.reducer';
 import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
@@ -54,14 +51,12 @@ interface Props {
   onNewAnnotation: (annotation: {lat: number, lng: number}[]) => void;
   onDrawnAnnotationUpdate: (annotation: {lat: number, lng: number}[]) => void;
   onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
-  markers: {location: {lat: number, lng: number}}[];
   selectedTool: ToolNames | undefined;
   isEditing: boolean;
   onMapClick: (click: MapClick) => void;
   onMouseMove: (move: MouseMove) => void;
 }
 
-// TODO make this a function again
 export function SegmentImage({
   imageUrl,
   imageSize: {width, height},
@@ -71,7 +66,6 @@ export function SegmentImage({
   onDrawnAnnotationUpdate,
   onAnnotationEdit,
   annotations,
-  markers,
   isEditing,
   onMapClick,
   onMouseMove,
@@ -107,12 +101,7 @@ export function SegmentImage({
       }
     }
   }
-  const icon =  new DivIcon({
-    iconSize: new Point(8, 8),
-    className: 'leaflet-div-icon leaflet-editing-icon'
-  });
 
-  // TODO improve zooming
   return (
     <Map
       ref={improveDragging}
@@ -162,7 +151,6 @@ export function SegmentImage({
           onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
-      {markers.map(({location}, index) => (<Marker key={index} position={location} icon={icon} />))}
     </Map>
   );
 }

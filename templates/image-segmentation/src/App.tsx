@@ -185,7 +185,6 @@ class App extends React.Component {
                   imageUrl={this.state.imageInfo.url}
                   imageSize={this.state.imageInfo}
                   annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
-                  markers={this.state.markers || []}
                   drawColor={currentTool ? currentTool.color : undefined}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   isEditing={isEditing}

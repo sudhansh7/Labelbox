@@ -9,7 +9,9 @@ function setTool(toolName: ToolNames) {
     'cancel': '.leaflet-draw-actions a[title="Cancel drawing"]',
     'line': '.leaflet-draw-draw-polyline',
     'polygon': '.leaflet-draw-draw-polygon',
-    'rectangle': '.leaflet-draw-draw-rectangle',
+    // Default Rectangle is shit. So we just use polygon tool
+    // and draw the hover rectangle ourself
+    'rectangle': '.leaflet-draw-draw-polygon',
   }[toolName || 'cancel'];
 
   if (toolbar) {

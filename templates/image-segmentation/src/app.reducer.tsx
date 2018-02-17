@@ -30,7 +30,6 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Bounds;
-  markers?: {location: {lat: number, lng: number}}[];
   errorLoadingImage?: string;
 }
 
@@ -64,7 +63,6 @@ export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: numb
   return {
     ...state,
     currentToolId: undefined,
-    markers: undefined,
     drawnAnnotationBounds: [],
     annotations: [
       ...state.annotations,
@@ -190,13 +188,19 @@ export const editShape = (state: AppState, annotationId?: string) => {
 };
 
 
+const getRectangleTool = (state: AppState) => {
+  return state.tools.find(({tool}) => tool === 'rectangle');
+}
+
+const isToolSelected = (state: AppState, tool: Tool | undefined) => {
+  return tool && tool.id === state.currentToolId;
+}
+
 export const userClickedMap = (state: AppState, click: MapClick) => {
-  const currentTool = state.tools.find(({id}) => id === state.currentToolId);
-  const isRectangleTool = currentTool && currentTool.tool === 'rectangle';
-  // When a user clicks the map with the rectangle tool
-  // we want to draw a marker
-  if (isRectangleTool){
-    return {...state, markers: [{location: click.location}]};
+  const rectangleTool = getRectangleTool(state);
+  if (isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 2) {
+    console.log('stop drawing and close shape');
+    return state;
   } else if (!state.currentToolId && !click.shapeId){
     return editShape(state);
   } else if (click.shapeId){
@@ -205,21 +209,24 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
   return state;
 }
 
-export const mouseMove = (state: AppState, {location: {lat, lng}}: MouseMove) => {
-  /* console.log('mousemove')*/
-  /* const boxAnnotation:Annotation = {*/
-  /* id: 'temporary-rectangle-bounding-box',*/
-  /* color: 'pink',*/
-  /* bounds: [*/
-  /* {lat: 0, lng: 0},*/
-  /* {lat, lng: 0},*/
-  /* {lat: 0, lng},*/
-  /* {lat, lng},*/
-  /* ],*/
-  /* editing: false,*/
-  /* toolName: 'rectangle',*/
-  /* toolId: 'probablyneedtherealtoolid'*/
-  /* };*/
-  /* return {...state, annotations: [boxAnnotation]};*/
+export const mouseMove = (state: AppState, {location: {lat: mouseLat, lng: mouseLng}}: MouseMove) => {
+  const rectangleTool = getRectangleTool(state);
+  if (rectangleTool && isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 1) {
+    const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds;
+    const boxAnnotation:Annotation = {
+      id: 'temporary-rectangle-bounding-box',
+      color: rectangleTool.id,
+      bounds: [
+        {lat: startLat, lng: startLng},
+        {lat: mouseLat, lng: startLng},
+        {lat: startLat, lng: mouseLng},
+        {lat: mouseLat, lng: mouseLng},
+      ],
+      editing: false,
+      toolName: 'rectangle',
+      toolId: rectangleTool.id
+    };
+    return {...state, annotations: [boxAnnotation]};
+  }
   return state;
 }
