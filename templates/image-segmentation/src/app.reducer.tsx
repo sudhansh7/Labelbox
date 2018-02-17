@@ -64,6 +64,7 @@ export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: numb
   return {
     ...state,
     currentToolId: undefined,
+    markers: undefined,
     drawnAnnotationBounds: [],
     annotations: [
       ...state.annotations,
