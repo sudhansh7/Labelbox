@@ -34,13 +34,12 @@ export class LabelingScreen extends Component {
           }
           {
             this.props.imageUrl && !this.state.errorLoadingImage &&
-              (<img
-                style={{width: '100%', opacity: this.state.loading ? '0.2' : '1', maxHeight: '50vh'}}
-                src={this.props.imageUrl}
-                onLoad={(e) => this.setState({...this.state, loading: false})}
-                onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
-                alt="classify-data"
-              />)
+              (<img style={{maxWidth: '100%', maxHeight: '100%', opacity: this.state.loading ? '0.2' : '1'}}
+                  src={this.props.imageUrl}
+                  onLoad={(e) => this.setState({...this.state, loading: false})}
+                  onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
+                  alt="classify-data"
+                />)
           }
           {
             this.state.errorLoadingImage && (
