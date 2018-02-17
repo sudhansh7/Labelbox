@@ -57,8 +57,8 @@ interface Props {
   markers: {location: {lat: number, lng: number}}[];
   selectedTool: ToolNames | undefined;
   isEditing: boolean;
-  mapClick: (click: MapClick) => void;
-  mouseMove: (move: MouseMove) => void;
+  onMapClick: (click: MapClick) => void;
+  onMouseMove: (move: MouseMove) => void;
 }
 
 // TODO make this a function again
@@ -73,8 +73,8 @@ export function SegmentImage({
   annotations,
   markers,
   isEditing,
-  mapClick,
-  mouseMove,
+  onMapClick,
+  onMouseMove,
 }: Props) {
 
   const getPointsFromEvent = (e: any) => {
@@ -122,8 +122,8 @@ export function SegmentImage({
       minZoom={-2}
       zoomControl={false}
       editable={true}
-      onClick={({latlng}:LeafletEvent) => mapClick({location: latlng})}
-      onMousemove={({latlng}:LeafletEvent) => mouseMove({location: latlng})}
+      onClick={({latlng}:LeafletEvent) => onMapClick({location: latlng})}
+      onMousemove={({latlng}:LeafletEvent) => onMouseMove({location: latlng})}
       zoomSnap={0.1}
     >
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
@@ -141,7 +141,7 @@ export function SegmentImage({
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: LeafletEvent) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id})}}
+          onClick={(e: LeafletEvent) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id})}}
         />
       ))}
       {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (
@@ -150,7 +150,7 @@ export function SegmentImage({
           bounds={latLngBounds(bounds)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id}) }}
+          onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
       {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
@@ -159,7 +159,7 @@ export function SegmentImage({
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); mapClick({location: e.latlng, shapeId: id}) }}
+          onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
       {markers.map(({location}, index) => (<Marker key={index} position={location} icon={icon} />))}

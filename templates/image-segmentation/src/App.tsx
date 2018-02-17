@@ -187,11 +187,11 @@ class App extends React.Component {
                   annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
                   markers={this.state.markers || []}
                   drawColor={currentTool ? currentTool.color : undefined}
-                  onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
                   selectedTool={currentTool ? currentTool.tool : undefined}
-                  mapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
-                  mouseMove={(move: MouseMove) => this.setState(mouseMove(this.state, move))}
                   isEditing={isEditing}
+                  onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
+                  onMouseMove={(move: MouseMove) => this.setState(mouseMove(this.state, move))}
+                  onMapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
                   onAnnotationEdit={onAnnotationEdit}
                   onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}
                 />

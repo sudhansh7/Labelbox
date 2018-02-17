@@ -206,19 +206,20 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
 }
 
 export const mouseMove = (state: AppState, {location: {lat, lng}}: MouseMove) => {
-  console.log('mousemove')
-  const boxAnnotation:Annotation = {
-    id: 'temporary-rectangle-bounding-box',
-    color: 'pink',
-    bounds: [
-      {lat: 0, lng: 0},
-      {lat, lng: 0},
-      {lat: 0, lng},
-      {lat, lng},
-    ],
-    editing: false,
-    toolName: 'rectangle',
-    toolId: 'probablyneedtherealtoolid'
-  };
-  return {...state, annotations: [boxAnnotation]};
+  /* console.log('mousemove')*/
+  /* const boxAnnotation:Annotation = {*/
+  /* id: 'temporary-rectangle-bounding-box',*/
+  /* color: 'pink',*/
+  /* bounds: [*/
+  /* {lat: 0, lng: 0},*/
+  /* {lat, lng: 0},*/
+  /* {lat: 0, lng},*/
+  /* {lat, lng},*/
+  /* ],*/
+  /* editing: false,*/
+  /* toolName: 'rectangle',*/
+  /* toolId: 'probablyneedtherealtoolid'*/
+  /* };*/
+  /* return {...state, annotations: [boxAnnotation]};*/
+  return state;
 }
