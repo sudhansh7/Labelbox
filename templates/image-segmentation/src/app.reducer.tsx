@@ -192,15 +192,46 @@ const getRectangleTool = (state: AppState) => {
   return state.tools.find(({tool}) => tool === 'rectangle');
 }
 
-const isToolSelected = (state: AppState, tool: Tool | undefined) => {
-  return tool && tool.id === state.currentToolId;
+const isToolSelected = (state: AppState, tool: Tool) => {
+  return tool.id === state.currentToolId;
+}
+
+const TEMP_RECT_ID = 'MOUSE_MOV_RECT';
+
+const updateTempBoundingBox = (state: AppState, boundingBox: Annotation) => {
+  const index = state.annotations.findIndex(({id}) => id === TEMP_RECT_ID);
+  const newAnnotations = index !== -1 ? [
+    ...state.annotations.slice(0, index),
+    ...state.annotations.slice(index + 1),
+    boundingBox
+  ] : [
+    ...state.annotations,
+    boundingBox
+  ];
+  return {
+    ...state,
+    annotations: newAnnotations
+  }
+}
+
+const finalizeTempBoundingBox = (state: AppState) => {
+  const index = state.annotations.findIndex(({id}) => id === TEMP_RECT_ID);
+  return {
+    ...state,
+    drawnAnnotationBounds: [],
+    currentToolId: undefined,
+    annotations: [
+      ...state.annotations.slice(0, index),
+      {...state.annotations[index], id: guid()},
+      ...state.annotations.slice(index + 1),
+    ]
+  }
 }
 
 export const userClickedMap = (state: AppState, click: MapClick) => {
   const rectangleTool = getRectangleTool(state);
-  if (isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 2) {
-    console.log('stop drawing and close shape');
-    return state;
+  if (rectangleTool && isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 2) {
+    return finalizeTempBoundingBox(state);
   } else if (!state.currentToolId && !click.shapeId){
     return editShape(state);
   } else if (click.shapeId){
@@ -214,8 +245,8 @@ export const mouseMove = (state: AppState, {location: {lat: mouseLat, lng: mouse
   if (rectangleTool && isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 1) {
     const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds;
     const boxAnnotation:Annotation = {
-      id: 'temporary-rectangle-bounding-box',
-      color: rectangleTool.id,
+      id: TEMP_RECT_ID,
+      color: rectangleTool.color,
       bounds: [
         {lat: startLat, lng: startLng},
         {lat: mouseLat, lng: startLng},
@@ -226,7 +257,7 @@ export const mouseMove = (state: AppState, {location: {lat: mouseLat, lng: mouse
       toolName: 'rectangle',
       toolId: rectangleTool.id
     };
-    return {...state, annotations: [boxAnnotation]};
+    return updateTempBoundingBox(state, boxAnnotation);
   }
   return state;
 }
