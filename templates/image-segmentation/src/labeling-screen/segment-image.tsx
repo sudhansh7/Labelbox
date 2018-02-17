@@ -8,9 +8,10 @@ import {
   FeatureGroup,
   Polygon as PolygonTyped,
   Polyline as PolylineTyped,
-  Rectangle as RectangleTyped
+  Rectangle as RectangleTyped,
+  Marker,
 } from 'react-leaflet';
-import { CRS, latLngBounds, DomEvent } from 'leaflet';
+import { CRS, latLngBounds, DomEvent, DivIcon, Point } from 'leaflet';
 import { Annotation } from '../app.reducer';
 import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
@@ -87,6 +88,10 @@ export function SegmentImage({
       }
     }
   }
+  const icon =  new DivIcon({
+    iconSize: new Point(8, 8),
+    className: 'leaflet-div-icon leaflet-editing-icon'
+  });
 
   // TODO improve zooming
   return (
@@ -101,6 +106,7 @@ export function SegmentImage({
       onClick={mapClick}
       zoomSnap={0.1}
     >
+      <Marker position={{lat: 500, lng: 500}} icon={icon} />
       <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
       <FeatureGroup>
         <LeafletDraw
