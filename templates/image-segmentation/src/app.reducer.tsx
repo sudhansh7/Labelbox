@@ -207,8 +207,8 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
     bounds: [
       {lat: startLat, lng: startLng},
       {lat: mouseLat, lng: startLng},
-      {lat: startLat, lng: mouseLng},
       {lat: mouseLat, lng: mouseLng},
+      {lat: startLat, lng: mouseLng},
     ],
     editing: false,
     toolName: 'rectangle',
