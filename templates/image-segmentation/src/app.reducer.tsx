@@ -189,16 +189,12 @@ export const editShape = (state: AppState, annotationId?: string) => {
 };
 
 
-const getRectangleTool = (state: AppState) => {
-  return state.tools.find(({tool}) => tool === 'rectangle');
-}
-
-const isToolSelected = (state: AppState, tool: Tool) => {
-  return tool.id === state.currentToolId;
+const getSelectedRectangleTool = (state: AppState) => {
+  return state.tools.find((tool) => tool.tool === 'rectangle' && tool.id === state.currentToolId);
 }
 
 const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: mouseLng}}: MouseMove) => {
-  const rectangleTool = getRectangleTool(state);
+  const rectangleTool = getSelectedRectangleTool(state);
   if (!rectangleTool){
     return state;
   }
@@ -245,8 +241,8 @@ const finalizeTempBoundingBox = (state: AppState) => {
 }
 
 export const userClickedMap = (state: AppState, click: MapClick) => {
-  const rectangleTool = getRectangleTool(state);
-  if (rectangleTool && isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 2) {
+  const selectedRectangleTool = getSelectedRectangleTool(state);
+  if (selectedRectangleTool && state.drawnAnnotationBounds.length === 2) {
     return finalizeTempBoundingBox(state);
   } else if (!state.currentToolId && !click.shapeId){
     return editShape(state);
@@ -257,8 +253,8 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
 }
 
 export const mouseMove = (state: AppState, move: MouseMove):AppState | undefined => {
-  const rectangleTool = getRectangleTool(state);
-  if (rectangleTool && isToolSelected(state, rectangleTool) && state.drawnAnnotationBounds.length === 1) {
+  const selectedRectangleTool = getSelectedRectangleTool(state);
+  if (selectedRectangleTool && state.drawnAnnotationBounds.length === 1) {
     return updateTempBoundingBox(state, move);
   }
   return;
