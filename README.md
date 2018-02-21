@@ -23,6 +23,7 @@ Table of Contents
       * [Local Development of Labeling Interfaces](#local-development-of-labeling-interfaces)
       * [Installing a Labeling Frontend in labelbox.io](#installing-a-labeling-frontend-in-labelboxio)
    * [Request features](#request-features)
+   * [Terms of use, privacy and content dispute policy](#terms-of-use-privacy-and-content-dispute-policy)
 
 # Labelbox
 [Labelbox](https://www.labelbox.io/) is a data labeling tool that's purpose
