@@ -21,6 +21,7 @@ export function Tool(
     <div style={{
       display: 'flex',
       flexGrow: '1',
+      minHeight: '40px',
     } as any}>
       <Button
         style={{
