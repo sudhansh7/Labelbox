@@ -102,6 +102,20 @@ class App extends React.Component {
       }
     });
 
+    keyDownSteam('1')
+      .merge(keyDownSteam('2'))
+      .merge(keyDownSteam('3'))
+      .merge(keyDownSteam('4'))
+      .merge(keyDownSteam('5'))
+      .merge(keyDownSteam('6'))
+      .merge(keyDownSteam('7'))
+      .merge(keyDownSteam('8'))
+      .merge(keyDownSteam('9'))
+      .merge(keyDownSteam('0'))
+      .subscribe((key) => {
+        console.log('select tool', key);
+      });
+
     keyDownSteam('del')
       .merge(keyDownSteam('backspace'))
       .subscribe(() => {
