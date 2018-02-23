@@ -6,7 +6,7 @@ const keyMap = {
   cmd: 91,
   escape: 27,
   a: 65,
-  d: 68,
+  e: 69,
   f: 70,
   s: 83,
   z: 90,
@@ -37,7 +37,7 @@ type mappedKeys = 'space' |
   'backspace' |
   'enter'|
   's' |
-  'd' |
+  'e' |
   '1' |
   '2' |
   '3' |

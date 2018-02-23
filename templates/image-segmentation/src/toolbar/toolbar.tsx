@@ -92,7 +92,7 @@ export function Toolbar(
           <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
             <div style={{display: 'flex', flexGrow: '1'} as any}>
               <div style={{flex: '60'}}>Submit</div>
-              <div style={{flex: '40'}}>d</div>
+              <div style={{flex: '40'}}>e</div>
             </div>
           </div>
           <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>

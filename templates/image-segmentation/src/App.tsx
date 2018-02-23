@@ -88,7 +88,7 @@ class App extends React.Component {
     };
 
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
-    keyDownSteam('d').subscribe(() => this.submit());
+    keyDownSteam('e').subscribe(() => this.submit());
     keyDownSteam('a').subscribe(() => this.next({skip: true}));
 
     keyDownSteam('escape').subscribe(() => {
