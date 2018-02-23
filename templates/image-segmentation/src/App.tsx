@@ -113,7 +113,10 @@ class App extends React.Component {
       .merge(keyDownSteam('9'))
       .merge(keyDownSteam('0'))
       .subscribe((key) => {
-        console.log('select tool', key);
+        const tool = this.state.tools[parseInt(key) - 1]
+        if (tool){
+          this.setTool(tool.id);
+        }
       });
 
     keyDownSteam('del')
@@ -173,6 +176,10 @@ class App extends React.Component {
     }
   }
 
+  setTool(toolId: string) {
+    this.setState({...editShape(this.state), currentToolId: toolId});
+  }
+
   render() {
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
@@ -194,7 +201,7 @@ class App extends React.Component {
               <Toolbar
                 tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
-                toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
+                toolChange={(toolId: string) => this.setTool(toolId)}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
                 disableSubmit={this.state.annotations.length === 0}
                 onSubmit={() => this.submit()}
