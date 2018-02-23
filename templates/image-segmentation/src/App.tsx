@@ -100,9 +100,11 @@ class App extends React.Component {
       }
     });
 
-    keyDownSteam('del').subscribe(() => {
-      this.setState(deleteSelectedAnnotation(this.state));
-    });
+    keyDownSteam('del')
+      .merge(keyDownSteam('backspace'))
+      .subscribe(() => {
+        this.setState(deleteSelectedAnnotation(this.state));
+      });
 
     // TODO will probably need erro handleing here
     (window as any).Labelbox.getTemplateCustomization()
