@@ -104,7 +104,7 @@ export function Toolbar(
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
-      <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px'}}>
+      <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px', minHeight: '36px'}}>
         <Button onClick={() => onSkip()}>Skip</Button>
         <Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button>
       </div>
