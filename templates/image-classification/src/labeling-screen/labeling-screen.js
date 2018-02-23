@@ -27,8 +27,29 @@ export class LabelingScreen extends Component {
     };
 
     return (
-      <Card>
-        <CardContent>
+      <div style={{display: 'flex'}}>
+        <div>
+          <div className="form-controls">
+            <div className="classification">
+              <ClassificationForm
+            value={this.state.label || ''}
+            onSelect={(label) => this.setState({...this.state, label})}
+              />
+              </div>
+            <div className="form-buttons">
+            </div>
+          </div>
+          <div style={{justifyContent: 'flex-end'}}>
+            <Button onClick={onSkip} >Skip</Button>
+            <Button
+          raised={true}
+          color="primary"
+          disabled={!this.state || !this.state.label}
+          onClick={onSubmit}
+            >Submit</Button>
+          </div>
+        </div>
+        <div>
           {
             this.state.loading && (<LinearProgress color="accent" />)
           }
@@ -51,27 +72,8 @@ export class LabelingScreen extends Component {
               </div>
             )
           }
-          <div className="form-controls">
-            <div className="classification">
-              <ClassificationForm
-                value={this.state.label || ''}
-                onSelect={(label) => this.setState({...this.state, label})}
-              />
-            </div>
-            <div className="form-buttons">
-            </div>
-          </div>
-        </CardContent>
-        <CardActions style={{justifyContent: 'flex-end'}}>
-          <Button onClick={onSkip} >Skip</Button>
-          <Button
-            raised={true}
-            color="primary"
-            disabled={!this.state || !this.state.label}
-            onClick={onSubmit}
-          >Submit</Button>
-        </CardActions>
-      </Card>
+        </div>
+      </div>
     );
   }
 }

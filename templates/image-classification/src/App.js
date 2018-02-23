@@ -40,6 +40,9 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
+          <div className="banner">
+            <div>Labelbox</div>
+          </div>
           <div className="labeling-frame">
             <LabelingScreen
               imageUrl={this.state && this.state.imageUrl}
