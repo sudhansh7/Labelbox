@@ -68,6 +68,18 @@ export function Toolbar(
             <div style={{flex: '40'}}>escape</div>
           </div>
         </div>
+        <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey'} as any}>
+          <div style={{display: 'flex', flexGrow: '1'} as any}>
+            <div style={{flex: '60'}}>Submit</div>
+            <div style={{flex: '40'}}>cmd/ctrl s</div>
+          </div>
+        </div>
+        <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey'} as any}>
+          <div style={{display: 'flex', flexGrow: '1'} as any}>
+            <div style={{flex: '60'}}>Skip</div>
+            <div style={{flex: '40'}}>cmd/ctrl d</div>
+          </div>
+        </div>
       </div>
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column'} as any}></div>
       <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px'}}>

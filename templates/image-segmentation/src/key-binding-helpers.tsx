@@ -5,15 +5,18 @@ const keyMap = {
   cmd: 91,
   escape: 27,
   z: 90,
+  s: 83,
+  d: 68,
   ctrl: 17,
   del: 46,
   backspace: 8,
   enter: 13,
 };
 
-type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'escape' | 'z' | 'del' | 'backspace' | 'enter';
+type mappedKeys = 'space' | 'cmd' | 'ctrl' | 'escape' | 'z' | 'del' | 'backspace' | 'enter' | 's' | 'd';
 const keyEvent = (keyCode: number, event: string) => Observable.fromEvent(document, event)
-  .filter((e: KeyboardEvent) => e.keyCode === keyCode);
+  .filter((e: KeyboardEvent) => e.keyCode === keyCode)
+  .do((e: KeyboardEvent) => e.preventDefault());
 
 const keyDown = (keyCode: number) => keyEvent(keyCode, 'keydown');
 const keyUp = (keyCode: number) => keyEvent(keyCode, 'keyup');

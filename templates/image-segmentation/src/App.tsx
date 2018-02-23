@@ -88,6 +88,8 @@ class App extends React.Component {
     };
 
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
+    keyComboStream(['cmd', 'ctrl'], 's').subscribe(() => this.submit());
+    keyComboStream(['cmd', 'ctrl'], 'd').subscribe(() => this.next({skip: true}));
 
     keyDownSteam('escape').subscribe(() => {
       // Turn off current tool and editing
@@ -151,6 +153,12 @@ class App extends React.Component {
     }
   }
 
+  submit(){
+    if (this.state.annotations.length > 0) {
+      this.next({label: generateLabel(this.state)})
+    }
+  }
+
   render() {
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
@@ -175,7 +183,7 @@ class App extends React.Component {
                 toolChange={(currentToolId: string) => this.setState({...editShape(this.state), currentToolId})}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
                 disableSubmit={this.state.annotations.length === 0}
-                onSubmit={() => this.next({label: generateLabel(this.state)})}
+                onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
               />
             </div>
