@@ -88,15 +88,15 @@ class App extends React.Component {
     };
 
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
-    keyComboStream(['cmd', 'ctrl'], 's').subscribe(() => this.submit());
-    keyComboStream(['cmd', 'ctrl'], 'd').subscribe(() => this.next({skip: true}));
+    keyDownSteam('d').subscribe(() => this.submit());
+    keyDownSteam('a').subscribe(() => this.next({skip: true}));
 
     keyDownSteam('escape').subscribe(() => {
       // Turn off current tool and editing
       this.setState({...editShape(this.state), currentToolId: undefined});
     });
 
-    keyDownSteam('enter').subscribe(() => {
+    keyDownSteam('f').subscribe(() => {
       if (this.state.currentToolId) {
         this.setState(onNewAnnotation(this.state, this.state.drawnAnnotationBounds))
       }

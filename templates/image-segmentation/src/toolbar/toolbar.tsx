@@ -68,7 +68,7 @@ export function Toolbar(
           <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
             <div style={{display: 'flex', flexGrow: '1'} as any}>
               <div style={{flex: '60'}}>Complete Shape</div>
-              <div style={{flex: '40'}}>enter</div>
+              <div style={{flex: '40'}}>f</div>
             </div>
           </div>
           <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
@@ -92,13 +92,13 @@ export function Toolbar(
           <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
             <div style={{display: 'flex', flexGrow: '1'} as any}>
               <div style={{flex: '60'}}>Submit</div>
-              <div style={{flex: '40'}}>cmd/ctrl s</div>
+              <div style={{flex: '40'}}>d</div>
             </div>
           </div>
           <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
             <div style={{display: 'flex', flexGrow: '1'} as any}>
               <div style={{flex: '60'}}>Skip</div>
-              <div style={{flex: '40'}}>cmd/ctrl d</div>
+              <div style={{flex: '40'}}>a</div>
             </div>
           </div>
         </ExpansionPanelDetails>
