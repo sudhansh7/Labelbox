@@ -209,7 +209,7 @@ class App extends React.Component {
               />
             </div>
             <div className="labeling-frame">
-              <div className="header" style={{fontWeight: '100'} as any}>Outline all listed objects</div>
+              <div className="header" style={{fontWeight: '100'} as any}>Outline listed objects</div>
               { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
               {
                 this.state.imageInfo && <SegmentImage
