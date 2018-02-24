@@ -128,7 +128,12 @@ Classify text form a set of categories. Categories can be customized in a
 fashion similar to the Image Segmentation Interface example above.
 
 ## Exporting labels
-Labels can be exported in CSV or JSON format.
+Labels can be exported in CSV or JSON format. The coordinates are exported in [WKT strings](https://en.wikipedia.org/wiki/Well-known_text). We recommend using python Shapely to parse the strings.
+
+```
+from shapely.wkt import loads as wkt_loads
+polygon_wkt= wkt_loads(polygon)
+```
 
 ### Segmentation Masks
 Labelbox can also export image masks from labels created using the image
