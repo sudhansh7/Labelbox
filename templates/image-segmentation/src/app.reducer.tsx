@@ -108,9 +108,9 @@ function parseIfPossible(str: string){
 }
 
 
-/* const selectTool = (state: AppState, toolName: tool) => {*/
-/* return state.tools.find((tool) => tool.tool === 'rectangle' && tool.id === state.currentToolId);*/
-/* }*/
+const selectToolByName = (state: AppState, toolName: string) => {
+  return state.tools.find((tool) => tool.name === toolName);
+}
 
 export const generateStateFromLabel = (state: AppState, label: string):AppState => {
   const classes = parseIfPossible(label);
@@ -120,32 +120,34 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
   }
 
   const stateWithClasses = Object.keys(classes).reduce((state, className) => {
+    const tool = selectToolByName(state, className);
+    if (!tool){
+      console.log('Tool not found', className, state);
+      return state
+    }
     const wktLabel = classes[className];
-    /* const tool = className*/
     const {coordinates: polygons} = wkt.parse(wktLabel);
-    /* polygons*/
-    /* const */
+    const annotations = polygons.map((polygon: [number, number][]) => {
+      // wkt start and ends with the same point
+      const bounds = polygon.slice(0,-1)
+        .map(([lng, lat]: [number, number]) => ({lat, lng}))
+      return {
+        id: guid(),
+        bounds,
+        color: tool.color,
+        editing: false,
+        toolName: tool.tool,
+        toolId: tool.id
+      }
+    });
 
-    console.log('polygons', polygons);
-
-    /* const annotation: Annotation = {*/
-    /* }*/
-    /* console.log('move this polygon into state', polygon);*/
-    /* */
-    /* id: guid(),*/
-    /* bounds,*/
-    /* color: currentTool.color,*/
-    /* editing: false,*/
-    /* toolName: currentTool.tool,*/
-    /* toolId: currentTool.id*/
-
-    return state;
+    return {
+      ...state,
+      annotations: [...state.annotations, ...annotations]
+    };
   }, state);
 
-
-
   return stateWithClasses;
-
 }
 
 export const generateLabel = (state: AppState) => {
