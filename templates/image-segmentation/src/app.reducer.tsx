@@ -1,5 +1,5 @@
 // tslint:disable
-import { ToolNames } from './labeling-screen/segment-image';
+import { ToolType } from './labeling-screen/segment-image';
 import * as wkt from 'terraformer-wkt-parser';
 import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
@@ -10,7 +10,7 @@ export interface Annotation {
   color: string;
   bounds: Bounds;
   editing: boolean;
-  toolName: ToolNames;
+  toolName: ToolType;
   toolId: string;
 }
 
@@ -18,7 +18,7 @@ export type Tool = {
   id: string;
   name: string;
   color: string;
-  tool: ToolNames;
+  tool: ToolType;
 };
 
 export interface AppState {

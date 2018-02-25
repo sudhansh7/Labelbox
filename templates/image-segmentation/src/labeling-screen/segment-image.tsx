@@ -42,7 +42,7 @@ export interface MouseMove {
   };
 }
 
-export type ToolNames = 'polygon' | 'rectangle' | 'line' | undefined;
+export type ToolType = 'polygon' | 'rectangle' | 'line' | undefined;
 interface Props {
   imageUrl: string;
   imageSize: {width: number, height: number};
@@ -51,7 +51,7 @@ interface Props {
   onNewAnnotation: (annotation: {lat: number, lng: number}[]) => void;
   onDrawnAnnotationUpdate: (annotation: {lat: number, lng: number}[]) => void;
   onAnnotationEdit: (annotationId: string, newBounds: {lat: number, lng: number}[]) => void;
-  selectedTool: ToolNames | undefined;
+  selectedTool: ToolType | undefined;
   isEditing: boolean;
   onMapClick: (click: MapClick) => void;
   onMouseMove: (move: MouseMove) => void;

@@ -1,9 +1,9 @@
 // tslint:disable
 import * as React from 'react';
 import { EditControl, } from 'react-leaflet-draw';
-import { ToolNames } from './segment-image';
+import { ToolType } from './segment-image';
 
-function setTool(toolName: ToolNames) {
+function setTool(toolName: ToolType) {
   const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
   const toolSelector = {
     'cancel': '.leaflet-draw-actions a[title="Cancel drawing"]',
@@ -28,7 +28,7 @@ const getPointsFromEvent = (e: any) => {
 }
 
 interface Props {
-  selectedTool: ToolNames | undefined,
+  selectedTool: ToolType | undefined,
   drawColor: string | undefined
   onNewAnnotation: (annotation: {lat: number, lng: number}[]) => void;
   onDrawnAnnotationUpdate: (annotation: {lat: number, lng: number}[]) => void;

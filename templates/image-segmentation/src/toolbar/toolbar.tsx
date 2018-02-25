@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Tool } from './tool';
 import Button from 'material-ui/Button';
-import { ToolNames } from '../labeling-screen/segment-image';
+import { ToolType } from '../labeling-screen/segment-image';
 import ExpansionPanel, {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
@@ -22,7 +22,7 @@ export function Toolbar(
     onSkip,
     disabled,
   }: {
-    tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolNames}[];
+    tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
     toolChange: (id: string | undefined) => void;
     currentTool: string | undefined;
     visibilityToggle: (toolIndex: string) => void;

@@ -3,13 +3,13 @@ import * as React from 'react';
 /* import { Circle } from './circle';*/
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
-import { ToolNames } from '../labeling-screen/segment-image';
+import { ToolType } from '../labeling-screen/segment-image';
 
 export function Tool(
   { color, name, count, onClick, selected, visible, visibilityToggle, toolName }: {
     color: string,
     name: string,
-    toolName: ToolNames,
+    toolName: ToolType,
     count: number,
     onClick: Function,
     selected: boolean,
