@@ -138,18 +138,16 @@ class App extends React.Component {
 
       this.setState({...this.state, loading: true});
       const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-        const newState = {
+        const stateWithTools = {
           ...defaultState,
           tools: this.state.tools,
+        };
+        this.setState({
+          ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
           imageInfo: {width, height, url: imageUrl},
           loading: false,
           disableSidebar: Boolean(asset.label)
-        }
-        this.setState(newState);
-        // TODO here
-        if (asset.label){
-          generateStateFromLabel(newState, asset.label);
-        }
+        })
       };
       getSizeOnImage(imageUrl).then(
         updateImageInfo,

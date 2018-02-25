@@ -127,9 +127,9 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
     }
     const wktLabel = classes[className];
     const {coordinates: polygons} = wkt.parse(wktLabel);
-    const annotations = polygons.map((polygon: [number, number][]) => {
+    const annotations = polygons.map((polygon: [number, number][][]) => {
       // wkt start and ends with the same point
-      const bounds = polygon.slice(0,-1)
+      const bounds = polygon[0].slice(0,-1)
         .map(([lng, lat]: [number, number]) => ({lat, lng}))
       return {
         id: guid(),
