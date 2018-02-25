@@ -133,6 +133,25 @@ class App extends React.Component {
         }
       });
 
+    (window as any).Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string}) => {
+      console.log('woohoo! look at you', asset);
+      const imageUrl = asset.data;
+
+      this.setState({...this.state, loading: true});
+      const updateImageInfo = ({height, width}: {height: number, width: number}) => {
+        this.setState({
+          ...defaultState,
+          tools: this.state.tools,
+          imageInfo: {width, height, url: imageUrl},
+          loading: false,
+        });
+      };
+      getSizeOnImage(imageUrl).then(
+        updateImageInfo,
+        () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
+      );
+    });
+
     window.onbeforeunload = () => {
       if (this.state.annotations.length > 0 || this.state.currentToolId) {
         return "Are you sure that you want to leave this page?";
@@ -145,21 +164,6 @@ class App extends React.Component {
   next(label?: {label?: string, skip?: boolean}) {
     const getNext = () => {
       (window as any).Labelbox.fetchNextAssetToLabel()
-        .then((imageUrl: string) => {
-          this.setState({...this.state, loading: true});
-          const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-            this.setState({
-              ...defaultState,
-              tools: this.state.tools,
-              imageInfo: {width, height, url: imageUrl},
-              loading: false,
-            });
-          };
-          getSizeOnImage(imageUrl).then(
-            updateImageInfo,
-            () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
-          );
-        });
     };
     if (!label) {
       getNext();
