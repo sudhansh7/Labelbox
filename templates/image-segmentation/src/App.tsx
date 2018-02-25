@@ -142,6 +142,7 @@ class App extends React.Component {
           tools: this.state.tools,
           imageInfo: {width, height, url: imageUrl},
           loading: false,
+          disableSidebar: asset.label
         });
       };
       getSizeOnImage(imageUrl).then(
@@ -207,6 +208,7 @@ class App extends React.Component {
                 disableSubmit={this.state.annotations.length === 0}
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
+                disabled={Boolean(this.state.disableSidebar)}
               />
             </div>
             <div className="labeling-frame">
