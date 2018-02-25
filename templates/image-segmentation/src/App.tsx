@@ -58,8 +58,6 @@ class App extends React.Component {
   };
 
   componentWillMount () {
-    this.next();
-
     // TODO kinda of of a hack to have this function here
     // would love to have the drawing be rendered by state
     // not some dom click
@@ -161,13 +159,12 @@ class App extends React.Component {
     }
   }
 
-  next(label?: {label?: string, skip?: boolean}) {
+  next(label: {label?: string, skip?: boolean}) {
     const getNext = () => {
       (window as any).Labelbox.fetchNextAssetToLabel()
     };
-    if (!label) {
-      getNext();
-    } else if (label.label) {
+
+    if (label.label) {
       (window as any).Labelbox.setLabelForAsset(label.label).then(getNext);
     } else if (label.skip) {
       (window as any).Labelbox.skip().then(getNext);
