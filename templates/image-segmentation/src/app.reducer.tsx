@@ -99,6 +99,55 @@ export const deleteSelectedAnnotation = (state: AppState) => {
   }
 }
 
+function parseIfPossible(str: string){
+  try {
+    return JSON.parse(str);
+  } catch(e) {
+    return undefined;
+  }
+}
+
+
+/* const selectTool = (state: AppState, toolName: tool) => {*/
+/* return state.tools.find((tool) => tool.tool === 'rectangle' && tool.id === state.currentToolId);*/
+/* }*/
+
+export const generateStateFromLabel = (state: AppState, label: string):AppState => {
+  const classes = parseIfPossible(label);
+  if (!classes){
+    console.log('Error parsing label', label);
+    return state;
+  }
+
+  const stateWithClasses = Object.keys(classes).reduce((state, className) => {
+    const wktLabel = classes[className];
+    /* const tool = className*/
+    const {coordinates: polygons} = wkt.parse(wktLabel);
+    /* polygons*/
+    /* const */
+
+    console.log('polygons', polygons);
+
+    /* const annotation: Annotation = {*/
+    /* }*/
+    /* console.log('move this polygon into state', polygon);*/
+    /* */
+    /* id: guid(),*/
+    /* bounds,*/
+    /* color: currentTool.color,*/
+    /* editing: false,*/
+    /* toolName: currentTool.tool,*/
+    /* toolId: currentTool.id*/
+
+    return state;
+  }, state);
+
+
+
+  return stateWithClasses;
+
+}
+
 export const generateLabel = (state: AppState) => {
 
   const getPoints = ({bounds}: Annotation) => {

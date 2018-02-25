@@ -25,6 +25,7 @@ import {
   editShape,
   userClickedMap,
   mouseMove,
+  generateStateFromLabel,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
 
@@ -137,13 +138,18 @@ class App extends React.Component {
 
       this.setState({...this.state, loading: true});
       const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-        this.setState({
+        const newState = {
           ...defaultState,
           tools: this.state.tools,
           imageInfo: {width, height, url: imageUrl},
           loading: false,
           disableSidebar: Boolean(asset.label)
-        });
+        }
+        this.setState(newState);
+        // TODO here
+        if (asset.label){
+          generateStateFromLabel(newState, asset.label);
+        }
       };
       getSizeOnImage(imageUrl).then(
         updateImageInfo,
