@@ -142,7 +142,7 @@ class App extends React.Component {
           tools: this.state.tools,
           imageInfo: {width, height, url: imageUrl},
           loading: false,
-          disableSidebar: asset.label
+          disableSidebar: Boolean(asset.label)
         });
       };
       getSizeOnImage(imageUrl).then(
