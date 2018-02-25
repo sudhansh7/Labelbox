@@ -133,7 +133,6 @@ class App extends React.Component {
       });
 
     (window as any).Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string}) => {
-      console.log('woohoo! look at you', asset);
       const imageUrl = asset.data;
 
       this.setState({...this.state, loading: true});
