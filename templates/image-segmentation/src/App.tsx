@@ -56,7 +56,6 @@ const getLabelbox = ():Promise<any> => {
     return Promise.resolve((window as any).Labelbox);
   } else {
     return new Promise((resolve) => {
-      console.log('saved me there');
       (window as any).document.getElementById('labelbox-script').addEventListener('load', () => {
         resolve((window as any).Labelbox);
       });
