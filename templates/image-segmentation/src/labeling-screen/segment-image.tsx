@@ -126,7 +126,7 @@ export function SegmentImage({
       </FeatureGroup>
       {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, bounds, editing}, index) => (
         <Polygon
-          key={index}
+          key={id}
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
@@ -135,7 +135,7 @@ export function SegmentImage({
       ))}
       {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (
         <Rectangle
-          key={index}
+          key={id}
           bounds={latLngBounds(bounds)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
@@ -144,7 +144,7 @@ export function SegmentImage({
       ))}
       {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
         <Polyline
-          key={index}
+          key={id}
           positions={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
