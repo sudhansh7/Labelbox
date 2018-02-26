@@ -32,7 +32,7 @@ export interface AppState {
   drawnAnnotationBounds: Bounds;
   rectangleInProgressId?: string;
   errorLoadingImage?: string;
-  disableSidebar?: boolean;
+  label?: string;
 }
 
 export function guid() {

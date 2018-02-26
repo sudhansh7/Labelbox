@@ -9,7 +9,15 @@ import ExpansionPanel, {
 } from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import Icon from 'material-ui/Icon';
+import styled from 'styled-components';
 /* import ExpandMoreIcon from 'material-ui-icons/ExpandMore';*/
+
+const ActionButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px;
+  minHeight: 36px;
+`;
 
 export function Toolbar(
   {
@@ -20,7 +28,7 @@ export function Toolbar(
     disableSubmit,
     onSubmit,
     onSkip,
-    disabled,
+    editing,
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
     toolChange: (id: string | undefined) => void;
@@ -29,12 +37,11 @@ export function Toolbar(
     disableSubmit: boolean;
     onSubmit: () => void;
     onSkip: () => void;
-    disabled: boolean;
+    editing: boolean;
   }) {
   return (
     <div className="toolbar">
-      {disabled && (<div style={{padding: '16px', textAlign: 'center', color: '#4a4a4a'}}>Editing submitted labels coming soon.</div>)}
-      <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', width: '100%', ...disabled ? {pointerEvents: 'none', opacity: 0.3} : {}} as any}>
+      <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', width: '100%'} as any}>
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
           {/* tslint:disable-next-line */}
           <div style={{margin: '20px 15px 10px', fontWeight: '700'} as any}>Select a class below</div>
@@ -108,10 +115,21 @@ export function Toolbar(
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <div style={{display: 'flex', justifyContent: 'flex-end', margin: '15px', minHeight: '36px'}}>
-          <Button onClick={() => onSkip()}>Skip</Button>
-          <Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button>
-        </div>
+        {
+          editing ?
+            (
+              <ActionButtons>
+                <Button onClick={() => onSkip()}>Reset</Button>
+                <Button color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
+              </ActionButtons>
+            ) :
+            (
+              <ActionButtons>
+                <Button onClick={() => onSkip()}>Skip</Button>
+                <Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button>
+              </ActionButtons>
+            )
+        }
       </div>
 
     </div>
