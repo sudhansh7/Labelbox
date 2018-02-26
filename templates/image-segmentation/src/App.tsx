@@ -190,6 +190,11 @@ class App extends React.Component {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
     };
 
+    let userUpdatedLabel = false;
+    if (this.state.label && this.state.label !== generateLabel(this.state)){
+      userUpdatedLabel = true
+    }
+
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
     const isEditing = this.state.annotations.some(({editing}) => editing === true);
     return (
@@ -212,6 +217,7 @@ class App extends React.Component {
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
                 editing={Boolean(this.state.label)}
+                pendingEdits={userUpdatedLabel}
               />
             </div>
             <div className="labeling-frame">

@@ -29,6 +29,7 @@ export function Toolbar(
     onSubmit,
     onSkip,
     editing,
+    pendingEdits
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
     toolChange: (id: string | undefined) => void;
@@ -38,6 +39,7 @@ export function Toolbar(
     onSubmit: () => void;
     onSkip: () => void;
     editing: boolean;
+    pendingEdits: boolean;
   }) {
   return (
     <div className="toolbar">
@@ -119,8 +121,8 @@ export function Toolbar(
           editing ?
             (
               <ActionButtons>
-                <Button onClick={() => onSkip()}>Reset</Button>
-                <Button color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
+                <Button disabled={!pendingEdits} onClick={() => onSkip()}>Reset</Button>
+                <Button disabled={!pendingEdits} color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
               </ActionButtons>
             ) :
             (
