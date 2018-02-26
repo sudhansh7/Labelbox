@@ -30,6 +30,7 @@
         return queryString[name];
       }
       var script = document.createElement('script');
+      script.id = 'labelbox-script';
       if (getQueryParam('local')){
         script.src = 'http://localhost:8000/client/v0.1/labeling-api.js';
       } else {

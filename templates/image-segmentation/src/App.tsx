@@ -50,6 +50,20 @@ const defaultState = {
   tools: []
 };
 
+// I load the script async
+const getLabelbox = ():Promise<any> => {
+  if ((window as any).Labelbox){
+    return Promise.resolve((window as any).Labelbox);
+  } else {
+    return new Promise((resolve) => {
+      console.log('saved me there');
+      (window as any).document.getElementById('labelbox-script').addEventListener('load', () => {
+        resolve((window as any).Labelbox);
+      });
+    });
+  }
+}
+
 const addId = (item: any) => ({id: guid(), ...item});
 
 class App extends React.Component {
@@ -124,34 +138,38 @@ class App extends React.Component {
         this.setState(deleteSelectedAnnotation(this.state));
       });
 
-    // TODO will probably need erro handleing here
-    (window as any).Labelbox.getTemplateCustomization()
-      .subscribe((customization: any) => {
-        if (customization.tools) {
-          this.setState({defaultState, tools: customization.tools.map(addId)});
-        }
-      });
+    getLabelbox().then((Labelbox: any) => {
+      // TODO will probably need erro handleing here
+      Labelbox.getTemplateCustomization()
+        .subscribe((customization: any) => {
+          if (customization.tools) {
+            this.setState({defaultState, tools: customization.tools.map(addId)});
+          }
+        });
+    })
 
-    (window as any).Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string}) => {
-      const imageUrl = asset.data;
+    getLabelbox().then((Labelbox: any) => {
+      Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string}) => {
+        const imageUrl = asset.data;
 
-      this.setState({...this.state, loading: true});
-      const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-        const stateWithTools = {
-          ...defaultState,
-          tools: this.state.tools,
+        this.setState({...this.state, loading: true});
+        const updateImageInfo = ({height, width}: {height: number, width: number}) => {
+          const stateWithTools = {
+            ...defaultState,
+            tools: this.state.tools,
+          };
+          this.setState({
+            ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
+            imageInfo: {width, height, url: imageUrl},
+            loading: false,
+            label: asset.label
+          })
         };
-        this.setState({
-          ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
-          imageInfo: {width, height, url: imageUrl},
-          loading: false,
-          label: asset.label
-        })
-      };
-      getSizeOnImage(imageUrl).then(
-        updateImageInfo,
-        () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
-      );
+        getSizeOnImage(imageUrl).then(
+          updateImageInfo,
+          () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
+        );
+      });
     });
 
     window.onbeforeunload = () => {
@@ -164,19 +182,21 @@ class App extends React.Component {
   }
 
   next(label: {label?: string, skip?: boolean}) {
-    const getNext = () => {
-      (window as any).Labelbox.fetchNextAssetToLabel()
-    };
+    getLabelbox().then((Labelbox) => {
+      const getNext = () => {
+        Labelbox.fetchNextAssetToLabel()
+      };
 
-    if (label.label) {
-      (window as any).Labelbox.setLabelForAsset(label.label).then(() => {
-        if (!this.state.label){
-          getNext();
-        }
-      });
-    } else if (label.skip) {
-      (window as any).Labelbox.skip().then(getNext);
-    }
+      if (label.label) {
+        Labelbox.setLabelForAsset(label.label).then(() => {
+          if (!this.state.label){
+            getNext();
+          }
+        });
+      } else if (label.skip) {
+        Labelbox.skip().then(getNext);
+      }
+    })
   }
 
   submit(){
