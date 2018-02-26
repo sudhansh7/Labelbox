@@ -145,7 +145,7 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
       ...state,
       annotations: [...state.annotations, ...annotations]
     };
-  }, state);
+  }, {...state, annotations: []});
 
   return stateWithClasses;
 }

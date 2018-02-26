@@ -218,6 +218,7 @@ class App extends React.Component {
                 onSkip={() => this.next({skip: true})}
                 editing={Boolean(this.state.label)}
                 pendingEdits={userUpdatedLabel}
+                onReset={() => this.state.label && this.setState(generateStateFromLabel(this.state, this.state.label))}
               />
             </div>
             <div className="labeling-frame">
