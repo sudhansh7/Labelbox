@@ -32,7 +32,7 @@ echo $CSV > data.csv
 
 4. Upload data.csv to https://app.labelbox.io/data
 
-**Notes***
+**Notes**
 - Only users on the same wifi network can see your data
 - If you stop your local server (shutdown your computer) others won't be able to access the data
 
