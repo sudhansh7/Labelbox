@@ -151,6 +151,7 @@ class App extends React.Component {
     getLabelbox().then((Labelbox: any) => {
       Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
         const imageUrl = asset.data;
+        console.log('ASSET', asset);
 
         this.setState({
           ...this.state,
@@ -188,21 +189,23 @@ class App extends React.Component {
 
   next(label: {label?: string, skip?: boolean}) {
     getLabelbox().then((Labelbox) => {
-      const getNext = () => {
-        Labelbox.fetchNextAssetToLabel()
-      };
-
       if (label.label) {
         if (!this.state.label) {
-          getNext();
+          this.jumpToNextAsset();
         }
         Labelbox.setLabelForAsset(label.label)
       } else if (label.skip) {
-        Labelbox.skip().then(getNext);
+        Labelbox.skip().then(() => this.jumpToNextAsset());
       } else {
         console.error('Next called with no label', label);
       }
     })
+  }
+
+  jumpToNextAsset(){
+    getLabelbox().then((Labelbox) => {
+      Labelbox.fetchNextAssetToLabel();
+    });
   }
 
   submit(){
@@ -267,11 +270,18 @@ class App extends React.Component {
                 </Icon>
                 <div>Outline listed objects</div>
                 <Icon
-                  style={{marginLeft: '20px', cursor: 'pointer', ...(!this.state.nextLabel ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
-                  onClick={() => this.state.nextLabel && this.setLabel(this.state.nextLabel)}
+                  style={{marginLeft: '20px', cursor: 'pointer', ...(!this.state.nextLabel && !this.state.label ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
+                  onClick={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
                 >
                   keyboard_arrow_right
                 </Icon>
+                <div
+                  style={{marginLeft: '10px', cursor: 'pointer', ...(!this.state.label ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
+                  onClick={() => this.jumpToNextAsset()}
+                >
+                  <Icon style={{width: '10px'}}> keyboard_arrow_right </Icon>
+                  <Icon style={{width: '10px'}}> keyboard_arrow_right </Icon>
+                </div>
               </div>
               { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
               {
