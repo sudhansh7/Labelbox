@@ -143,7 +143,8 @@ class App extends React.Component {
       Labelbox.getTemplateCustomization()
         .subscribe((customization: any) => {
           if (customization.tools) {
-            this.setState({defaultState, tools: customization.tools.map(addId)});
+            this.setState({...this.state, tools: customization.tools.map(addId)
+            });
           }
         });
     })
@@ -151,7 +152,7 @@ class App extends React.Component {
     getLabelbox().then((Labelbox: any) => {
       Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
         const imageUrl = asset.data;
-        console.log('ASSET', asset)
+        console.log('ASSET FROM API', asset)
 
         this.setState({
           ...this.state,
@@ -165,9 +166,9 @@ class App extends React.Component {
           this.setState({
             ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
             imageInfo: {width, height, url: imageUrl},
-            loading: false,
             previousLabel: asset.previous,
             nextLabel: asset.next,
+            loading: false,
             label: asset.label
           })
         };
@@ -267,7 +268,7 @@ class App extends React.Component {
                 >
                   keyboard_arrow_left
                 </Icon>
-                <div>Outline listed objects {this.state.previousLabel}</div>
+                <div>Outline listed objects</div>
                 <Icon
                   style={{marginLeft: '20px', cursor: 'pointer', ...(!this.state.nextLabel ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
                   onClick={() => this.state.nextLabel && this.setLabel(this.state.nextLabel)}
