@@ -151,7 +151,6 @@ class App extends React.Component {
     getLabelbox().then((Labelbox: any) => {
       Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
         const imageUrl = asset.data;
-        console.log('ASSET', asset);
 
         this.setState({
           ...this.state,
