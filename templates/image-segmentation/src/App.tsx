@@ -28,6 +28,7 @@ import {
   generateStateFromLabel,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
+import Icon from 'material-ui/Icon';
 
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
@@ -149,11 +150,13 @@ class App extends React.Component {
 
     getLabelbox().then((Labelbox: any) => {
       Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
-        console.log('previsou', asset.previous);
-        console.log('next', asset.next);
         const imageUrl = asset.data;
+        console.log('ASSET', asset)
 
-        this.setState({...this.state, loading: true});
+        this.setState({
+          ...this.state,
+          loading: true
+        });
         const updateImageInfo = ({height, width}: {height: number, width: number}) => {
           const stateWithTools = {
             ...defaultState,
@@ -163,6 +166,8 @@ class App extends React.Component {
             ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
             imageInfo: {width, height, url: imageUrl},
             loading: false,
+            previousLabel: asset.previous,
+            nextLabel: asset.next,
             label: asset.label
           })
         };
@@ -210,10 +215,18 @@ class App extends React.Component {
     this.setState({...editShape(this.state), currentToolId: toolId});
   }
 
+  setLabel(labelId: string){
+    getLabelbox().then((Labelbox) => {
+      Labelbox.setLabelAsCurrentAsset(labelId)
+    });
+  }
+
   render() {
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
     };
+
+    console.log(this.state);
 
     let userUpdatedLabel = false;
     if (this.state.label && this.state.label !== generateLabel(this.state)){
@@ -247,7 +260,21 @@ class App extends React.Component {
               />
             </div>
             <div className="labeling-frame">
-              <div className="header" style={{fontWeight: '100'} as any}>Outline listed objects</div>
+              <div style={{fontWeight: '100', fontSize: '22px', marginBottom: '30px', display: 'flex'} as any}>
+                <Icon
+                  style={{marginRight: '20px', cursor: 'pointer', ...(!this.state.previousLabel ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
+                  onClick={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
+                >
+                  keyboard_arrow_left
+                </Icon>
+                <div>Outline listed objects {this.state.previousLabel}</div>
+                <Icon
+                  style={{marginLeft: '20px', cursor: 'pointer', ...(!this.state.nextLabel ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
+                  onClick={() => this.state.nextLabel && this.setLabel(this.state.nextLabel)}
+                >
+                  keyboard_arrow_right
+                </Icon>
+              </div>
               { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
               {
                 this.state.imageInfo && <SegmentImage

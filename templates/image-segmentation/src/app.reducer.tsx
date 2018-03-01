@@ -30,6 +30,8 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Bounds;
+  previousLabel?: string;
+  nextLabel?: string;
   rectangleInProgressId?: string;
   errorLoadingImage?: string;
   label?: string;
