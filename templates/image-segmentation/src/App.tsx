@@ -201,6 +201,8 @@ class App extends React.Component {
         });
       } else if (label.skip) {
         Labelbox.skip().then(getNext);
+      } else {
+        console.error('Next called with no label', label);
       }
     })
   }
@@ -225,8 +227,6 @@ class App extends React.Component {
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {bounds: newBounds}));
     };
-
-    console.log(this.state);
 
     let userUpdatedLabel = false;
     if (this.state.label && this.state.label !== generateLabel(this.state)){
