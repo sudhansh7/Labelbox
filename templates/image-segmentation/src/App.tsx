@@ -143,8 +143,7 @@ class App extends React.Component {
       Labelbox.getTemplateCustomization()
         .subscribe((customization: any) => {
           if (customization.tools) {
-            this.setState({...this.state, tools: customization.tools.map(addId)
-            });
+            this.setState({...this.state, tools: customization.tools.map(addId)});
           }
         });
     })
@@ -244,7 +243,7 @@ class App extends React.Component {
         <div className="app">
           <div className="content">
             <div className="sidebar">
-              <div className="header logo">
+              <div className="logo" style={{marginBottom: '30px'}}>
                 <img src={logo} width="100px" />
               </div>
               <Toolbar
