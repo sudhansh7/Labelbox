@@ -193,11 +193,10 @@ class App extends React.Component {
       };
 
       if (label.label) {
-        Labelbox.setLabelForAsset(label.label).then(() => {
-          if (!this.state.label){
-            getNext();
-          }
-        });
+        if (!this.state.label) {
+          getNext();
+        }
+        Labelbox.setLabelForAsset(label.label)
       } else if (label.skip) {
         Labelbox.skip().then(getNext);
       } else {
