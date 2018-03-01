@@ -148,7 +148,9 @@ class App extends React.Component {
     })
 
     getLabelbox().then((Labelbox: any) => {
-      Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string}) => {
+      Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
+        console.log('previsou', asset.previous);
+        console.log('next', asset.next);
         const imageUrl = asset.data;
 
         this.setState({...this.state, loading: true});
