@@ -2,6 +2,13 @@ import * as React from 'react';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 import screenText from './screen-text';
+import Checkbox from 'material-ui/Checkbox';
+import List from 'material-ui/List';
+
+enum FieldTypes {
+  CHECK = 'check',
+  RADIO = 'radio',
+}
 
 export default class ClassificationForm extends React.Component {
   state = {
@@ -16,21 +23,8 @@ export default class ClassificationForm extends React.Component {
   componentWillMount(){
     this.customizationSubscription = (window as any).Labelbox.getTemplateCustomization()
       .subscribe((customization: any) => {
-        if (typeof customization === 'object') {
-          if (!Array.isArray(customization)){
-            // This is to support legacy templates when we only
-            // had a single classifications
-            this.setState({
-              ...this.state,
-              customization: [{
-                ...customization,
-                type: 'radio',
-                required: true,
-              }]
-            });
-          } else {
-            this.setState({...this.state, customization});
-          }
+        if (Array.isArray(customization)) {
+          this.setState({...this.state, customization});
         }
       });
   }
@@ -43,20 +37,30 @@ export default class ClassificationForm extends React.Component {
     return (
       <div>
         {
-          this.state.customization.map((field: {instructions: string, required: boolean, options: {label: string, value: string}[]}) => {
+          this.state.customization.map((field: {instructions: string, required: boolean, type: FieldTypes, options: {label: string, value: string}[]}) => {
             return (
               <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{paddingBottom: '20px'}}>
                 <FormLabel component="legend">{field.instructions}</FormLabel>
-                <RadioGroup
-                  value={this.props.value}
-                  onChange={(event, value) => this.props.onSelect(value)}
-                  >
-                  {
-                    field.options.map(({value, label}:{value: string, label: string}) => (
-                      <FormControlLabel value={value} control={<Radio />} label={label} key={value}/>
-                    ))
-                  }
-                </RadioGroup>
+                {
+                  field.type === FieldTypes.RADIO ?
+                    ( <RadioGroup
+                      value={this.props.value}
+                      onChange={(event, value) => this.props.onSelect(value)}
+                      >
+                      {
+                        field.options.map(({value, label}:{value: string, label: string}) => (
+                          <FormControlLabel value={value} control={<Radio color="primary" />} label={label} key={value}/>
+                        ))
+                      }
+                    </RadioGroup> ) :
+                    ( <List >
+                      {
+                        field.options.map(({value, label}:{value: string, label: string}) => (
+                          <FormControlLabel value={value} control={<Checkbox color="primary" />} label={label} key={value}/>
+                        ))
+                      }
+                    </List> )
+                }
               </FormControl>
             )
           })
