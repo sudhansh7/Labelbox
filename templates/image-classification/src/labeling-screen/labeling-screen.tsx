@@ -1,6 +1,5 @@
 import * as React from 'react';
-import ClassificationForm from './classification-options';
-import Button from 'material-ui/Button';
+import ClassificationForm, { Label } from './classification-options';
 import { LinearProgress } from 'material-ui/Progress';
 import Icon from 'material-ui/Icon';
 import styled from 'styled-components';
@@ -10,22 +9,6 @@ const Content = styled.div`
   flex-direction: row;
   flex-grow: 1;
   max-height: 80vh;
-`;
-
-const Sidebar = styled.div`
-  box-shadow: 2px 0px 13px #bfbfbf;
-  background-color: white;
-  min-width: 240px;
-  max-width: 240px;
-  flex-direction: column;
-  display: flex;
-  flex-grow: 1;
-  padding: 20px;
-`;
-
-const Divider = styled.div`
-  display: flex;
-  flex-grow: 1;
 `;
 
 const MainContent = styled.div`
@@ -42,16 +25,11 @@ const ImageFrame = styled.div`
   display: flex;
 `
 
-const ActionButtons = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
 export class LabelingScreen extends React.Component {
   state: {
     loading: boolean,
     errorLoadingImage: boolean,
-    label?: string,
+    label?: Label,
   } = {
     loading: true,
     errorLoadingImage: false,
@@ -79,22 +57,12 @@ export class LabelingScreen extends React.Component {
 
     return (
       <Content>
-        <Sidebar>
-          <ClassificationForm
-            value={this.state.label || ''}
-            onSelect={(label: string) => this.setState({...this.state, label})}
-          />
-          <Divider />
-          <ActionButtons>
-            <Button onClick={onSkip} >Skip</Button>
-            <Button
-              variant="raised"
-              color="primary"
-              disabled={!this.state || !this.state.label}
-              onClick={() => onSubmit()}
-            >Submit</Button>
-          </ActionButtons>
-        </Sidebar>
+        <ClassificationForm
+          label={this.state.label || {}}
+          onLabelUpdate={(label: Label) => this.setState({...this.state, label})}
+          onSubmit={onSubmit}
+          onSkip={onSkip}
+        />
         <MainContent>
           {
             this.state.loading && (<LinearProgress color="primary" />)
