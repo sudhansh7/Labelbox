@@ -52,7 +52,7 @@ const canUserSubmitForm = (formFields: ClassificationField[], label: Label): boo
   const hasCompletedRequiredFields = formFields
     .filter(({required}) => required === true)
     .every(({name}) => Boolean(label[name]));
-  return hasCompletedRequiredFields;
+  return hasCompletedRequiredFields && Object.keys(label).length > 0;
 }
 
 const isChecked = (label: Label, checkboxName: string, checkboxValue: string) => {
