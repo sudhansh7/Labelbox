@@ -42,7 +42,7 @@ export default class ClassificationForm extends React.Component {
 
   render(){
     return (
-      <div>
+      <div style={{overflowY: 'auto'}}>
         {
           this.state.customization.map((field) => {
             return (
