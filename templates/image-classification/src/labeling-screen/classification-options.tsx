@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 import screenText from './screen-text';
@@ -7,11 +7,15 @@ export default class ClassificationForm extends React.Component {
   state = {
     customization: screenText
   }
-  customizationSubscription;
+  props: {
+    value: string,
+    onSelect: Function,
+  }
+  customizationSubscription: {unsubscribe: Function};
 
   componentWillMount(){
-    this.customizationSubscription = window.Labelbox.getTemplateCustomization()
-      .subscribe((customization) => {
+    this.customizationSubscription = (window as any).Labelbox.getTemplateCustomization()
+      .subscribe((customization: any) => {
         if (customization.options) {
           this.setState({...this.state, customization});
         }

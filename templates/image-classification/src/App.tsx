@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import './App.css';
 import './icons.css';
 import { MuiThemeProvider } from 'material-ui/styles';
@@ -16,23 +16,26 @@ export const theme = createMuiTheme({
   }
 });
 
-class App extends Component {
+class App extends React.Component {
+  public state: {
+    imageUrl?: string;
+  };
 
   componentWillMount () {
     this.next();
   }
 
-  next(submission){
+  next(submission?: {label?: string, skip?: boolean}){
     const getNext = () => {
-      window.Labelbox.fetchNextAssetToLabel()
-        .then((imageUrl) => this.setState({imageUrl}));
+      (window as any).Labelbox.fetchNextAssetToLabel()
+        .then((imageUrl: string) => this.setState({imageUrl}));
     };
     if (!submission) {
       getNext();
     } else if (submission.label) {
-      window.Labelbox.setLabelForAsset(submission.label).then(getNext);
+      (window as any).Labelbox.setLabelForAsset(submission.label).then(getNext);
     } else if (submission.skip) {
-      window.Labelbox.skip().then(getNext);
+      (window as any).Labelbox.skip().then(getNext);
     }
   }
 
@@ -47,7 +50,7 @@ class App extends Component {
             <LabelingScreen
               imageUrl={this.state && this.state.imageUrl}
               onSkip={() => this.next({skip: true})}
-              onSubmit={(label) => this.next({label})}
+              onSubmit={(label: string) => this.next({label})}
             />
           </div>
         </div>
