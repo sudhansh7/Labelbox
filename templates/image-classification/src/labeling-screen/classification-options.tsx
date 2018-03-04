@@ -3,7 +3,7 @@ import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 import screenText from './screen-text';
 import Checkbox from 'material-ui/Checkbox';
-import List from 'material-ui/List';
+import List, { ListItem } from 'material-ui/List';
 
 enum FieldTypes {
   CHECK = 'check',
@@ -53,10 +53,17 @@ export default class ClassificationForm extends React.Component {
                         ))
                       }
                     </RadioGroup> ) :
-                    ( <List >
+                    ( <List>
                       {
                         field.options.map(({value, label}:{value: string, label: string}) => (
-                          <FormControlLabel value={value} control={<Checkbox color="primary" />} label={label} key={value}/>
+                          <ListItem value={value} disableGutters={true} style={{padding: '0px'}}>
+                            <FormControlLabel
+                              control={
+                                <Checkbox color="primary" onChange={(e) => console.log('checkbox change', e)} />
+                              }
+                              label={label}
+                            />
+                          </ListItem>
                         ))
                       }
                     </List> )
