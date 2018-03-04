@@ -18,6 +18,13 @@ const Sidebar = styled.div`
   min-width: 280px;
   max-width: 280px;
   flex-direction: column;
+  display: flex;
+  flex-grow: 1;
+`;
+
+const Divider = styled.div`
+  display: flex;
+  flex-grow: 1;
 `;
 
 const MainContent = styled.div`
@@ -67,16 +74,11 @@ export class LabelingScreen extends React.Component {
     return (
       <Content>
         <Sidebar>
-          <div className="form-controls">
-            <div className="classification">
-              <ClassificationForm
-                value={this.state.label || ''}
-                onSelect={(label: string) => this.setState({...this.state, label})}
-              />
-              </div>
-            <div className="form-buttons">
-            </div>
-          </div>
+          <ClassificationForm
+            value={this.state.label || ''}
+            onSelect={(label: string) => this.setState({...this.state, label})}
+          />
+          <Divider />
           <div style={{justifyContent: 'flex-end'}}>
             <Button onClick={onSkip} >Skip</Button>
             <Button
