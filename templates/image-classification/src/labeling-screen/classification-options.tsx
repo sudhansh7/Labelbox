@@ -1,18 +1,25 @@
 import * as React from 'react';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
-import screenText from './screen-text';
+import classificationOptions, { FieldTypes } from './screen-text';
 import Checkbox from 'material-ui/Checkbox';
 import List, { ListItem } from 'material-ui/List';
 
-enum FieldTypes {
-  CHECK = 'check',
-  RADIO = 'radio',
-}
+interface ClassificationField {
+  name: string,
+  instructions: string,
+  required: boolean,
+  type: FieldTypes,
+  options: {
+    label: string, value: string
+  }[],
+};
 
 export default class ClassificationForm extends React.Component {
-  state = {
-    customization: screenText
+  public state: {
+    customization: ClassificationField[]
+  } = {
+    customization: classificationOptions
   }
   props: {
     value: string,
@@ -37,7 +44,7 @@ export default class ClassificationForm extends React.Component {
     return (
       <div>
         {
-          this.state.customization.map((field: {instructions: string, required: boolean, type: FieldTypes, options: {label: string, value: string}[]}) => {
+          this.state.customization.map((field) => {
             return (
               <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{paddingBottom: '20px'}}>
                 <FormLabel component="legend">{field.instructions}</FormLabel>

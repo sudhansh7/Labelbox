@@ -1,7 +1,13 @@
+export enum FieldTypes {
+  CHECKLIST = 'checklist',
+  RADIO = 'radio',
+}
+
 export default [
   {
+    name: 'model',
     instructions: "Select the car model",
-    type: 'radio',
+    type: FieldTypes.RADIO,
     required: true,
     options: [
       { value: "model_s", label: "Tesla Model S"},
@@ -10,8 +16,9 @@ export default [
     ]
   },
   {
+    name: 'image_problems',
     instructions: "Select all that apply",
-    type: 'checklist',
+    type: FieldTypes.CHECKLIST,
     required: false,
     options: [
       { value: "blur", label: "Blurry"},
