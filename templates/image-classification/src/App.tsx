@@ -8,6 +8,15 @@ import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { logo } from './logo';
 import styled from 'styled-components';
 
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #f2f2f2;
+  height: 90vh;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+`;
+
 const Logo = styled.img`
   margin-left: 20px;
   margin-bottom: 30px;
@@ -50,14 +59,14 @@ class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <div className="app">
+        <AppContainer>
           <Logo src={logo} />
           <LabelingScreen
             imageUrl={this.state && this.state.imageUrl}
             onSkip={() => this.next({skip: true})}
             onSubmit={(label: string) => this.next({label})}
           />
-        </div>
+        </AppContainer>
       </MuiThemeProvider>
     );
   }

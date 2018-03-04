@@ -18,12 +18,14 @@ const Sidebar = styled.div`
   min-width: 280px;
   max-width: 280px;
   flex-direction: column;
-  margin-right: 50px;
 `;
 
 const MainContent = styled.div`
   display: flex;
-  flex-grow: 1
+  flex-grow: 1;
+  justify-content: center;
+  margin-left: 50px;
+  margin-right: 50px;
 `;
 
 const ImageFrame = styled.div`

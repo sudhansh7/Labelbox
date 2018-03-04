@@ -1,16 +1,3 @@
-.app {
-  display: flex;
-  flex-direction: column;
-  background-color: #f2f2f2;
-  height: 100vh;
-  padding-top: 5vh;
-  padding-bottom: 5vh;
-}
-
-.banner{
-  margin-bottom: 5vh;
-}
-
 .form-controls {
   display: flex;
   flex-grow: 1;
