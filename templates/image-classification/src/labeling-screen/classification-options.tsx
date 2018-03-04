@@ -48,6 +48,13 @@ const remove = (arr: string[], value: string) => {
   return reject(equals(value), arr);
 }
 
+const canUserSubmitForm = (formFields: ClassificationField[], label: Label): boolean => {
+  const hasCompletedRequiredFields = formFields
+    .filter(({required}) => required === true)
+    .every(({name}) => Boolean(label[name]));
+  return hasCompletedRequiredFields;
+}
+
 export default class ClassificationForm extends React.Component {
   public state: {
     customization: ClassificationField[]
@@ -76,7 +83,6 @@ export default class ClassificationForm extends React.Component {
   }
 
   render(){
-    console.log(this.props.label);
     const updateLabelAfterCheckboxChange = (fieldName: string, isCheckboxOn: boolean, checkboxValue: string) => {
       const currentValues = (this.props.label[fieldName] as string[] || []);
       this.props.onLabelUpdate({
@@ -132,7 +138,7 @@ export default class ClassificationForm extends React.Component {
           <Button
             variant="raised"
             color="primary"
-            disabled={!this.props.label}
+            disabled={!canUserSubmitForm(this.state.customization, this.props.label)}
             onClick={() => this.props.onSubmit()}
           >Submit</Button>
         </ActionButtons>
