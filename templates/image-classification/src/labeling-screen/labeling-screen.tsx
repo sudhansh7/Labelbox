@@ -3,6 +3,34 @@ import ClassificationForm from './classification-options';
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 import Icon from 'material-ui/Icon';
+import styled from 'styled-components';
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  max-height: 80vh;
+`;
+
+const Sidebar = styled.div`
+  box-shadow: 2px 0px 13px #bfbfbf;
+  background-color: white;
+  min-width: 280px;
+  max-width: 280px;
+  flex-direction: column;
+  margin-right: 50px;
+`;
+
+const MainContent = styled.div`
+  display: flex;
+  flex-grow: 1
+`;
+
+const ImageFrame = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`
 
 export class LabelingScreen extends React.Component {
   state: {
@@ -35,8 +63,8 @@ export class LabelingScreen extends React.Component {
     };
 
     return (
-      <div style={{display: 'flex'}}>
-        <div>
+      <Content>
+        <Sidebar>
           <div className="form-controls">
             <div className="classification">
               <ClassificationForm
@@ -56,20 +84,22 @@ export class LabelingScreen extends React.Component {
               onClick={() => onSubmit()}
             >Submit</Button>
           </div>
-        </div>
-        <div>
+        </Sidebar>
+        <MainContent>
           {
             this.state.loading && (<LinearProgress color="primary" />)
           }
-          {
-            this.props.imageUrl && !this.state.errorLoadingImage &&
-              (<img style={{maxWidth: '100%', maxHeight: '100%', opacity: this.state.loading ? '0.2' : '1'} as any}
-                  src={this.props.imageUrl}
-                  onLoad={(e) => this.setState({...this.state, loading: false})}
-                  onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
-                  alt="classify-data"
-                />)
-          }
+          <ImageFrame>
+            {
+              this.props.imageUrl && !this.state.errorLoadingImage &&
+                (<img style={{maxWidth: '100%', maxHeight: '100%', opacity: this.state.loading ? '0.2' : '1'} as any}
+                    src={this.props.imageUrl}
+                    onLoad={(e) => this.setState({...this.state, loading: false})}
+                    onError={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
+                    alt="classify-data"
+                  />)
+            }
+          </ImageFrame>
           {
             this.state.errorLoadingImage && (
               <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', alignItems: 'center'} as any}>
@@ -80,8 +110,8 @@ export class LabelingScreen extends React.Component {
               </div>
             )
           }
-        </div>
-      </div>
+        </MainContent>
+      </Content>
     );
   }
 }

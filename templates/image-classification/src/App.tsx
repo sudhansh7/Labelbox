@@ -52,13 +52,11 @@ class App extends React.Component {
       <MuiThemeProvider theme={theme}>
         <div className="app">
           <Logo src={logo} />
-          <div className="labeling-frame">
-            <LabelingScreen
-              imageUrl={this.state && this.state.imageUrl}
-              onSkip={() => this.next({skip: true})}
-              onSubmit={(label: string) => this.next({label})}
-            />
-          </div>
+          <LabelingScreen
+            imageUrl={this.state && this.state.imageUrl}
+            onSkip={() => this.next({skip: true})}
+            onSubmit={(label: string) => this.next({label})}
+          />
         </div>
       </MuiThemeProvider>
     );
