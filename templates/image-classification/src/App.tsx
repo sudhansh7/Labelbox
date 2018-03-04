@@ -5,6 +5,14 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { LabelingScreen } from './labeling-screen/labeling-screen';
+import { logo } from './logo';
+import styled from 'styled-components';
+
+const Logo = styled.img`
+  margin-left: 20px;
+  margin-bottom: 30px;
+  width: 100px;
+`;
 
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
@@ -43,9 +51,7 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="app">
-          <div className="banner">
-            <div>Labelbox</div>
-          </div>
+          <Logo src={logo} />
           <div className="labeling-frame">
             <LabelingScreen
               imageUrl={this.state && this.state.imageUrl}
