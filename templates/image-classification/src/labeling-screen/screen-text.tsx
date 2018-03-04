@@ -10,13 +10,13 @@ export default [
     ]
   },
   {
-    instructions: "Select the colors the car contains.",
+    instructions: "Select all that apply",
     type: 'checklist',
     required: false,
     options: [
-      { value: "red", label: "Red"},
-      { value: "blue", label: "Blue"},
-      { value: "black", label: "Black"},
+      { value: "blur", label: "Blurry"},
+      { value: "saturated", label: "Over Saturated"},
+      { value: "pixelated", label: "Pixelated"},
     ]
   }
 ]
