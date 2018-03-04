@@ -28,7 +28,7 @@ import {
   generateStateFromLabel,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
-import Icon from 'material-ui/Icon';
+import { History } from './history/history';
 
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
@@ -260,28 +260,15 @@ class App extends React.Component {
               />
             </div>
             <div className="labeling-frame">
-              <div style={{fontWeight: '100', fontSize: '22px', marginBottom: '30px', display: 'flex'} as any}>
-                <Icon
-                  style={{marginRight: '20px', cursor: 'pointer', ...(!this.state.previousLabel ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
-                  onClick={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
-                >
-                  keyboard_arrow_left
-                </Icon>
-                <div>Outline listed objects</div>
-                <Icon
-                  style={{marginLeft: '20px', cursor: 'pointer', ...(!this.state.nextLabel && !this.state.label ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
-                  onClick={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
-                >
-                  keyboard_arrow_right
-                </Icon>
-                <div
-                  style={{marginLeft: '10px', cursor: 'pointer', ...(!this.state.label ? {opacity: '0.1', pointerEvents: 'none'}: {})}}
-                  onClick={() => this.jumpToNextAsset()}
-                >
-                  <Icon style={{width: '10px'}}> keyboard_arrow_right </Icon>
-                  <Icon style={{width: '10px'}}> keyboard_arrow_right </Icon>
-                </div>
-              </div>
+              <History
+                title="Outline listed objects"
+                hasBack={Boolean(this.state.previousLabel)}
+                goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
+                hasNext={Boolean(this.state.nextLabel || this.state.label)}
+                goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
+                isCurrent={Boolean(!this.state.label)}
+                goCurrent={() => this.jumpToNextAsset()}
+              />
               { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
               {
                 this.state.imageInfo && <SegmentImage
