@@ -15,11 +15,12 @@ const Content = styled.div`
 const Sidebar = styled.div`
   box-shadow: 2px 0px 13px #bfbfbf;
   background-color: white;
-  min-width: 280px;
-  max-width: 280px;
+  min-width: 240px;
+  max-width: 240px;
   flex-direction: column;
   display: flex;
   flex-grow: 1;
+  padding: 20px;
 `;
 
 const Divider = styled.div`
@@ -40,6 +41,11 @@ const ImageFrame = styled.div`
   justify-content: center;
   display: flex;
 `
+
+const ActionButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 export class LabelingScreen extends React.Component {
   state: {
@@ -79,7 +85,7 @@ export class LabelingScreen extends React.Component {
             onSelect={(label: string) => this.setState({...this.state, label})}
           />
           <Divider />
-          <div style={{justifyContent: 'flex-end'}}>
+          <ActionButtons>
             <Button onClick={onSkip} >Skip</Button>
             <Button
               variant="raised"
@@ -87,7 +93,7 @@ export class LabelingScreen extends React.Component {
               disabled={!this.state || !this.state.label}
               onClick={() => onSubmit()}
             >Submit</Button>
-          </div>
+          </ActionButtons>
         </Sidebar>
         <MainContent>
           {
