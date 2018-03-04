@@ -55,6 +55,10 @@ const canUserSubmitForm = (formFields: ClassificationField[], label: Label): boo
   return hasCompletedRequiredFields;
 }
 
+const isChecked = (label: Label, checkboxName: string, checkboxValue: string) => {
+  return Boolean(label[checkboxName] && label[checkboxName].indexOf(checkboxValue) > -1);
+}
+
 export default class ClassificationForm extends React.Component {
   public state: {
     customization: ClassificationField[]
@@ -118,7 +122,11 @@ export default class ClassificationForm extends React.Component {
                             <ListItem value={value} disableGutters={true} style={{padding: '0px'}} key={value}>
                               <FormControlLabel
                                 control={
-                                  <Checkbox color="primary" onChange={(e) => updateLabelAfterCheckboxChange(field.name, e.target.checked, value)} />
+                                  <Checkbox
+                                    color="primary"
+                                    checked={isChecked(this.props.label, field.name, value)}
+                                    onChange={(e) => updateLabelAfterCheckboxChange(field.name, e.target.checked, value)}
+                                  />
                                 }
                                 label={label}
                               />

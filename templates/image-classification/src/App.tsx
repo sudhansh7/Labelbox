@@ -49,7 +49,7 @@ class App extends React.Component {
     if (!submission) {
       getNext();
     } else if (submission.label) {
-      (window as any).Labelbox.setLabelForAsset(submission.label).then(getNext);
+      (window as any).Labelbox.setLabelForAsset(JSON.stringify(submission.label)).then(getNext);
     } else if (submission.skip) {
       (window as any).Labelbox.skip().then(getNext);
     }
