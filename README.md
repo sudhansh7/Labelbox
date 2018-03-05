@@ -13,6 +13,8 @@ Table of Contents
       * [Text Classification](#text-classification-interface)
    * [Exporting Labels](#exporting-labels)
       * [Segmentation Masks](#segmentation-masks)
+      * [COCO format](scripts/README.md)
+      * [Pascal VOC format](scripts/README.md)
    * [Creating Custom Labeling Interfaces](#creating-custom-labeling-interfaces)
       * [A Minimal Example](#a-minimal-example)
       * [Labelbox Pluggable Interface Architecture](#labelbox-pluggable-interface-architecture)
