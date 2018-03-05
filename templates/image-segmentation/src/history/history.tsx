@@ -1,6 +1,40 @@
 // tslint:disable
 import * as React from 'react';
 import Icon from 'material-ui/Icon';
+import styled from 'styled-components';
+
+const HistoryContainer = styled.div`
+  font-weight: 100;
+  font-size: 22px;
+  margin-bottom: 30px;
+  display: flex;
+`;
+
+interface ArrowPros {
+  direction: 'left' | 'right';
+  disabled?: boolean;
+  className?: string;
+  onClick?: Function;
+  width?: string;
+}
+const ArrowUnstyled = ({direction, className, onClick}: ArrowPros) => (
+  <Icon className={className} onClick={() => onClick && onClick()}>
+    {direction === 'left' ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}
+  </Icon>
+)
+
+const Arrow = styled(ArrowUnstyled)`
+  cursor: pointer;
+  opacity: ${(props: ArrowPros) => {
+    return props.disabled ? 0.1 : 1;
+  }};
+  pointer-events: ${(props: ArrowPros) => {
+    return props.disabled ? 'none' : 'inherit';
+  }};
+  width: ${(props: ArrowPros) => {
+    return props.width ? props.width : 'inherit';
+  }}
+`;
 
 export function History({
   title,
@@ -20,27 +54,18 @@ export function History({
   goCurrent: Function
 }){
   return (
-    <div style={{fontWeight: '100', fontSize: '22px', marginBottom: '30px', display: 'flex'} as any}>
-      <Icon
-        style={{marginRight: '20px', cursor: 'pointer', ...(!hasBack ? {opacity: '0.1', pointerEvents: 'none'}: {})} as any}
-        onClick={() => goBack()}
-      >
-        keyboard_arrow_left
-      </Icon>
-      <div>{title}</div>
-      <Icon
-        style={{marginLeft: '20px', cursor: 'pointer', ...(!hasNext ? {opacity: '0.1', pointerEvents: 'none'}: {})} as any}
-        onClick={() => goNext()}
-      >
-        keyboard_arrow_right
-      </Icon>
-      <div
-        style={{marginLeft: '10px', cursor: 'pointer', ...(isCurrent ? {opacity: '0.1', pointerEvents: 'none'}: {})} as any}
-        onClick={() => goCurrent()}
-      >
-        <Icon style={{width: '10px'}}> keyboard_arrow_right </Icon>
-        <Icon style={{width: '10px'}}> keyboard_arrow_right </Icon>
+    <HistoryContainer>
+      <div style={{paddingRight: '20px'}}>
+        <Arrow direction="left" disabled={!hasBack} onClick={goBack} />
       </div>
-    </div>
+      <div>{title}</div>
+      <div style={{paddingLeft: '20px'}}>
+        <Arrow direction="right" disabled={!hasNext} onClick={goBack} />
+      </div>
+      <div onClick={() => !isCurrent && goCurrent()}>
+        <Arrow direction="right" disabled={isCurrent} width="10px" />
+        <Arrow direction="right" disabled={isCurrent} width="10px" />
+      </div>
+    </HistoryContainer>
   )
 }
