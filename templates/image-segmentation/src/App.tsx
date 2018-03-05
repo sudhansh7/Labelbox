@@ -26,6 +26,7 @@ import {
   userClickedMap,
   mouseMove,
   generateStateFromLabel,
+  removeTempBoundingBox,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
@@ -106,7 +107,7 @@ class App extends React.Component {
 
     keyDownSteam('escape').subscribe(() => {
       // Turn off current tool and editing
-      this.setState({...editShape(this.state), currentToolId: undefined});
+      this.setState({...editShape(removeTempBoundingBox(this.state)), currentToolId: undefined});
     });
 
     keyDownSteam('f').subscribe(() => {

@@ -247,6 +247,15 @@ const getSelectedRectangleTool = (state: AppState) => {
   return state.tools.find((tool) => tool.tool === 'rectangle' && tool.id === state.currentToolId);
 }
 
+export const removeTempBoundingBox = (state: AppState) => {
+  return {
+    ...state,
+    annotations: state.annotations.filter(({id}) => id !== state.rectangleInProgressId),
+    rectangleInProgressId: undefined,
+    drawnAnnotationBounds: [],
+  }
+}
+
 const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: mouseLng}}: MouseMove) => {
   const rectangleTool = getSelectedRectangleTool(state);
   if (!rectangleTool){
