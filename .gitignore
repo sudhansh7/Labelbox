@@ -4,3 +4,4 @@ node_modules
 *.swp
 venv/
 scripts/test-results/
+*.pytest_cache/
