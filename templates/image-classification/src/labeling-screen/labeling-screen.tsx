@@ -27,16 +27,16 @@ const ImageFrame = styled.div`
 `
 
 export class LabelingScreen extends React.Component {
-  state: {
+  public state: {
     loading: boolean,
     errorLoadingImage: boolean,
-    label?: Label,
   } = {
     loading: true,
     errorLoadingImage: false,
   }
-  props: {
+  public props: {
     imageUrl?: string;
+    label?: Label;
     onSkip: Function;
     onSubmit: Function;
   }
@@ -47,7 +47,7 @@ export class LabelingScreen extends React.Component {
     }
 
     const onSubmit = () => {
-      this.props.onSubmit(this.state.label);
+      this.props.onSubmit();
       this.setState({...this.state, label: undefined, loading: true});
     };
 
@@ -59,7 +59,7 @@ export class LabelingScreen extends React.Component {
     return (
       <Content>
         <ClassificationForm
-          label={this.state.label || {}}
+          label={this.props.label || {}}
           onLabelUpdate={(label: Label) => this.setState({...this.state, label})}
           onSubmit={onSubmit}
           onSkip={onSkip}

@@ -3,6 +3,7 @@ import './icons.css';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
+import { Label } from './labeling-screen/classification-options';
 import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { logo } from './logo';
 import styled from 'styled-components';
@@ -47,9 +48,20 @@ interface Asset {
   previous?: string,
 }
 
+const readAsJson = (str?: string) => {
+  if (typeof str !== 'string'){
+    return;
+  }
+  try{
+    return JSON.parse(str);
+  } catch(e){
+    return;
+  }
+}
+
 class App extends React.Component {
   public state: {
-    label?: string;
+    label?: Label;
     imageUrl?: string;
     previousLabel?: string;
     nextLabel?: string;
@@ -62,7 +74,7 @@ class App extends React.Component {
         imageUrl: asset.data,
         previousLabel: asset.previous,
         nextLabel: asset.next,
-        label: asset.label,
+        label: readAsJson(asset.label),
       });
     });
   }
@@ -105,9 +117,10 @@ class App extends React.Component {
             />
           </Header>
           <LabelingScreen
+            label={this.state.label}
             imageUrl={this.state && this.state.imageUrl}
             onSkip={() => this.next({skip: true})}
-            onSubmit={(label: string) => this.next({label})}
+            onSubmit={() => this.next({label: JSON.stringify(this.state.label)})}
           />
         </AppContainer>
       </MuiThemeProvider>
