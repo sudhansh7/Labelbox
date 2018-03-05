@@ -16,7 +16,7 @@ const ActionButtons = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 15px;
-  minHeight: 36px;
+  min-height: 36px;
 `;
 
 export function Toolbar(
@@ -49,19 +49,21 @@ export function Toolbar(
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
           {/* tslint:disable-next-line */}
           <div style={{margin: '20px 15px 10px', fontWeight: '700'} as any}>Select a class below</div>
-          {tools.map(({id, name, color, count, visible, tool}, index) => (
-            <Tool
-              key={index}
-              name={name}
-              toolName={tool}
-              color={color}
-              count={count}
-              visible={visible}
-              visibilityToggle={() => visibilityToggle(id)}
-              onClick={() => toolChange(id !== currentTool ? id : undefined)}
-              selected={id === currentTool}
-            />
-          ))}
+          <div style={{overflowY: 'auto'}}>
+            {tools.map(({id, name, color, count, visible, tool}, index) => (
+              <Tool
+                key={index}
+                name={name}
+                toolName={tool}
+                color={color}
+                count={count}
+                visible={visible}
+                visibilityToggle={() => visibilityToggle(id)}
+                onClick={() => toolChange(id !== currentTool ? id : undefined)}
+                selected={id === currentTool}
+              />
+            ))}
+          </div>
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 
@@ -69,9 +71,9 @@ export function Toolbar(
           <ExpansionPanelSummary expandIcon={<Icon>keyboard_arrow_up</Icon>}>
             <Typography>Keyboard Shortcuts</Typography>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{display: 'flex', flexDirection: 'column', padding: '0px'}}>
+          <ExpansionPanelDetails style={{display: 'flex', flexDirection: 'column', padding: '0px', overflowY: 'auto', maxHeight: '60vh'}}>
             {
-              tools.map(({name}, index) => (
+              tools.slice(0, 9).map(({name}, index) => (
                 <div key={index} style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
                   <div style={{display: 'flex', flexGrow: '1'} as any}>
                     <div style={{flex: '60'}}>{name}</div>
