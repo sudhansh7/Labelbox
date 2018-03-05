@@ -51,6 +51,7 @@ export class LabelingScreen extends React.Component {
       <Content>
         <ClassificationForm
           label={this.props.label || {}}
+          loading={this.props.loading}
           onLabelUpdate={(label: Label) => this.props.onLabelUpdate(label)}
           onSubmit={() => this.props.onSubmit()}
           onSkip={() => this.props.onSkip()}

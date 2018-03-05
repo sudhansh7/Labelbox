@@ -70,6 +70,7 @@ export default class ClassificationForm extends React.Component {
     onLabelUpdate: Function,
     onSubmit: Function,
     onSkip: Function,
+    loading: boolean,
   }
   customizationSubscription: {unsubscribe: Function};
 
@@ -146,7 +147,7 @@ export default class ClassificationForm extends React.Component {
           <Button
             variant="raised"
             color="primary"
-            disabled={!canUserSubmitForm(this.state.customization, this.props.label)}
+            disabled={!canUserSubmitForm(this.state.customization, this.props.label) || this.props.loading}
             onClick={() => this.props.onSubmit()}
           >Submit</Button>
         </ActionButtons>
