@@ -85,8 +85,8 @@ class App extends React.Component {
   }
 
   next(submission?: {label?: Label, skip?: boolean}){
+    this.setState({...this.state, loading: true});
     const getNext = () => {
-      this.setState({...this.state, loading: true});
       (window as any).Labelbox.fetchNextAssetToLabel()
     };
     if (!submission) {

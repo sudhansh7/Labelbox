@@ -188,6 +188,7 @@ class App extends React.Component {
   }
 
   next(label: {label?: string, skip?: boolean}) {
+    this.setState({...this.state, loading: true});
     getLabelbox().then((Labelbox) => {
       if (label.label) {
         if (!this.state.label) {
