@@ -84,7 +84,7 @@ class App extends React.Component {
     });
   }
 
-  next(submission?: {label?: string, skip?: boolean}){
+  next(submission?: {label?: Label, skip?: boolean}){
     const getNext = () => {
       (window as any).Labelbox.fetchNextAssetToLabel()
     };
@@ -129,7 +129,7 @@ class App extends React.Component {
             imageUrl={this.state && this.state.imageUrl}
             onLabelUpdate={(label: Label) => this.setState({...this.state, label})}
             onSkip={() => this.next({skip: true})}
-            onSubmit={() => this.next({label: JSON.stringify(this.state.label)})}
+            onSubmit={() => this.next({label: this.state.label})}
             onImageLoad={() => this.setState({...this.state, loading: false})}
             onErrorLoadingImage={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
           />
