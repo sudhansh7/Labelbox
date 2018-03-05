@@ -252,7 +252,7 @@ class App extends React.Component {
                 currentTool={this.state.currentToolId}
                 toolChange={(toolId: string) => this.setTool(toolId)}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
-                disableSubmit={this.state.annotations.length === 0}
+                disableSubmit={this.state.annotations.length === 0 || this.state.loading}
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
                 editing={Boolean(this.state.label)}
