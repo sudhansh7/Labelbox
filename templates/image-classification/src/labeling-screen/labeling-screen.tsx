@@ -60,7 +60,7 @@ export class LabelingScreen extends React.Component {
           <ImageFrame>
             {
               this.props.imageUrl && !this.props.errorLoadingImage &&
-                (<img style={{maxWidth: '100%', maxHeight: '100%', opacity: this.props.loading ? '0.2' : '1'} as any}
+                (<img style={{maxWidth: '100%', objectFit: 'scale-down', maxHeight: '100%', opacity: this.props.loading ? '0.2' : '1'} as any}
                     src={this.props.imageUrl}
                     onLoad={() => this.props.onImageLoad()}
                     onError={() => this.props.onErrorLoadingImage()}
