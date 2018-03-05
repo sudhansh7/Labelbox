@@ -8,6 +8,7 @@ import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { logo } from './logo';
 import styled from 'styled-components';
 import { History } from './history/history';
+import { LinearProgress } from 'material-ui/Progress';
 
 const AppContainer = styled.div`
   display: flex;
@@ -65,7 +66,12 @@ class App extends React.Component {
     imageUrl?: string;
     previousLabel?: string;
     nextLabel?: string;
-  } = {};
+    loading: boolean;
+    errorLoadingImage: boolean;
+  } = {
+    loading: true,
+    errorLoadingImage: false,
+  };
 
   componentWillMount () {
     (window as any).Labelbox.currentAsset().subscribe((asset: Asset) => {
@@ -102,6 +108,7 @@ class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
+        {this.state.loading && (<LinearProgress color="primary" />)}
         <AppContainer>
           <Header>
             <Logo src={logo} />
@@ -116,11 +123,15 @@ class App extends React.Component {
             />
           </Header>
           <LabelingScreen
+            loading={this.state.loading}
+            errorLoadingImage={this.state.errorLoadingImage}
             label={this.state.label}
             imageUrl={this.state && this.state.imageUrl}
             onLabelUpdate={(label: Label) => this.setState({...this.state, label})}
             onSkip={() => this.next({skip: true})}
             onSubmit={() => this.next({label: JSON.stringify(this.state.label)})}
+            onImageLoad={() => this.setState({...this.state, loading: false})}
+            onErrorLoadingImage={() => this.setState({...this.state, loading: false, errorLoadingImage: true})}
           />
         </AppContainer>
       </MuiThemeProvider>
