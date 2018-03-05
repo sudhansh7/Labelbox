@@ -60,7 +60,7 @@ export function History({
       </div>
       <div>{title}</div>
       <div style={{paddingLeft: '20px'}}>
-        <Arrow direction="right" disabled={!hasNext} onClick={goBack} />
+        <Arrow direction="right" disabled={!hasNext} onClick={goNext} />
       </div>
       <div onClick={() => !isCurrent && goCurrent()}>
         <Arrow direction="right" disabled={isCurrent} width="10px" />
