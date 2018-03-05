@@ -23,6 +23,7 @@ const ImageFrame = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  background-color: #dddddd;
 `
 
 export class LabelingScreen extends React.Component {

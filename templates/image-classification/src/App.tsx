@@ -6,6 +6,7 @@ import lightblue from 'material-ui/colors/blue';
 import { LabelingScreen } from './labeling-screen/labeling-screen';
 import { logo } from './logo';
 import styled from 'styled-components';
+import { History } from './history/history';
 
 const AppContainer = styled.div`
   display: flex;
@@ -16,9 +17,15 @@ const AppContainer = styled.div`
   padding-bottom: 5vh;
 `;
 
+const Header = styled.div`
+  display: flex;
+  height: 50px;
+`;
+
 const Logo = styled.img`
   margin-left: 20px;
   margin-bottom: 30px;
+  margin-right: 205px;
   width: 100px;
 `;
 
@@ -34,8 +41,11 @@ export const theme = createMuiTheme({
 
 class App extends React.Component {
   public state: {
+    label?: string;
     imageUrl?: string;
-  };
+    previousLabel?: string;
+    nextLabel?: string;
+  } = {};
 
   componentWillMount () {
     this.next();
@@ -55,11 +65,30 @@ class App extends React.Component {
     }
   }
 
+  setLabel(labelId: string){
+    console.log('setLabel', labelId);
+  }
+
+  jumpToNextAsset(){
+    console.log('jumpToNextAsset');
+  }
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <AppContainer>
-          <Logo src={logo} />
+          <Header>
+            <Logo src={logo} />
+            <History
+              title="Classify Image"
+              hasBack={Boolean(this.state.previousLabel)}
+              goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
+              hasNext={Boolean(this.state.nextLabel || this.state.label)}
+              goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
+              isCurrent={Boolean(!this.state.label)}
+              goCurrent={() => this.jumpToNextAsset()}
+            />
+          </Header>
           <LabelingScreen
             imageUrl={this.state && this.state.imageUrl}
             onSkip={() => this.next({skip: true})}
