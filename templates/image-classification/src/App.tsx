@@ -118,6 +118,7 @@ class App extends React.Component {
           <LabelingScreen
             label={this.state.label}
             imageUrl={this.state && this.state.imageUrl}
+            onLabelUpdate={(label: Label) => this.setState({...this.state, label})}
             onSkip={() => this.next({skip: true})}
             onSubmit={() => this.next({label: JSON.stringify(this.state.label)})}
           />

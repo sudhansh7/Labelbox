@@ -39,6 +39,7 @@ export class LabelingScreen extends React.Component {
     label?: Label;
     onSkip: Function;
     onSubmit: Function;
+    onLabelUpdate: Function;
   }
 
   render() {
@@ -60,7 +61,7 @@ export class LabelingScreen extends React.Component {
       <Content>
         <ClassificationForm
           label={this.props.label || {}}
-          onLabelUpdate={(label: Label) => this.setState({...this.state, label})}
+          onLabelUpdate={(label: Label) => this.props.onLabelUpdate(label)}
           onSubmit={onSubmit}
           onSkip={onSkip}
         />
