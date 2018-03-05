@@ -24,7 +24,16 @@ const ImageFrame = styled.div`
   justify-content: center;
   display: flex;
   background-color: #dddddd;
+  width: 100%;
 `
+
+interface Props {
+  imageUrl?: string;
+  label?: Label;
+  onSkip: Function;
+  onSubmit: Function;
+  onLabelUpdate: Function;
+}
 
 export class LabelingScreen extends React.Component {
   public state: {
@@ -34,12 +43,12 @@ export class LabelingScreen extends React.Component {
     loading: true,
     errorLoadingImage: false,
   }
-  public props: {
-    imageUrl?: string;
-    label?: Label;
-    onSkip: Function;
-    onSubmit: Function;
-    onLabelUpdate: Function;
+  public props: Props;
+
+  componentWillUpdate(nextProps: Props){
+    if (nextProps.imageUrl !== this.props.imageUrl){
+      this.setState({...this.state, loading: true});
+    }
   }
 
   render() {
