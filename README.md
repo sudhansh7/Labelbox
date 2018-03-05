@@ -137,6 +137,10 @@ from shapely.wkt import loads as wkt_loads
 polygon_wkt= wkt_loads(polygon)
 ```
 
+You can also convert Labelbox output to COCO or Pascal VOC format using our scripts. 
+* [COCO format](scripts/README.md)
+* [Pascal VOC format](scripts/README.md)
+
 ### Segmentation Masks
 Labelbox can also export image masks from labels created using the image
 segmentation tools. Using image masks often means less data preparation is
