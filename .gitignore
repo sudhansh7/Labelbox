@@ -1,2 +1,7 @@
 node_modules
 .DS_Store
+*.py[co]
+*.swp
+venv/
+scripts/test-results/
+*.pytest_cache/
