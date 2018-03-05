@@ -39,6 +39,14 @@ export const theme = createMuiTheme({
   }
 });
 
+interface Asset {
+  id: string,
+  data: string,
+  label: string,
+  next?: string,
+  previous?: string,
+}
+
 class App extends React.Component {
   public state: {
     label?: string;
@@ -48,13 +56,20 @@ class App extends React.Component {
   } = {};
 
   componentWillMount () {
-    this.next();
+    (window as any).Labelbox.currentAsset().subscribe((asset: Asset) => {
+      console.log(asset);
+      this.setState({
+        imageUrl: asset.data,
+        previousLabel: asset.previous,
+        nextLabel: asset.next,
+        label: asset.label,
+      });
+    });
   }
 
   next(submission?: {label?: string, skip?: boolean}){
     const getNext = () => {
       (window as any).Labelbox.fetchNextAssetToLabel()
-        .then((imageUrl: string) => this.setState({imageUrl}));
     };
     if (!submission) {
       getNext();
@@ -66,11 +81,11 @@ class App extends React.Component {
   }
 
   setLabel(labelId: string){
-    console.log('setLabel', labelId);
+    (window as any).Labelbox.setLabelAsCurrentAsset(labelId)
   }
 
   jumpToNextAsset(){
-    console.log('jumpToNextAsset');
+    (window as any).Labelbox.fetchNextAssetToLabel();
   }
 
   render() {
