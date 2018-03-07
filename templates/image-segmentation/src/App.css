@@ -65,13 +65,14 @@
   display: none;
 }
 
-.leaflet-marker-icon{
-  margin-left: -5px !important;
-  margin-top: -5px !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 100%;
-}
+// TODO make this work with both markers and polygons
+/* .leaflet-marker-icon{ */
+/*   margin-left: -5px !important; */
+/*   margin-top: -5px !important; */
+/*   width: 10px !important; */
+/*   height: 10px !important; */
+/*   border-radius: 100%; */
+/* } */
 
 .leaflet-draw-tooltip-subtext{
   display: none;

@@ -12,6 +12,7 @@ function setTool(toolName: ToolType) {
     // Default Rectangle is shit. So we just use polygon tool
     // and draw the hover rectangle ourself
     'rectangle': '.leaflet-draw-draw-polygon',
+    'point': '.leaflet-draw-draw-marker',
   }[toolName || 'cancel'];
 
   if (toolbar) {
@@ -23,7 +24,7 @@ function setTool(toolName: ToolType) {
 }
 
 const getPointsFromEvent = (e: any) => {
-  let points = e.layer.getLatLngs();
+  let points = e.layer.getLatLngs ? e.layer.getLatLngs() : e.layer.getLatLng();
   return (Array.isArray(points[0]) ? points[0] : points);
 }
 
@@ -78,7 +79,15 @@ export class LeafletDraw extends React.Component{
         onDrawVertex={vertexDrawn}
         draw={{
           circle: false,
-          marker: false,
+          marker: {
+            draggable: true,
+            shapeOptions: {
+              color: drawColor,
+              // TODO dont forget to setup
+              // drag listner
+              draggable: true,
+            }
+          },
           circlemarker: false,
           polygon: {
             shapeOptions: {
