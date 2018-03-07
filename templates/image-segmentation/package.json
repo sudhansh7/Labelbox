@@ -19,7 +19,8 @@
     "rxjs": "^5.5.6",
     "serve": "^6.4.9",
     "styled-components": "^3.1.6",
-    "terraformer-wkt-parser": "^1.1.2"
+    "terraformer-wkt-parser": "^1.1.2",
+    "tinycolor2": "^1.4.1"
   },
   "scripts": {
     "now-start": "cd build && serve -s ./",
