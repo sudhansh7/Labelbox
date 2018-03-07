@@ -1,6 +1,5 @@
 // tslint:disable
 import { ToolType } from './labeling-screen/segment-image';
-import * as wkt from 'terraformer-wkt-parser';
 import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
 type Bounds = {lat: number, lng:number}[];
@@ -114,6 +113,7 @@ const selectToolByName = (state: AppState, toolName: string) => {
   return state.tools.find((tool) => tool.name === toolName);
 }
 
+// TODO update me with new xyz parsing
 export const generateStateFromLabel = (state: AppState, label: string):AppState => {
   const classes = parseIfPossible(label);
   if (!classes){
@@ -127,12 +127,8 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
       console.log('Tool not found', className, state);
       return state
     }
-    const wktLabel = classes[className];
-    const {coordinates: polygons} = wkt.parse(wktLabel);
-    const annotations = polygons.map((polygon: [number, number][][]) => {
-      // wkt start and ends with the same point
-      const bounds = polygon[0].slice(0,-1)
-        .map(([lng, lat]: [number, number]) => ({lat, lng}))
+    const annotations = classes[className].map((polygon: [number, number][]) => {
+      const bounds = polygon.map(([lng, lat]: [number, number]) => ({lat, lng}))
       return {
         id: guid(),
         bounds,
@@ -155,18 +151,8 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
 export const generateLabel = (state: AppState) => {
 
   const getPoints = ({bounds}: Annotation) => {
-    const toPoint = ({lat, lng}: {lat: number, lng: number}) => [lng, lat];
-    return [
-      ...bounds.map(toPoint),
-      toPoint(bounds[0])
-    ];
-  };
-
-  const turnAnnotationsIntoWktString = (annotations: Annotation[]) => {
-    return wkt.convert({
-      "type": "MultiPolygon",
-      "coordinates": annotations.map(getPoints).map((polygon) => [polygon])
-    });
+    const toPoint = ({lat: x, lng: y}: {lat: number, lng: number}) => ({x, y});
+    return bounds.map(toPoint);
   };
 
   const annotationsByTool = state.annotations.reduce((annotationsByTool, annotation) => {
@@ -190,7 +176,7 @@ export const generateLabel = (state: AppState) => {
     }
     return {
       ...label,
-      [tool.name]: turnAnnotationsIntoWktString(annotationsByTool[toolId])
+      [tool.name]: state.annotations.map(getPoints),
     }
 
   }, {})
