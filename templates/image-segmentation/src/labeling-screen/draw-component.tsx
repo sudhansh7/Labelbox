@@ -57,11 +57,14 @@ export class LeafletDraw extends React.Component{
       onDrawnAnnotationUpdate(vertextEvent.layers.getLayers().map((layer: any) => layer.getLatLng()));
     }
 
-    // tslint:disable-next-line
-    // In order to keep this pure
-    // I'm removing the drawn shape and letting it get updated via props
+
     const onCreate = (e: any) => {
       onNewAnnotation(getPointsFromEvent(e));
+      // I know what your thinking...
+      // we just created this annotation why are we deleteing it?
+      // worry not young jedi. In order to keep this pure
+      // I.E. state will rendering annotations not user events
+      // I'm removing the drawn shape and letting it get drawn via props
       e.layer.remove();
     };
 
@@ -83,9 +86,6 @@ export class LeafletDraw extends React.Component{
             draggable: true,
             shapeOptions: {
               color: drawColor,
-              // TODO dont forget to setup
-              // drag listner
-              draggable: true,
             }
           },
           circlemarker: false,

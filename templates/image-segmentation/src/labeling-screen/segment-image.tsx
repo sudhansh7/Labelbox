@@ -158,6 +158,7 @@ export function SegmentImage({
           key={id}
           position={bounds}
           color={color}
+          draggable={true}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
