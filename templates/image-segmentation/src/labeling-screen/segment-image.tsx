@@ -7,6 +7,7 @@ import {
   Polygon as PolygonTyped,
   Polyline as PolylineTyped,
   Rectangle as RectangleTyped,
+  Marker as MarkerTyped,
 } from 'react-leaflet';
 import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { Annotation } from '../app.reducer';
@@ -19,6 +20,7 @@ const Map: any = MapTyped;
 const Polygon: any = PolygonTyped;
 const Rectangle: any = RectangleTyped;
 const Polyline: any = PolylineTyped;
+const Marker: any = MarkerTyped;
 
 interface LeafletEvent extends Event {
   latlng: {
@@ -146,6 +148,15 @@ export function SegmentImage({
         <Polyline
           key={id}
           positions={bounds}
+          color={color}
+          ref={(shape: any) => onShapeCreation(shape, id, editing)}
+          onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+        />
+      ))}
+      {annotations.filter(({toolName}) => toolName === 'point').map(({id, color, bounds, editing}, index) => (
+        <Marker
+          key={id}
+          position={bounds}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
