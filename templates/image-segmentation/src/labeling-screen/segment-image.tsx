@@ -14,6 +14,7 @@ import { Annotation } from '../app.reducer';
 import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
 import { LeafletDraw } from './draw-component';
+import { getPointIcon } from './get-point-icon';
 
 // TODO hack to add editing onto the interface
 const Map: any = MapTyped;
@@ -157,6 +158,7 @@ export function SegmentImage({
         <Marker
           key={id}
           position={bounds}
+          icon={getPointIcon(color)}
           color={color}
           draggable={true}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}

@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { EditControl, } from 'react-leaflet-draw';
 import { ToolType } from './segment-image';
+import { getPointIcon } from './get-point-icon';
 
 function setTool(toolName: ToolType) {
   const toolbar = document.querySelector('.leaflet-draw.leaflet-control');
@@ -83,10 +84,7 @@ export class LeafletDraw extends React.Component{
         draw={{
           circle: false,
           marker: {
-            draggable: true,
-            shapeOptions: {
-              color: drawColor,
-            }
+            icon: getPointIcon(drawColor || 'grey'),
           },
           circlemarker: false,
           polygon: {
