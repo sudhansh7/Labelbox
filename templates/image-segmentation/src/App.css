@@ -65,7 +65,7 @@
   display: none;
 }
 
-.leaflet-vertex-icon, .leaflet-editing-icon {
+.leaflet-vertex-icon, .leaflet-editing-icon, .leaflet-middle-icon {
   margin-left: -5px !important;
   margin-top: -5px !important;
   width: 10px !important;

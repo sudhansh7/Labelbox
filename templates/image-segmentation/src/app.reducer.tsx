@@ -127,7 +127,7 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
       return state
     }
     const annotations = classes[className].map((shape: {x: number, y: number}[]) => {
-      const toCoord = ({x, y}:{x: number, y: number}) => ({lat: x, lng: y});
+      const toCoord = ({y, x}:{x: number, y: number}) => ({lat: y, lng: x});
       const geometry = Array.isArray(shape) ? shape.map(toCoord) : toCoord(shape);
       return {
         id: guid(),
@@ -150,7 +150,7 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
 
 export const generateLabel = (state: AppState) => {
   const getPoints = ({geometry}: Annotation) => {
-    const toPoint = ({lat: x, lng: y}: {lat: number, lng: number}) => ({x, y});
+    const toPoint = ({lat: y, lng: x}: {lat: number, lng: number}) => ({x, y});
     return Array.isArray(geometry) ? geometry.map(toPoint) : toPoint(geometry);
   };
 
