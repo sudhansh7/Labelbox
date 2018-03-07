@@ -23,6 +23,14 @@ const Rectangle: any = RectangleTyped;
 const Polyline: any = PolylineTyped;
 const Marker: any = MarkerTyped;
 
+const debounce = (fn: Function, time: number) => {
+  let timeout: any;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), time);
+  }
+}
+
 interface LeafletEvent extends Event {
   latlng: {
     lat: number;
@@ -161,6 +169,7 @@ export function SegmentImage({
           icon={getPointIcon(color)}
           color={color}
           draggable={true}
+          onDrag={debounce((e: any) => onAnnotationEdit(id, e.latlng), 500)}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
