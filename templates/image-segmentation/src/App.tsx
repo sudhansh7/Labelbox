@@ -37,7 +37,7 @@ function addPointTool(tools: Tool[]):Tool[] {
     {
       id: guid(),
       name: 'woot woot point tool',
-      color: 'yellow',
+      color: '#33ecb4',
       tool: 'point'
     }
   ];

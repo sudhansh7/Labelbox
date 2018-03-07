@@ -1,7 +1,27 @@
 // tslint:disable
 import { Icon } from 'leaflet';
 
+function lightenDarkenColor(col: string, amt: number) {
+  var usePound = false;
+  if (col[0] == "#") {
+    col = col.slice(1);
+    usePound = true;
+  }
+  var num = parseInt(col,16);
+  var r = (num >> 16) + amt;
+  if (r > 255) r = 255;
+  else if  (r < 0) r = 0;
+  var b = ((num >> 8) & 0x00FF) + amt;
+  if (b > 255) b = 255;
+  else if  (b < 0) b = 0;
+  var g = (num & 0x0000FF) + amt;
+  if (g > 255) g = 255;
+  else if (g < 0) g = 0;
+  return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+}
+
 export function getPointIcon(color: string){
+  const light = lightenDarkenColor(color, 100);
   const height = 41;
   const width = 28;
   const svg = `
@@ -13,7 +33,7 @@ export function getPointIcon(color: string){
         </linearGradient>
         <linearGradient id="a">
           <stop offset="0" stop-color="${color}"/>
-          <stop offset="1" stop-color="${color}"/>
+          <stop offset="1" stop-color="${light}"/>
         </linearGradient>
         <linearGradient id="c" x1="0.498125" x2="0.498125" xlink:href="#a" y1="0.971494" y2="-0.004651"/>
         <linearGradient id="d" x1="0.415917" x2="0.415917" xlink:href="#b" y1="0.490437" y2="-0.004651"/>
