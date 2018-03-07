@@ -239,8 +239,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state);
-
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {geometry: newBounds}));
     };
