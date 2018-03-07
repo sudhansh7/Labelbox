@@ -113,7 +113,6 @@ const selectToolByName = (state: AppState, toolName: string) => {
   return state.tools.find((tool) => tool.name === toolName);
 }
 
-// TODO update me with new xyz parsing
 export const generateStateFromLabel = (state: AppState, label: string):AppState => {
   const classes = parseIfPossible(label);
   if (!classes){
@@ -150,7 +149,6 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
 }
 
 export const generateLabel = (state: AppState) => {
-
   const getPoints = ({geometry}: Annotation) => {
     const toPoint = ({lat: x, lng: y}: {lat: number, lng: number}) => ({x, y});
     return Array.isArray(geometry) ? geometry.map(toPoint) : toPoint(geometry);
