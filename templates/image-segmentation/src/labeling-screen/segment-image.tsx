@@ -42,7 +42,7 @@ export interface MouseMove {
   };
 }
 
-export type ToolType = 'polygon' | 'rectangle' | 'line' | undefined;
+export type ToolType = 'polygon' | 'rectangle' | 'line' | 'point' | undefined;
 interface Props {
   imageUrl: string;
   imageSize: {width: number, height: number};
