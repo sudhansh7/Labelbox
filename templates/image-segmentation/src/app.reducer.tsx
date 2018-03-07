@@ -2,12 +2,12 @@
 import { ToolType } from './labeling-screen/segment-image';
 import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
-type Bounds = {lat: number, lng:number}[];
+type Geometry = {lat: number, lng:number}[] | {lat: number, lng: number};
 
 export interface Annotation {
   id: string;
   color: string;
-  bounds: Bounds;
+  geometry: Geometry;
   editing: boolean;
   toolName: ToolType;
   toolId: string;
@@ -28,7 +28,7 @@ export interface AppState {
   deletedAnnotations: Annotation[];
   loading: boolean;
   tools: Tool[];
-  drawnAnnotationBounds: Bounds;
+  drawnAnnotationBounds: Geometry;
   previousLabel?: string;
   nextLabel?: string;
   rectangleInProgressId?: string;
@@ -58,7 +58,7 @@ export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
 };
 
 
-export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: number}[]) => {
+export const onNewAnnotation = (state: AppState, geometry: Geometry): AppState => {
   const currentTool = state.tools.find(({id}) => id === state.currentToolId);
   if (currentTool === undefined) {
     throw new Error('should not be able to add an annotation without a tool');
@@ -71,7 +71,7 @@ export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: numb
       ...state.annotations,
       {
         id: guid(),
-        bounds,
+        geometry,
         color: currentTool.color,
         editing: false,
         toolName: currentTool.tool,
@@ -81,7 +81,7 @@ export const onNewAnnotation = (state: AppState, bounds: {lat: number, lng: numb
   };
 };
 
-export const deleteSelectedAnnotation = (state: AppState) => {
+export const deleteSelectedAnnotation = (state: AppState): AppState => {
   const deleteAnnotationIndex = state.annotations.findIndex(({editing}) => editing === true);
   if (deleteAnnotationIndex !== -1) {
     return {
@@ -128,10 +128,10 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
       return state
     }
     const annotations = classes[className].map((polygon: [number, number][]) => {
-      const bounds = polygon.map(([lng, lat]: [number, number]) => ({lat, lng}))
+      const geometry = polygon.map(([lng, lat]: [number, number]) => ({lat, lng}))
       return {
         id: guid(),
-        bounds,
+        geometry,
         color: tool.color,
         editing: false,
         toolName: tool.tool,
@@ -150,9 +150,9 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
 
 export const generateLabel = (state: AppState) => {
 
-  const getPoints = ({bounds}: Annotation) => {
+  const getPoints = ({geometry}: Annotation) => {
     const toPoint = ({lat: x, lng: y}: {lat: number, lng: number}) => ({x, y});
-    return bounds.map(toPoint);
+    return Array.isArray(geometry) ? geometry.map(toPoint) : toPoint(geometry);
   };
 
   const annotationsByTool = state.annotations.reduce((annotationsByTool, annotation) => {
@@ -249,11 +249,11 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
   }
   const rectId = state.rectangleInProgressId ? state.rectangleInProgressId : guid();
 
-  const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds;
+  const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds as {lat: number, lng: number}[];
   const boxAnnotation:Annotation = {
     id: rectId,
     color: rectangleTool.color,
-    bounds: [
+    geometry: [
       {lat: startLat, lng: startLng},
       {lat: mouseLat, lng: startLng},
       {lat: mouseLat, lng: mouseLng},
@@ -291,7 +291,7 @@ const finalizeTempBoundingBox = (state: AppState) => {
 
 export const userClickedMap = (state: AppState, click: MapClick) => {
   const selectedRectangleTool = getSelectedRectangleTool(state);
-  if (selectedRectangleTool && state.drawnAnnotationBounds.length === 2) {
+  if (selectedRectangleTool && Array.isArray(state.drawnAnnotationBounds) && state.drawnAnnotationBounds.length === 2) {
     return finalizeTempBoundingBox(state);
   } else if (!state.currentToolId && !click.shapeId){
     return editShape(state);
@@ -303,7 +303,7 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
 
 export const mouseMove = (state: AppState, move: MouseMove):AppState | undefined => {
   const selectedRectangleTool = getSelectedRectangleTool(state);
-  if (selectedRectangleTool && state.drawnAnnotationBounds.length === 1) {
+  if (selectedRectangleTool && Array.isArray(state.drawnAnnotationBounds) && state.drawnAnnotationBounds.length === 1) {
     return updateTempBoundingBox(state, move);
   }
   return;

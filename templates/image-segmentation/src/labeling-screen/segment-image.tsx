@@ -127,37 +127,37 @@ export function SegmentImage({
           onDrawnAnnotationUpdate={onDrawnAnnotationUpdate}
         />
       </FeatureGroup>
-      {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, bounds, editing}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, geometry, editing}, index) => (
         <Polygon
           key={id}
-          positions={bounds}
+          positions={geometry}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: LeafletEvent) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id})}}
         />
       ))}
-      {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, bounds, editing}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, geometry, editing}, index) => (
         <Rectangle
           key={id}
-          bounds={latLngBounds(bounds)}
+          bounds={Array.isArray(geometry) && latLngBounds(geometry)}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
-      {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, bounds, editing}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, geometry, editing}, index) => (
         <Polyline
           key={id}
-          positions={bounds}
+          positions={geometry}
           color={color}
           ref={(shape: any) => onShapeCreation(shape, id, editing)}
           onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
         />
       ))}
-      {annotations.filter(({toolName}) => toolName === 'point').map(({id, color, bounds, editing}, index) => (
+      {annotations.filter(({toolName}) => toolName === 'point').map(({id, color, geometry, editing}, index) => (
         <Marker
           key={id}
-          position={bounds}
+          position={geometry}
           icon={getPointIcon(color)}
           color={color}
           draggable={true}
