@@ -14,7 +14,6 @@ import { screenText } from './customization';
 import { LinearProgress } from 'material-ui/Progress';
 import {
   AppState,
-  Tool,
   guid,
   toggleVisiblityOfTool,
   onNewAnnotation,
