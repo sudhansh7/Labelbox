@@ -31,19 +31,6 @@ import {
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
 
-function addPointTool(tools: Tool[]):Tool[] {
-  return [
-    ...tools,
-    {
-      id: guid(),
-      name: 'woot woot point tool',
-      /* color: '#33ecb4',*/
-      color: 'red',
-      tool: 'point'
-    }
-  ];
-}
-
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -83,7 +70,7 @@ const addId = (item: any) => ({id: guid(), ...item});
 class App extends React.Component {
   public state: AppState = {
     ...defaultState,
-    tools: addPointTool(screenText.tools.map(addId))
+    tools: screenText.tools.map(addId)
   };
 
   componentWillMount () {
@@ -157,7 +144,7 @@ class App extends React.Component {
       Labelbox.getTemplateCustomization()
         .subscribe((customization: any) => {
           if (customization.tools) {
-            this.setState({...this.state, tools: addPointTool(customization.tools.map(addId))});
+            this.setState({...this.state, tools: customization.tools.map(addId)});
           }
         });
     })
