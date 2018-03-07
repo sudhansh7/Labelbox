@@ -127,8 +127,9 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
       console.log('Tool not found', className, state);
       return state
     }
-    const annotations = classes[className].map((polygon: [number, number][]) => {
-      const geometry = polygon.map(([lng, lat]: [number, number]) => ({lat, lng}))
+    const annotations = classes[className].map((shape: {x: number, y: number}[]) => {
+      const toCoord = ({x, y}:{x: number, y: number}) => ({lat: x, lng: y});
+      const geometry = Array.isArray(shape) ? shape.map(toCoord) : toCoord(shape);
       return {
         id: guid(),
         geometry,
@@ -176,7 +177,7 @@ export const generateLabel = (state: AppState) => {
     }
     return {
       ...label,
-      [tool.name]: state.annotations.map(getPoints),
+      [tool.name]: annotationsByTool[toolId].map(getPoints),
     }
 
   }, {})
