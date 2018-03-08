@@ -152,10 +152,7 @@ class App extends React.Component {
       Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
         const imageUrl = asset.data;
 
-        this.setState({
-          ...this.state,
-          loading: true
-        });
+        this.startLoading();
         const updateImageInfo = ({height, width}: {height: number, width: number}) => {
           const stateWithTools = {
             ...defaultState,
@@ -185,11 +182,16 @@ class App extends React.Component {
     }
   }
 
-  next(label: {label?: string, skip?: boolean}) {
+  startLoading() {
     this.setState({
       ...this.state,
-      loading: true
+      loading: true,
+      imageInfo: undefined
     });
+  }
+
+  next(label: {label?: string, skip?: boolean}) {
+    this.startLoading();
     getLabelbox().then((Labelbox) => {
       if (label.label) {
         if (!this.state.label) {
@@ -205,10 +207,7 @@ class App extends React.Component {
   }
 
   jumpToNextAsset(){
-    this.setState({
-      ...this.state,
-      loading: true
-    });
+    this.startLoading();
     getLabelbox().then((Labelbox) => {
       Labelbox.fetchNextAssetToLabel();
     });
@@ -225,10 +224,7 @@ class App extends React.Component {
   }
 
   setLabel(labelId: string){
-    this.setState({
-      ...this.state,
-      loading: true
-    });
+    this.startLoading();
     getLabelbox().then((Labelbox) => {
       Labelbox.setLabelAsCurrentAsset(labelId)
     });
@@ -282,7 +278,7 @@ class App extends React.Component {
               />
               { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
               {
-                this.state.imageInfo && <SegmentImage
+                this.state.imageInfo ? <SegmentImage
                   imageUrl={this.state.imageInfo.url}
                   imageSize={this.state.imageInfo}
                   annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
@@ -301,7 +297,7 @@ class App extends React.Component {
                   onMapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
                   onAnnotationEdit={onAnnotationEdit}
                   onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}
-                />
+                /> : <div style={{opacity: 0.6, height: '100%', widht: '100%', backgroundColor: '#dddddd'}}></div>
               }
             </div>
           </div>
