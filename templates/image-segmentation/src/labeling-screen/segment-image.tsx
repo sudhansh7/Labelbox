@@ -66,6 +66,7 @@ interface Props {
   isEditing: boolean;
   onMapClick: (click: MapClick) => void;
   onMouseMove: (move: MouseMove) => void;
+  loading: boolean;
 }
 
 export function SegmentImage({
@@ -80,6 +81,7 @@ export function SegmentImage({
   isEditing,
   onMapClick,
   onMouseMove,
+  loading,
 }: Props) {
 
   const getPointsFromEvent = (e: any) => {
@@ -114,66 +116,68 @@ export function SegmentImage({
   }
 
   return (
-    <Map
-      ref={improveDragging}
-      crs={CRS.Simple}
-      bounds={[[0, 0], [height, width]]}
-      maxZoom={100}
-      minZoom={-2}
-      zoomControl={false}
-      editable={true}
-      onClick={({latlng}:LeafletEvent) => onMapClick({location: latlng})}
-      onMousemove={({latlng}:LeafletEvent) => onMouseMove({location: latlng})}
-      zoomSnap={0.1}
-    >
-      <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
-      <FeatureGroup>
-        <LeafletDraw
-          drawColor={drawColor}
-          selectedTool={selectedTool}
-          onNewAnnotation={onNewAnnotation}
-          onDrawnAnnotationUpdate={onDrawnAnnotationUpdate}
-        />
-      </FeatureGroup>
-      {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, geometry, editing}, index) => (
-        <Polygon
-          key={id}
-          positions={geometry}
-          color={color}
-          ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: LeafletEvent) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id})}}
-        />
-      ))}
-      {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, geometry, editing}, index) => (
-        <Rectangle
-          key={id}
-          bounds={Array.isArray(geometry) && latLngBounds(geometry)}
-          color={color}
-          ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
-        />
-      ))}
-      {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, geometry, editing}, index) => (
-        <Polyline
-          key={id}
-          positions={geometry}
-          color={color}
-          ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
-        />
-      ))}
-      {annotations.filter(({toolName}) => toolName === 'point').map(({id, color, geometry, editing}, index) => (
-        <Marker
-          key={id}
-          position={geometry}
-          icon={getPointIcon(color)}
-          color={color}
-          draggable={true}
-          onDrag={debounce((e: any) => onAnnotationEdit(id, e.latlng), 500)}
-          ref={(shape: any) => onShapeCreation(shape, id, editing)}
-          onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
-        />
-      ))}
-    </Map>
+    <div style={{opacity: loading ? 0.6 : 1, height: '100%', widht: '100%'}}>
+      <Map
+        ref={improveDragging}
+        crs={CRS.Simple}
+        bounds={[[0, 0], [height, width]]}
+        maxZoom={100}
+        minZoom={-2}
+        zoomControl={false}
+        editable={true}
+        onClick={({latlng}:LeafletEvent) => onMapClick({location: latlng})}
+        onMousemove={({latlng}:LeafletEvent) => onMouseMove({location: latlng})}
+        zoomSnap={0.1}
+      >
+        <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
+        <FeatureGroup>
+          <LeafletDraw
+            drawColor={drawColor}
+            selectedTool={selectedTool}
+            onNewAnnotation={onNewAnnotation}
+            onDrawnAnnotationUpdate={onDrawnAnnotationUpdate}
+          />
+        </FeatureGroup>
+        {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, geometry, editing}, index) => (
+          <Polygon
+            key={id}
+            positions={geometry}
+            color={color}
+            ref={(shape: any) => onShapeCreation(shape, id, editing)}
+            onClick={(e: LeafletEvent) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id})}}
+          />
+        ))}
+        {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, geometry, editing}, index) => (
+          <Rectangle
+            key={id}
+            bounds={Array.isArray(geometry) && latLngBounds(geometry)}
+            color={color}
+            ref={(shape: any) => onShapeCreation(shape, id, editing)}
+            onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+          />
+        ))}
+        {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, geometry, editing}, index) => (
+          <Polyline
+            key={id}
+            positions={geometry}
+            color={color}
+            ref={(shape: any) => onShapeCreation(shape, id, editing)}
+            onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+          />
+        ))}
+        {annotations.filter(({toolName}) => toolName === 'point').map(({id, color, geometry, editing}, index) => (
+          <Marker
+            key={id}
+            position={geometry}
+            icon={getPointIcon(color)}
+            color={color}
+            draggable={true}
+            onDrag={debounce((e: any) => onAnnotationEdit(id, e.latlng), 500)}
+            ref={(shape: any) => onShapeCreation(shape, id, editing)}
+            onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+          />
+        ))}
+      </Map>
+    </div>
   );
 }

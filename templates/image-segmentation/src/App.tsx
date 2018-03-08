@@ -187,7 +187,10 @@ class App extends React.Component {
   }
 
   next(label: {label?: string, skip?: boolean}) {
-    this.setState({...this.state, loading: true});
+    this.setState({
+      ...this.state,
+      loading: true
+    });
     getLabelbox().then((Labelbox) => {
       if (label.label) {
         if (!this.state.label) {
@@ -203,6 +206,10 @@ class App extends React.Component {
   }
 
   jumpToNextAsset(){
+    this.setState({
+      ...this.state,
+      loading: true
+    });
     getLabelbox().then((Labelbox) => {
       Labelbox.fetchNextAssetToLabel();
     });
@@ -219,6 +226,10 @@ class App extends React.Component {
   }
 
   setLabel(labelId: string){
+    this.setState({
+      ...this.state,
+      loading: true
+    });
     getLabelbox().then((Labelbox) => {
       Labelbox.setLabelAsCurrentAsset(labelId)
     });
@@ -276,6 +287,7 @@ class App extends React.Component {
                   imageUrl={this.state.imageInfo.url}
                   imageSize={this.state.imageInfo}
                   annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
+                  loading={this.state.loading}
                   drawColor={currentTool ? currentTool.color : undefined}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   isEditing={isEditing}
