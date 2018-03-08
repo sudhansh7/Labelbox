@@ -166,7 +166,6 @@ class App extends React.Component {
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
-            loading: false,
             label: asset.label
           })
         };
@@ -288,6 +287,7 @@ class App extends React.Component {
                   imageSize={this.state.imageInfo}
                   annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
                   loading={this.state.loading}
+                  onImageLoaded={() => this.setState({...this.state, loading: false})}
                   drawColor={currentTool ? currentTool.color : undefined}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   isEditing={isEditing}

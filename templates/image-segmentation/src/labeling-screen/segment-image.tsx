@@ -66,6 +66,7 @@ interface Props {
   isEditing: boolean;
   onMapClick: (click: MapClick) => void;
   onMouseMove: (move: MouseMove) => void;
+  onImageLoaded: () => void;
   loading: boolean;
 }
 
@@ -81,6 +82,7 @@ export function SegmentImage({
   isEditing,
   onMapClick,
   onMouseMove,
+  onImageLoaded,
   loading,
 }: Props) {
 
@@ -115,6 +117,12 @@ export function SegmentImage({
     }
   }
 
+  const notifyImageLoaded = (ref: any) => {
+    if (ref && !ref.leafletElement.listens('load')) {
+      ref.leafletElement.on('load', onImageLoaded);
+    }
+  }
+
   return (
     <div style={{opacity: loading ? 0.6 : 1, height: '100%', widht: '100%'}}>
       <Map
@@ -129,7 +137,7 @@ export function SegmentImage({
         onMousemove={({latlng}:LeafletEvent) => onMouseMove({location: latlng})}
         zoomSnap={0.1}
       >
-        <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} />
+        <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} ref={notifyImageLoaded}/>
         <FeatureGroup>
           <LeafletDraw
             drawColor={drawColor}
