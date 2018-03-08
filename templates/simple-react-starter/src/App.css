@@ -1,0 +1,27 @@
+.App {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #dddddd;
+}
+
+.LabelingFrame{
+  width: 700px;
+  height: 500px;
+  background-color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Divider{
+  display: flex;
+  flex-grow: 1;
+}
+
+.ButtonBar{
+  display: flex;
+  justify-content: flex-end;
+}
