@@ -194,10 +194,18 @@ class App extends React.Component {
     this.startLoading();
     getLabelbox().then((Labelbox) => {
       if (label.label) {
-        if (!this.state.label) {
-          this.jumpToNextAsset();
-        }
-        Labelbox.setLabelForAsset(label.label)
+        // Yea wording is confusing here...
+        // basically if we have a this.state.label it means the user
+        // is reviewing the label and when they click submit they don't
+        // want to jump all the way to the next asset
+        // However, if they are labeling away when they click submit they should
+        // indeed jump to the next asset
+        const goToNextUnlabeledAsset = !this.state.label;
+        Labelbox.setLabelForAsset(label.label).then(() => {
+          if (goToNextUnlabeledAsset){
+            this.jumpToNextAsset();
+          }
+        });
       } else if (label.skip) {
         Labelbox.skip().then(() => this.jumpToNextAsset());
       } else {
