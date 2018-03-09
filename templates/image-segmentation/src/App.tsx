@@ -149,7 +149,13 @@ class App extends React.Component {
     })
 
     getLabelbox().then((Labelbox: any) => {
-      Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string}) => {
+      Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string} | undefined) => {
+        // TODO this this should probably be the signal for all start loading
+        if (!asset){
+          this.startLoading();
+          return;
+        }
+
         const imageUrl = asset.data;
 
         this.startLoading();
