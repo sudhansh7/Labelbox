@@ -74,7 +74,10 @@ class App extends React.Component {
   };
 
   componentWillMount () {
-    (window as any).Labelbox.currentAsset().subscribe((asset: Asset) => {
+    (window as any).Labelbox.currentAsset().subscribe((asset: Asset | undefined) => {
+      if (!asset){
+        return;
+      }
       this.setState({
         imageUrl: asset.data,
         previousLabel: asset.previous,
