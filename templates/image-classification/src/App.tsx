@@ -31,6 +31,20 @@ const Logo = styled.img`
   width: 100px;
 `;
 
+// I load the script async
+const getLabelbox = ():Promise<any> => {
+  if ((window as any).Labelbox){
+    return Promise.resolve((window as any).Labelbox);
+  } else {
+    return new Promise((resolve) => {
+      (window as any).document.getElementById('labelbox-script').addEventListener('load', () => {
+        resolve((window as any).Labelbox);
+      });
+    });
+  }
+}
+
+
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -74,39 +88,62 @@ class App extends React.Component {
   };
 
   componentWillMount () {
-    (window as any).Labelbox.currentAsset().subscribe((asset: Asset | undefined) => {
-      if (!asset){
-        return;
+    const preloadFunction = (asset: Asset) => {
+      const loadImageInDom = (url: string) => {
+        return new Promise((resolve) => {
+          const img = document.createElement('img');
+          img.src = url;
+          img.onload = () => {
+            img.remove();
+            resolve();
+          };
+          img.style.display = 'none',
+          img.style.width = '0px',
+          img.style.height = '0px',
+          document.body.appendChild(img);
+        });
       }
-      this.setState({
-        imageUrl: asset.data,
-        previousLabel: asset.previous,
-        nextLabel: asset.next,
-        label: readAsJson(asset.label),
+      return loadImageInDom(asset.data);
+    }
+
+    getLabelbox().then((Labelbox) => {
+      Labelbox.enablePreloading({preloadFunction});
+      Labelbox.currentAsset().subscribe((asset: Asset | undefined) => {
+        if (!asset){
+          return;
+        }
+        this.setState({
+          imageUrl: asset.data,
+          previousLabel: asset.previous,
+          nextLabel: asset.next,
+          label: readAsJson(asset.label),
+        });
       });
-    });
+    })
   }
 
   next(submission?: {label?: Label, skip?: boolean}){
     this.setState({...this.state, loading: true});
-    const getNext = () => {
-      (window as any).Labelbox.fetchNextAssetToLabel()
-    };
-    if (!submission) {
-      getNext();
-    } else if (submission.label) {
-      (window as any).Labelbox.setLabelForAsset(JSON.stringify(submission.label || '')).then(getNext);
-    } else if (submission.skip) {
-      (window as any).Labelbox.skip().then(getNext);
-    }
+    getLabelbox().then((Labelbox) => {
+      const getNext = () => {
+        Labelbox.fetchNextAssetToLabel()
+      };
+      if (!submission) {
+        getNext();
+      } else if (submission.label) {
+        Labelbox.setLabelForAsset(JSON.stringify(submission.label || '')).then(getNext);
+      } else if (submission.skip) {
+        Labelbox.skip().then(getNext);
+      }
+    })
   }
 
   setLabel(labelId: string){
-    (window as any).Labelbox.setLabelAsCurrentAsset(labelId)
+    getLabelbox().then((Labelbox) => Labelbox.setLabelAsCurrentAsset(labelId));
   }
 
   jumpToNextAsset(){
-    (window as any).Labelbox.fetchNextAssetToLabel();
+    getLabelbox().then((Labelbox) => Labelbox.fetchNextAssetToLabel());
   }
 
   render() {
