@@ -155,18 +155,22 @@ class App extends React.Component {
           }
         });
       const preloadFunction = (asset: Asset) => {
-        return new Promise((resolve) => {
-          const img = document.createElement('img');
-          img.src = asset.data
-          img.onload = () => {
-            img.remove();
-            resolve();
-          };
-          img.style.display = 'none',
-          img.style.width = '0px',
-          img.style.height = '0px',
-          document.body.appendChild(img);
-        });
+        const loadImageInDom = (url: string) => {
+          return new Promise((resolve) => {
+            console.log('preloading being called');
+            const img = document.createElement('img');
+            img.src = url;
+            img.onload = () => {
+              img.remove();
+              resolve();
+            };
+            img.style.display = 'none',
+            img.style.width = '0px',
+            img.style.height = '0px',
+            document.body.appendChild(img);
+          });
+        }
+        return Promise.all([getSizeOnImage(asset.data), loadImageInDom(asset.data)]);
       }
 
       Labelbox.enablePreloading({preloadFunction})
@@ -179,6 +183,8 @@ class App extends React.Component {
           this.startLoading();
           return;
         }
+
+        console.log('currentAsset', asset);
 
         const imageUrl = asset.data;
 
