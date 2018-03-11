@@ -30,6 +30,14 @@ import {
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
 
+interface Asset {
+  id: string,
+  data: string,
+  label: string,
+  next?: string,
+  previous?: string
+}
+
 export const primary = '#5495e3';
 export const theme = createMuiTheme({
   palette: {
@@ -146,10 +154,26 @@ class App extends React.Component {
             this.setState({...this.state, tools: customization.tools.map(addId)});
           }
         });
+      const preloadFunction = (asset: Asset) => {
+        return new Promise((resolve) => {
+          const img = document.createElement('img');
+          img.src = asset.data
+          img.onload = () => {
+            img.remove();
+            resolve();
+          };
+          img.style.display = 'none',
+          img.style.width = '0px',
+          img.style.height = '0px',
+          document.body.appendChild(img);
+        });
+      }
+
+      Labelbox.enablePreloading({preloadFunction})
     })
 
     getLabelbox().then((Labelbox: any) => {
-      Labelbox.currentAsset().subscribe((asset: {id: string, data: string, label: string, next?: string, previous?: string} | undefined) => {
+      Labelbox.currentAsset().subscribe((asset: Asset | undefined) => {
         // TODO this this should probably be the signal for all start loading
         if (!asset){
           this.startLoading();
