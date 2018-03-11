@@ -234,9 +234,12 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 <script>
 function next(label){
   if (label) {
-    Labelbox.setLabelForAsset(label);
+    Labelbox.setLabelForAsset(label).then(() => {
+      Labelbox.fetchNextAssetToLabel().then(drawItem);
+    });
+  } else {
+    Labelbox.fetchNextAssetToLabel().then(drawItem);
   }
-  Labelbox.fetchNextAssetToLabel().then(drawItem);
 }
 
 function drawItem(dataToLabel){
