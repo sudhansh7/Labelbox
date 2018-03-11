@@ -157,7 +157,6 @@ class App extends React.Component {
       const preloadFunction = (asset: Asset) => {
         const loadImageInDom = (url: string) => {
           return new Promise((resolve) => {
-            console.log('preloading being called');
             const img = document.createElement('img');
             img.src = url;
             img.onload = () => {
@@ -183,8 +182,6 @@ class App extends React.Component {
           this.startLoading();
           return;
         }
-
-        console.log('currentAsset', asset);
 
         const imageUrl = asset.data;
 
