@@ -174,7 +174,8 @@ class App extends React.Component {
           imageInfo: {width: 100, height: 100, url: imageUrl},
           previousLabel: asset.previous,
           nextLabel: asset.next,
-          label: asset.label
+          label: asset.label,
+          loading: false,
         })
       });
     });
