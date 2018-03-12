@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {
   Map as MapTyped,
-  ImageOverlay,
+  TileLayer,
   FeatureGroup,
   Polygon as PolygonTyped,
   Polyline as PolylineTyped,
@@ -117,12 +117,6 @@ export function SegmentImage({
     }
   }
 
-  const notifyImageLoaded = (ref: any) => {
-    if (ref && !ref.leafletElement.listens('load')) {
-      ref.leafletElement.on('load', onImageLoaded);
-    }
-  }
-
   return (
     <div style={{opacity: loading ? 0.6 : 1, height: '100%', widht: '100%'}}>
       <Map
@@ -131,13 +125,14 @@ export function SegmentImage({
         bounds={[[0, 0], [height, width]]}
         maxZoom={100}
         minZoom={-2}
+        center={[0,0]}
         zoomControl={false}
         editable={true}
         onClick={({latlng}:LeafletEvent) => onMapClick({location: latlng})}
         onMousemove={({latlng}:LeafletEvent) => onMouseMove({location: latlng})}
         zoomSnap={0.1}
       >
-        <ImageOverlay url={imageUrl} bounds={[[0, 0], [height, width]]} ref={notifyImageLoaded}/>
+        <TileLayer url={'https://s3-us-west-2.amazonaws.com/labelbox/pathology/{z}/{x}/{y}.png'} />
         <FeatureGroup>
           <LeafletDraw
             drawColor={drawColor}

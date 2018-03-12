@@ -23,6 +23,10 @@ const addListener = once((leafletMap: any) => {
 // tslint:disable-next-line
 export const improveDragging = (mapRef: any) => {
   if (mapRef && mapRef.leafletElement) {
+    (window as any).map = mapRef;
+    // TODO hack
+    mapRef.leafletElement.panTo([10,10])
+    mapRef.leafletElement.setZoom(1)
     addListener(mapRef.leafletElement);
   }
 };

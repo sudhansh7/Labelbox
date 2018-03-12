@@ -7,7 +7,6 @@ import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { SegmentImage, MapClick, MouseMove } from './labeling-screen/segment-image';
 import { Toolbar } from './toolbar/toolbar';
-import { getSizeOnImage } from './utils/image-size';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
 import { screenText } from './customization';
@@ -154,25 +153,6 @@ class App extends React.Component {
             this.setState({...this.state, tools: customization.tools.map(addId)});
           }
         });
-      const preloadFunction = (asset: Asset) => {
-        const loadImageInDom = (url: string) => {
-          return new Promise((resolve) => {
-            const img = document.createElement('img');
-            img.src = url;
-            img.onload = () => {
-              img.remove();
-              resolve();
-            };
-            img.style.display = 'none',
-            img.style.width = '0px',
-            img.style.height = '0px',
-            document.body.appendChild(img);
-          });
-        }
-        return Promise.all([getSizeOnImage(asset.data), loadImageInDom(asset.data)]);
-      }
-
-      Labelbox.enablePreloading({preloadFunction})
     })
 
     getLabelbox().then((Labelbox: any) => {
@@ -185,24 +165,17 @@ class App extends React.Component {
 
         const imageUrl = asset.data;
 
-        this.startLoading();
-        const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-          const stateWithTools = {
-            ...defaultState,
-            tools: this.state.tools,
-          };
-          this.setState({
-            ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
-            imageInfo: {width, height, url: imageUrl},
-            previousLabel: asset.previous,
-            nextLabel: asset.next,
-            label: asset.label
-          })
+        const stateWithTools = {
+          ...defaultState,
+          tools: this.state.tools,
         };
-        getSizeOnImage(imageUrl).then(
-          updateImageInfo,
-          () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
-        );
+        this.setState({
+          ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
+          imageInfo: {width: 100, height: 100, url: imageUrl},
+          previousLabel: asset.previous,
+          nextLabel: asset.next,
+          label: asset.label
+        })
       });
     });
 
