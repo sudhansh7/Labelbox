@@ -25,8 +25,8 @@ export const improveDragging = (mapRef: any) => {
   if (mapRef && mapRef.leafletElement) {
     (window as any).map = mapRef;
     // TODO hack
-    mapRef.leafletElement.panTo([10,10])
-    mapRef.leafletElement.setZoom(1)
+    mapRef.leafletElement.panTo([-79,56]);
+    mapRef.leafletElement.setZoom(2);
     addListener(mapRef.leafletElement);
   }
 };
