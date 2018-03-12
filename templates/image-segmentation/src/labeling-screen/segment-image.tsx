@@ -123,7 +123,7 @@ export function SegmentImage({
         ref={improveDragging}
         crs={CRS.Simple}
         bounds={[[0, 0], [height, width]]}
-        maxZoom={100}
+        maxZoom={8.4}
         minZoom={-2}
         center={[0,0]}
         zoomControl={false}
