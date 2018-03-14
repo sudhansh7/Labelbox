@@ -38,8 +38,10 @@ ann_output_dir = './Annotations'
 images_output_dir = './Images'
 
 # call the Labelbox to Pascal conversion
+# NOTE: make sure to specify the correct label_format based on the export
+#  format chosen on Labelbox; 'WKT' or 'XY'.
 lb2pa.from_json(labeled_data=labeled_data, ann_output_dir=ann_output_dir,
-                images_output_dir=images_output_dir)
+                images_output_dir=images_output_dir, label_format='WKT')
 ```
 
 ### Testing
