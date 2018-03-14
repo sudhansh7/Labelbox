@@ -7,7 +7,20 @@ from PIL import Image
 from pascal_voc_writer import Writer as PascalWriter
 
 
-def from_json(labeled_data, ann_output_dir, images_output_dir):
+class Error(Exception):
+    pass
+
+
+class UnknownFormatError(Error):
+    """Exception raised for unknown label_format"""
+
+    def __init__(self, label_format):
+        self.message = ("Provided label_format '{}' is unsupported"
+                        .format(label_format))
+
+
+def from_json(labeled_data, ann_output_dir, images_output_dir,
+              label_format='WKT'):
     """Convert Labelbox JSON export to Pascal VOC format.
 
     Args:
@@ -15,6 +28,8 @@ def from_json(labeled_data, ann_output_dir, images_output_dir):
         ann_output_dir (str): File path of directory to write Pascal VOC
             annotation files.
         images_output_dir (str): File path of directory to write images.
+        label_format (str): Format of the labeled data.
+            Valid options are: "WKT" and "XY", default is "WKT".
 
     Todo:
         * Add functionality to allow use of local copy of an image instead of
@@ -59,17 +74,41 @@ def from_json(labeled_data, ann_output_dir, images_output_dir):
 
         # convert WKT multipolygon to Pascal VOC format
         for cat in data['Label'].keys():
-
-            multipolygon = wkt.loads(data['Label'][cat])
-            for m in multipolygon:
-                xy_coords = []
-                for x, y in m.exterior.coords:
-                    xy_coords.extend([x, height-y])
-                # remove last polygon if it is identical to first point
-                if xy_coords[-2:] == xy_coords[:2]:
-                    xy_coords = xy_coords[:-2]
-                xml_writer.addObject(name=cat, xy_coords=xy_coords)
+            if label_format == 'WKT':
+                xml_writer = add_pascal_object_from_wkt(
+                    xml_writer, img_height=height, wkt_data=data['Label'][cat],
+                    label=cat)
+            elif label_format == 'XY':
+                xml_writer = add_pascal_object_from_xy(
+                    xml_writer, img_height=height, data=data['Label'][cat],
+                    label=cat)
+            else:
+                e = UnknownFormatError(label_format=label_format)
+                print(e.message)
+                raise e
 
         # write Pascal VOC xml annotation for image
         xml_writer.save(os.path.join(ann_output_dir,
                                      '{}.xml'.format(data['ID'])))
+
+
+def add_pascal_object_from_wkt(xml_writer, img_height, wkt_data, label):
+    multipolygon = wkt.loads(wkt_data)
+    for m in multipolygon:
+        xy_coords = []
+        for x, y in m.exterior.coords:
+            xy_coords.extend([x, img_height-y])
+        # remove last polygon if it is identical to first point
+        if xy_coords[-2:] == xy_coords[:2]:
+            xy_coords = xy_coords[:-2]
+        xml_writer.addObject(name=label, xy_coords=xy_coords)
+    return xml_writer
+
+
+def add_pascal_object_from_xy(xml_writer, img_height, data, label):
+    for polygon in data:
+        xy_coords = []
+        for x, y in [(p['x'], p['y']) for p in polygon]:
+            xy_coords.extend([x, img_height-y])
+        xml_writer.addObject(name=label, xy_coords=xy_coords)
+    return xml_writer
