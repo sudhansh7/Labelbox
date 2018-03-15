@@ -226,6 +226,7 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 ### Hello World Example
 
 [Try it in your browser](https://hello-world.labelbox.io)  
+(The project must be setup first)
 
 ### Full Example
 ```html
