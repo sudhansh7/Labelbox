@@ -105,14 +105,34 @@ with the JSON snippet below:
 {
   "tools": [
     {
-      "name": "Object 1",
+      "name": "Car",
       "color": "navy",
       "tool": "polygon"
     },
     {
-      "name": "Object 2",
+      "name": "Tree",
       "color": "green",
+      "tool": "polygon"
+    },
+    {
+      "name": "Road Sign",
+      "color": "orange",
+      "tool": "polygon"
+    },
+    {
+      "name": "Person",
+      "color": "pink",
       "tool": "rectangle"
+    },
+    {
+      "name": "Corner of Building",
+      "color": "red",
+      "tool": "point"
+    },
+        {
+      "name": "Lane divider",
+      "color": "purple",
+      "tool": "line"
     }
   ]
 }
