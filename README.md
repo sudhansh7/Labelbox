@@ -142,8 +142,53 @@ with the JSON snippet below:
 
 
 ### Image Classification Interface
-Classify an image from a set of categories. Categories can be customized in a
-similar fashion to the Image Segmentation Interface example above.
+Classify an image from a set of categories. Classification interface supports single or multi choice forms which can be configured as below:
+
+```
+[
+  {
+    "name": "model",
+    "instructions": "Select the car model",
+    "type": "radio",
+    "required": true,
+    "options": [
+      {
+        "value": "model_s",
+        "label": "Tesla Model S"
+      },
+      {
+        "value": "model_3",
+        "label": "Tesla Model 3"
+      },
+      {
+        "value": "model_x",
+        "label": "Tesla Model X"
+      }
+    ]
+  },
+  {
+    "name": "image_problems",
+    "instructions": "Select all that apply",
+    "type": "checklist",
+    "required": false,
+    "options": [
+      {
+        "value": "blur",
+        "label": "Blurry"
+      },
+      {
+        "value": "saturated",
+        "label": "Over Saturated"
+      },
+      {
+        "value": "pixelated",
+        "label": "Pixelated"
+      }
+    ]
+  }
+]
+```
+
 
 ### Text Classification Interface
 Classify text form a set of categories. Categories can be customized in a
