@@ -101,7 +101,7 @@ tool and the other with a polygon tool. To modify the pre-made Labelbox Image
 Segmentation Interface to support this task, edit the segmentation interface
 with the JSON snippet below:
 
-```
+```json
 {
   "tools": [
     {
@@ -144,7 +144,7 @@ with the JSON snippet below:
 ### Image Classification Interface
 Classify an image from a set of categories. Classification interface supports single or multi choice forms which can be configured as below:
 
-```
+```json
 [
   {
     "name": "model",
@@ -197,7 +197,7 @@ fashion similar to the Image Segmentation Interface example above.
 ## Exporting labels
 Labels can be exported in CSV or JSON format. The coordinates are exported in [WKT strings](https://en.wikipedia.org/wiki/Well-known_text). We recommend using python Shapely to parse the strings.
 
-```
+```python
 from shapely.wkt import loads as wkt_loads
 polygon_wkt= wkt_loads(polygon)
 ```
