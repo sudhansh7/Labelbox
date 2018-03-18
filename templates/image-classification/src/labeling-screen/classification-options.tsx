@@ -4,7 +4,7 @@ import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 import classificationOptions, { FieldTypes } from './screen-text';
 import Checkbox from 'material-ui/Checkbox';
 import List, { ListItem } from 'material-ui/List';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import Button from 'material-ui/Button';
 import { reject, equals } from 'ramda';
 
@@ -17,6 +17,10 @@ const Sidebar = styled.div`
   display: flex;
   flex-grow: 1;
   padding: 20px;
+  ${props => (props as any).disabled && css`
+    opacity: 0.5;
+    pointer-events: none;
+  `}
 `;
 
 const Divider = styled.div`
@@ -71,6 +75,7 @@ export default class ClassificationForm extends React.Component {
     onSubmit: Function,
     onSkip: Function,
     loading: boolean,
+    isSkip: boolean,
   }
   customizationSubscription: {unsubscribe: Function};
 
@@ -98,7 +103,8 @@ export default class ClassificationForm extends React.Component {
       });
     }
     return (
-      <Sidebar>
+      <Sidebar {...this.props.isSkip ? {disabled: true} : {disabled: false}}>
+        {this.props.isSkip && <div style={{color: '#D32F2F', fontSize: '12px', marginBottom: '20px'}}>Editing Skips is not currently supported</div>}
         <div style={{overflowY: 'auto'}}>
           {
             this.state.customization.map((field) => {

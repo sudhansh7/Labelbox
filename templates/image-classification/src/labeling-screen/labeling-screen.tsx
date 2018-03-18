@@ -31,6 +31,7 @@ interface Props {
   label?: Label;
   onSkip: Function;
   onSubmit: Function;
+  isSkip: boolean;
   onLabelUpdate: Function;
   onImageLoad: Function,
   onErrorLoadingImage: Function,
@@ -50,6 +51,7 @@ export class LabelingScreen extends React.Component {
     return (
       <Content>
         <ClassificationForm
+          isSkip={this.props.isSkip}
           label={this.props.label || {}}
           loading={this.props.loading}
           onLabelUpdate={(label: Label) => this.props.onLabelUpdate(label)}
