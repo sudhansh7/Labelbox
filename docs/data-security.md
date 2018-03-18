@@ -27,7 +27,7 @@ Now if you visit `<your-ip-address>:8000` you should see a directory listing wit
 ```
 IP_ADDRESS=$(ifconfig en0 | grep inet | grep -v inet6 | awk '{print $2}')
 CSV=$(echo "Data URL"; for fileName in $(ls); do echo $IP_ADDRESS:8000/$fileName; done)
-echo $CSV > data.csv
+echo "$CSV" > data.csv
 ```
 
 4. Upload data.csv to https://app.labelbox.io/data
