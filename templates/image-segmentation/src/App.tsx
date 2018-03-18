@@ -204,12 +204,13 @@ class App extends React.Component {
             ...defaultState,
             tools: this.state.tools,
           };
+          const newState = (asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools)
           this.setState({
-            ...(asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools),
+            ...newState,
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
-            label: asset.label,
+            label: asset.typeName === 'Skip' ? newState.label : asset.label,
             ... asset.createdAt ?
               {
                 existingLabel: {
@@ -326,7 +327,7 @@ class App extends React.Component {
                 disableSubmit={this.state.annotations.length === 0 || this.state.loading}
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
-                editing={Boolean(this.state.existingLabel && this.state.existingLabel.typeName !== 'Skip')}
+                editing={Boolean(this.state.existingLabel)}
                 pendingEdits={userUpdatedLabel}
                 onReset={() => this.state.label && this.setState(generateStateFromLabel(this.state, this.state.label))}
               />
