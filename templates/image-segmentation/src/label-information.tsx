@@ -1,6 +1,7 @@
 // tslint:disable
 import * as React from 'react';
 import styled from 'styled-components';
+import * as moment from 'moment';
 
 const Information = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ export function LabelInformation(
     <Information>
       {typeName === 'Skip' && (<div style={{color: '#e87d7c'}}>Skipped</div>)}
       <div>{createdBy}</div>
-      <div>{createdAt}</div>
+      <div>{moment.duration(moment().diff(moment(createdAt))).humanize()} ago</div>
     </Information>
   )
 }
