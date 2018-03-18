@@ -7,6 +7,7 @@ const Information = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 13px;
+  color: #4b4b4b;
 `
 
 export function LabelInformation(
