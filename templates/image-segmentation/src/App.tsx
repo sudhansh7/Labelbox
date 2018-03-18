@@ -204,7 +204,7 @@ class App extends React.Component {
             ...defaultState,
             tools: this.state.tools,
           };
-          const newState = (asset.label ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools)
+          const newState = (asset.label && asset.typeName !== 'Skip' ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools)
           this.setState({
             ...newState,
             imageInfo: {width, height, url: imageUrl},
@@ -338,9 +338,9 @@ class App extends React.Component {
                   title="Outline listed objects"
                   hasBack={Boolean(this.state.previousLabel)}
                   goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
-                  hasNext={Boolean(this.state.nextLabel || this.state.label)}
+                  hasNext={Boolean(this.state.existingLabel)}
                   goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
-                  isCurrent={Boolean(!this.state.label)}
+                  isCurrent={Boolean(!this.state.existingLabel)}
                   goCurrent={() => this.jumpToNextAsset()}
                 />
                 {this.state.existingLabel && <LabelInformation {...this.state.existingLabel} />}
