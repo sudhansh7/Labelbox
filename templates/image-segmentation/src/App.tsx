@@ -218,7 +218,9 @@ class App extends React.Component {
                   createdAt: asset.createdAt,
                 }
               } :
-              {},
+              {
+                existingLabel: undefined
+              },
           })
         };
         getSizeOnImage(imageUrl).then(
