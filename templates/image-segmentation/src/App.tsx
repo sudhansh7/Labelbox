@@ -35,7 +35,10 @@ interface Asset {
   data: string,
   label: string,
   next?: string,
-  previous?: string
+  previous?: string,
+  typeName?: string,
+  createdBy?: string,
+  createdAt?: string,
 }
 
 export const primary = '#5495e3';
@@ -196,7 +199,16 @@ class App extends React.Component {
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
-            label: asset.label
+            label: asset.label,
+            ... asset.createdAt ?
+              {
+                existingLabel: {
+                  typeName: asset.typeName,
+                  createdBy: asset.createdBy,
+                  createdAt: asset.createdAt,
+                }
+              } :
+              {},
           })
         };
         getSizeOnImage(imageUrl).then(
@@ -302,7 +314,7 @@ class App extends React.Component {
                 disableSubmit={this.state.annotations.length === 0 || this.state.loading}
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
-                editing={Boolean(this.state.label)}
+                editing={Boolean(this.state.existingLabel && this.state.existingLabel.typeName !== 'Skip')}
                 pendingEdits={userUpdatedLabel}
                 onReset={() => this.state.label && this.setState(generateStateFromLabel(this.state, this.state.label))}
               />

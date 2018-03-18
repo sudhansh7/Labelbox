@@ -29,6 +29,11 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Geometry;
+  existingLabel?: {
+    typeName: 'Any' | 'Skip',
+    createdBy: string,
+    createdAt: string,
+  };
   previousLabel?: string;
   nextLabel?: string;
   rectangleInProgressId?: string;
