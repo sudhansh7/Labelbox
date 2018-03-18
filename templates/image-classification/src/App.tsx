@@ -179,9 +179,9 @@ class App extends React.Component {
               title="Classify Image"
               hasBack={Boolean(this.state.previousLabel)}
               goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
-              hasNext={Boolean(this.state.nextLabel || this.state.label)}
+              hasNext={Boolean(this.state.existingLabel)}
               goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
-              isCurrent={Boolean(!this.state.label)}
+              isCurrent={Boolean(!this.state.existingLabel)}
               goCurrent={() => this.jumpToNextAsset()}
             />
             <div style={{display: 'flex', flexGrow: '1'} as any}></div>
