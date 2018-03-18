@@ -19,7 +19,7 @@ const ActionButtons = styled.div`
   min-height: 36px;
 `;
 
-export function Toolbar(
+export function ToolMenu(
   {
     tools,
     toolChange,

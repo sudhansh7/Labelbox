@@ -6,7 +6,7 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { SegmentImage, MapClick, MouseMove } from './labeling-screen/segment-image';
-import { Toolbar } from './toolbar/toolbar';
+import { ToolMenu } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
@@ -29,6 +29,16 @@ import {
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
+import styled from 'styled-components';
+import { LabelInformation } from './label-information';
+
+const Toolbar = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+`
 
 interface Asset {
   id: string,
@@ -306,7 +316,7 @@ class App extends React.Component {
               <div className="logo" style={{marginBottom: '30px'}}>
                 <img src={logo} width="100px" />
               </div>
-              <Toolbar
+              <ToolMenu
                 tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
                 toolChange={(toolId: string) => this.setTool(toolId)}
@@ -320,15 +330,18 @@ class App extends React.Component {
               />
             </div>
             <div className="labeling-frame">
-              <History
-                title="Outline listed objects"
-                hasBack={Boolean(this.state.previousLabel)}
-                goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
-                hasNext={Boolean(this.state.nextLabel || this.state.label)}
-                goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
-                isCurrent={Boolean(!this.state.label)}
-                goCurrent={() => this.jumpToNextAsset()}
-              />
+              <Toolbar>
+                <History
+                  title="Outline listed objects"
+                  hasBack={Boolean(this.state.previousLabel)}
+                  goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
+                  hasNext={Boolean(this.state.nextLabel || this.state.label)}
+                  goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
+                  isCurrent={Boolean(!this.state.label)}
+                  goCurrent={() => this.jumpToNextAsset()}
+                />
+                {this.state.existingLabel && <LabelInformation {...this.state.existingLabel} />}
+              </Toolbar>
               { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
               {
                 this.state.imageInfo ? <SegmentImage

@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const HistoryContainer = styled.div`
   font-weight: 100;
   font-size: 22px;
-  margin-bottom: 30px;
   display: flex;
 `;
 
