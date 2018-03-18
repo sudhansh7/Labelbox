@@ -9,6 +9,7 @@ import { logo } from './logo';
 import styled from 'styled-components';
 import { History } from './history/history';
 import { LinearProgress } from 'material-ui/Progress';
+import { LabelInformation } from './label-information';
 
 const AppContainer = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const AppContainer = styled.div`
 const Header = styled.div`
   display: flex;
   height: 50px;
+  margin-right: 5vw;
 `;
 
 const Logo = styled.img`
@@ -61,7 +63,11 @@ interface Asset {
   label: string,
   next?: string,
   previous?: string,
+  typeName?: string,
+  createdBy?: string,
+  createdAt?: string,
 }
+
 
 const readAsJson = (str?: string) => {
   if (typeof str !== 'string'){
@@ -82,6 +88,11 @@ class App extends React.Component {
     nextLabel?: string;
     loading: boolean;
     errorLoadingImage: boolean;
+    existingLabel?: {
+      typeName: 'Any' | 'Skip',
+      createdBy: string,
+      createdAt: string,
+    };
   } = {
     loading: true,
     errorLoadingImage: false,
@@ -117,6 +128,17 @@ class App extends React.Component {
           previousLabel: asset.previous,
           nextLabel: asset.next,
           label: readAsJson(asset.label),
+          ... asset.createdAt ?
+            {
+              existingLabel: {
+                typeName: asset.typeName,
+                createdBy: asset.createdBy,
+                createdAt: asset.createdAt,
+              }
+            } :
+            {
+              existingLabel: undefined
+            },
         });
       });
     })
@@ -162,6 +184,8 @@ class App extends React.Component {
               isCurrent={Boolean(!this.state.label)}
               goCurrent={() => this.jumpToNextAsset()}
             />
+            <div style={{display: 'flex', flexGrow: '1'} as any}></div>
+            {this.state.existingLabel && <LabelInformation {...this.state.existingLabel} />}
           </Header>
           <LabelingScreen
             loading={this.state.loading}
