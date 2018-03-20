@@ -109,7 +109,7 @@ export default class ClassificationForm extends React.Component {
           {
             this.state.customization.map((field) => {
               return (
-                <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{paddingBottom: '20px'}}>
+                <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{paddingBottom: '20px', width: '100%'}}>
                   <FormLabel component="legend">{field.instructions}</FormLabel>
                   {
                     field.type === FieldTypes.RADIO ?
