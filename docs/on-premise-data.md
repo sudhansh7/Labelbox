@@ -1,4 +1,4 @@
-# Self Hosting
+# On Premise Data
 
 If your company has hosting security constraints you can decide to self host all your data behind a local network. On a local network Labelbox will not have access to any of your source data but Labelbox will still have access to your generated labels (typically not valueable without source data). If you do setup self hosting some products such as image masks won't be available since Labelbox can't access your data.
 
