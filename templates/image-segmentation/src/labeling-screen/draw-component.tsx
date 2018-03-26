@@ -63,7 +63,6 @@ export class LeafletDraw extends React.Component{
 
     const vertexDrawn = (vertextEvent: any) => {
       onDrawnAnnotationUpdate(vertextEvent.layers.getLayers().map((layer: any) => {
-        console.log('latngs, onDrawnAnnotationUpdate', layer.getLatLng());
         return layer.getLatLng()
       }));
     }

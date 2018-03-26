@@ -155,7 +155,12 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
 
 export const generateLabel = (state: AppState) => {
   const getPoints = ({geometry}: Annotation) => {
-    const toPoint = ({lat: y, lng: x}: {lat: number, lng: number}) => ({x, y});
+    const toPoint = ({lat, lng}: {lat: number, lng: number}) => ({
+      // These leaflet Latlngs have like 13 decimal points
+      // pixels locations dont have decimal points
+      x: Math.round(lng),
+      y: Math.round(lat)
+    });
     return Array.isArray(geometry) ? geometry.map(toPoint) : toPoint(geometry);
   };
 
