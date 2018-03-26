@@ -13,7 +13,7 @@ import { CRS, latLngBounds, DomEvent } from 'leaflet';
 import { Annotation } from '../app.reducer';
 import { improveDragging } from './dragging-fix';
 import 'leaflet-editable';
-import { LeafletDraw } from './draw-component';
+import { LeafletDraw, getPointsFromEvent } from './draw-component';
 import { getPointIcon } from './get-point-icon';
 
 // TODO hack to add editing onto the interface
@@ -85,12 +85,6 @@ export function SegmentImage({
   onImageLoaded,
   loading,
 }: Props) {
-
-  const getPointsFromEvent = (e: any) => {
-    let points = e.layer.getLatLngs();
-    return (Array.isArray(points[0]) ? points[0] : points);
-  }
-
 
   const onShapeCreation = (shape: any, annotationId: string, editingShape: boolean) => {
     if (shape){

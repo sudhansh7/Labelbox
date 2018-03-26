@@ -24,7 +24,14 @@ function setTool(toolName: ToolType) {
   }
 }
 
-const getPointsFromEvent = (e: any) => {
+interface LeafletAnnotationUpdateEvent {
+  layer: {
+    getLatLngs?: () => {lat: number, lng: number}[],
+    getLatLng: () => {lat: number, lng: number},
+  }
+}
+
+export const getPointsFromEvent = (e: LeafletAnnotationUpdateEvent) => {
   let points = e.layer.getLatLngs ? e.layer.getLatLngs() : e.layer.getLatLng();
   return (Array.isArray(points[0]) ? points[0] : points);
 }
@@ -55,7 +62,10 @@ export class LeafletDraw extends React.Component{
     } = this.props;
 
     const vertexDrawn = (vertextEvent: any) => {
-      onDrawnAnnotationUpdate(vertextEvent.layers.getLayers().map((layer: any) => layer.getLatLng()));
+      onDrawnAnnotationUpdate(vertextEvent.layers.getLayers().map((layer: any) => {
+        console.log('latngs, onDrawnAnnotationUpdate', layer.getLatLng());
+        return layer.getLatLng()
+      }));
     }
 
 
