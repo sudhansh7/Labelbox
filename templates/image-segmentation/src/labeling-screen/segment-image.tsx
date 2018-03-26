@@ -130,7 +130,7 @@ export function SegmentImage({
         crs={CRS.Simple}
         bounds={[[0, 0], [height, width]]}
         maxZoom={100}
-        minZoom={-2}
+        minZoom={-50}
         zoomControl={false}
         editable={true}
         onClick={({latlng}:LeafletEvent) => onMapClick({location: latlng})}
