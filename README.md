@@ -208,8 +208,6 @@ You can also convert Labelbox output to COCO or Pascal VOC format using our scri
 * [COCO format](scripts/README.md)
 * [Pascal VOC format](scripts/README.md)
 
-__NOTE__: for 
-
 ### Segmentation Masks
 Labelbox can also export image masks from labels created using the image
 segmentation tools. Using image masks often means less data preparation is
