@@ -24,7 +24,7 @@ import {
   editShape,
   userClickedMap,
   mouseMove,
-  generateStateFromLabel,
+  generateAnnotationsFromLabel,
   removeTempBoundingBox,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
@@ -49,6 +49,21 @@ interface Asset {
   typeName?: string,
   createdBy?: string,
   createdAt?: string,
+}
+
+function hasUserChangedLabel(state: AppState){
+  if (state.label) {
+    // We dont set this.state.label until the user clicks confirm
+    const labelDerviedFromState = generateLabel(state);
+    if (state.label === 'Skip' && labelDerviedFromState === '{}'){
+      return false;
+    }
+    if (state.label !== labelDerviedFromState) {
+      return true;
+    }
+  }
+
+  return false
 }
 
 export const primary = '#5495e3';
@@ -204,13 +219,13 @@ class App extends React.Component {
             ...defaultState,
             tools: this.state.tools,
           };
-          const newState = (asset.label && asset.typeName !== 'Skip' ? generateStateFromLabel(stateWithTools, asset.label) : stateWithTools)
+          const annotations = generateAnnotationsFromLabel(stateWithTools, asset.label);
           this.setState({
-            ...newState,
+            annotations: annotations,
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
-            label: asset.typeName === 'Skip' ? newState.label : asset.label,
+            label: asset.label,
             ... asset.createdAt ?
               {
                 existingLabel: {
@@ -259,7 +274,7 @@ class App extends React.Component {
         // However, if they are labeling away when they click submit they should
         // indeed jump to the next asset
         const goToNextUnlabeledAsset = !this.state.label;
-        Labelbox.setLabelForAsset(label.label).then(() => {
+        Labelbox.setLabelForAsset(label.label, 'Any').then(() => {
           if (goToNextUnlabeledAsset){
             this.jumpToNextAsset();
           }
@@ -300,12 +315,6 @@ class App extends React.Component {
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {geometry: newBounds}));
     };
-
-    let userUpdatedLabel = false;
-    if (this.state.label && this.state.label !== generateLabel(this.state)){
-      userUpdatedLabel = true
-    }
-
     const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
     const isEditing = this.state.annotations.some(({editing}) => editing === true);
     return (
@@ -328,8 +337,11 @@ class App extends React.Component {
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
                 editing={Boolean(this.state.existingLabel)}
-                pendingEdits={userUpdatedLabel}
-                onReset={() => this.state.label && this.setState(generateStateFromLabel(this.state, this.state.label))}
+                pendingEdits={hasUserChangedLabel(this.state)}
+                onReset={() => this.state.label && this.setState({
+                  ...this.state,
+                  annotations: generateAnnotationsFromLabel(this.state, this.state.label)
+                })}
               />
             </div>
             <div className="labeling-frame">

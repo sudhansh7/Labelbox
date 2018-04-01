@@ -118,20 +118,19 @@ const selectToolByName = (state: AppState, toolName: string) => {
   return state.tools.find((tool) => tool.name === toolName);
 }
 
-export const generateStateFromLabel = (state: AppState, label: string):AppState => {
+export const generateAnnotationsFromLabel = (state: AppState, label: string): Annotation[] => {
   const classes = parseIfPossible(label);
   if (!classes){
-    console.log('Error parsing label', label);
-    return state;
+    return [];
   }
 
-  const stateWithClasses = Object.keys(classes).reduce((state, className) => {
+  const annotations = Object.keys(classes).reduce((annotations, className) => {
     const tool = selectToolByName(state, className);
     if (!tool){
       console.log('Tool not found', className, state);
-      return state
+      return annotations
     }
-    const annotations = classes[className].map((shape: {x: number, y: number}[]) => {
+    const newAnnotations = classes[className].map((shape: {x: number, y: number}[]) => {
       const toCoord = ({y, x}:{x: number, y: number}) => ({lat: y, lng: x});
       const geometry = Array.isArray(shape) ? shape.map(toCoord) : toCoord(shape);
       return {
@@ -144,13 +143,10 @@ export const generateStateFromLabel = (state: AppState, label: string):AppState 
       }
     });
 
-    return {
-      ...state,
-      annotations: [...state.annotations, ...annotations]
-    };
-  }, {...state, annotations: []});
+    return [...annotations, ...newAnnotations];
+  }, []);
 
-  return stateWithClasses;
+  return annotations;
 }
 
 export const generateLabel = (state: AppState) => {
