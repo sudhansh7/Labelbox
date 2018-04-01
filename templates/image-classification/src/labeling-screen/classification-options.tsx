@@ -75,7 +75,6 @@ export default class ClassificationForm extends React.Component {
     onSubmit: Function,
     onSkip: Function,
     loading: boolean,
-    isSkip: boolean,
   }
   customizationSubscription: {unsubscribe: Function};
 
@@ -103,8 +102,7 @@ export default class ClassificationForm extends React.Component {
       });
     }
     return (
-      <Sidebar {...this.props.isSkip ? {disabled: true} : {disabled: false}}>
-        {this.props.isSkip && <div style={{color: '#D32F2F', fontSize: '12px', marginBottom: '20px'}}>Editing Skips is not currently supported</div>}
+      <Sidebar>
         <div style={{overflowY: 'auto'}}>
           {
             this.state.customization.map((field) => {

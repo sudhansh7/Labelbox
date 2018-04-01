@@ -188,7 +188,6 @@ class App extends React.Component {
             {this.state.existingLabel && <LabelInformation {...this.state.existingLabel} />}
           </Header>
           <LabelingScreen
-            isSkip={Boolean(this.state.existingLabel && this.state.existingLabel.typeName === 'Skip')}
             loading={this.state.loading}
             errorLoadingImage={this.state.errorLoadingImage}
             label={this.state.label}
