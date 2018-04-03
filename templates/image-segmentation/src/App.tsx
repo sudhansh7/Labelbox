@@ -63,7 +63,16 @@ function hasUserChangedLabel(state: AppState){
     }
   }
 
-  return false
+  // TODO I dont like that state.label isn't saved until we sumbit
+  if (!state.label && state.annotations.length > 0) {
+    return true;
+  }
+
+  return false;
+}
+
+function isSubmitDisabled(state: AppState){
+  return state.loading || !hasUserChangedLabel(state);
 }
 
 export const primary = '#5495e3';
@@ -295,7 +304,7 @@ class App extends React.Component {
   }
 
   submit(){
-    if (this.state.annotations.length > 0) {
+    if (!isSubmitDisabled(this.state)){
       this.next({label: generateLabel(this.state)})
     }
   }
@@ -333,11 +342,10 @@ class App extends React.Component {
                 currentTool={this.state.currentToolId}
                 toolChange={(toolId: string) => this.setTool(toolId)}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
-                disableSubmit={this.state.annotations.length === 0 || this.state.loading}
+                disableSubmit={isSubmitDisabled(this.state)}
                 onSubmit={() => this.submit()}
                 onSkip={() => this.next({skip: true})}
                 editing={Boolean(this.state.existingLabel)}
-                pendingEdits={hasUserChangedLabel(this.state)}
                 onReset={() => this.state.label && this.setState({
                   ...this.state,
                   annotations: generateAnnotationsFromLabel(this.state, this.state.label)

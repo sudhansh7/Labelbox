@@ -29,7 +29,6 @@ export function ToolMenu(
     onSubmit,
     onSkip,
     editing,
-    pendingEdits,
     onReset,
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
@@ -41,7 +40,6 @@ export function ToolMenu(
     onSkip: () => void;
     onReset: () => void;
     editing: boolean;
-    pendingEdits: boolean;
   }) {
   return (
     <div className="toolbar">
@@ -125,8 +123,8 @@ export function ToolMenu(
           editing ?
             (
               <ActionButtons>
-                <Button disabled={!pendingEdits} onClick={() => onReset()}>Reset</Button>
-                <Button disabled={!pendingEdits} color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
+                <Button disabled={disableSubmit} onClick={() => onReset()}>Reset</Button>
+                <Button disabled={disableSubmit} color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
               </ActionButtons>
             ) :
             (
