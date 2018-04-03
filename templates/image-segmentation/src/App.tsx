@@ -31,6 +31,7 @@ import { BrokenImage } from './broken-image';
 import { History } from './history/history';
 import styled from 'styled-components';
 import { LabelInformation } from './label-information';
+import { getQueryParam } from './query-param';
 
 const Toolbar = styled.div`
   display: flex;
@@ -262,6 +263,9 @@ class App extends React.Component {
         return
       }
     }
+
+
+
   }
 
   startLoading() {
@@ -334,9 +338,9 @@ class App extends React.Component {
         <div className="app">
           <div className="content">
             <div className="sidebar">
-              <div className="logo" style={{marginBottom: '30px'}}>
-                <img src={logo} width="100px" />
-              </div>
+              <a href={`https://app.labelbox.io/projects/${getQueryParam('project')}/overview`} style={{marginBottom: '30px'}}>
+                <img src={logo} width="100px" style={{marginLeft: '30px'}}/>
+              </a>
               <ToolMenu
                 tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
                 currentTool={this.state.currentToolId}
