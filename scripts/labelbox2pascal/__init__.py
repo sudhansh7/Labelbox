@@ -72,8 +72,13 @@ def from_json(labeled_data, ann_output_dir, images_output_dir,
         width, height = im.size
         xml_writer = PascalWriter(image_fqn, width, height)
 
-        # convert WKT multipolygon to Pascal VOC format
-        for cat in data['Label'].keys():
+        # remove classification labels (Skip, etc...)
+        labels = data['Label']
+        if not callable(getattr(labels, 'keys', None)):
+            continue
+
+        # convert multipolygon to Pascal VOC format
+        for cat in labels.keys():
             if label_format == 'WKT':
                 xml_writer = add_pascal_object_from_wkt(
                     xml_writer, img_height=height, wkt_data=data['Label'][cat],
