@@ -1,0 +1,430 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Labelbox: March Product Update</title>
+  <style>
+    /* -------------------------------------
+          GLOBAL RESETS
+      ------------------------------------- */
+
+    img {
+      border: none;
+      -ms-interpolation-mode: bicubic;
+      max-width: 100%;
+    }
+
+    love {
+      color: #ff0000;
+    }
+
+    body {
+      background-color: #f6f6f6;
+      font-family: sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    table {
+      border-collapse: separate;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+      width: 100%;
+    }
+
+    table td {
+      font-family: sans-serif;
+      font-size: 14px;
+      vertical-align: top;
+    }
+    /* -------------------------------------
+          BODY & CONTAINER
+      ------------------------------------- */
+
+    .body {
+      background-color: #f6f6f6;
+      width: 100%;
+    }
+    /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+
+    .container {
+      display: block;
+      Margin: 0 auto !important;
+      /* makes it centered */
+      max-width: 580px;
+      padding: 10px;
+      width: 580px;
+    }
+    /* This should also be a block element, so that it will fill 100% of the .container */
+
+    .content {
+      box-sizing: border-box;
+      display: block;
+      Margin: 0 auto;
+      max-width: 580px;
+      padding: 10px;
+    }
+    /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+
+    .main {
+      background: #ffffff;
+      border-radius: 3px;
+      width: 100%;
+    }
+
+    .wrapper {
+      box-sizing: border-box;
+      padding: 20px;
+    }
+
+    .content-block {
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+
+    .footer {
+      clear: both;
+      Margin-top: 10px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .footer td,
+    .footer p,
+    .footer span,
+    .footer a {
+      color: #999999;
+      font-size: 12px;
+      text-align: center;
+    }
+    /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: #000000;
+      font-family: sans-serif;
+      font-weight: 400;
+      line-height: 1.4;
+      margin: 0;
+      Margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 35px;
+      font-weight: 300;
+      text-align: center;
+      text-transform: capitalize;
+    }
+
+    p,
+    ul,
+    ol {
+      font-family: sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0;
+      Margin-bottom: 15px;
+    }
+
+    p li,
+    ul li,
+    ol li {
+      list-style-position: inside;
+      margin-left: 5px;
+    }
+
+    a {
+      color: #3498db;
+      text-decoration: underline;
+    }
+    /* -------------------------------------
+          BUTTONS
+      ------------------------------------- */
+
+    .btn {
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .btn>tbody>tr>td {
+      padding-bottom: 15px;
+    }
+
+    .btn table {
+      width: auto;
+    }
+
+    .btn table td {
+      background-color: #ffffff;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .btn a {
+      background-color: #ffffff;
+      border: solid 1px #3498db;
+      border-radius: 5px;
+      box-sizing: border-box;
+      color: #3498db;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 14px;
+      font-weight: bold;
+      margin: 0;
+      padding: 12px 25px;
+      text-decoration: none;
+      text-transform: capitalize;
+    }
+
+    .btn-primary table td {
+      background-color: #3498db;
+    }
+
+    .btn-primary a {
+      background-color: #3498db;
+      border-color: #3498db;
+      color: #ffffff;
+    }
+    /* -------------------------------------
+          OTHER STYLES THAT MIGHT BE USEFUL
+      ------------------------------------- */
+
+    .last {
+      margin-bottom: 0;
+    }
+
+    .first {
+      margin-top: 0;
+    }
+
+    .align-center {
+      text-align: center;
+    }
+
+    .align-right {
+      text-align: right;
+    }
+
+    .align-left {
+      text-align: left;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .mt0 {
+      margin-top: 0;
+    }
+
+    .mb0 {
+      margin-bottom: 0;
+    }
+
+    .preheader {
+      color: transparent;
+      display: none;
+      height: 0;
+      max-height: 0;
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      mso-hide: all;
+      visibility: hidden;
+      width: 0;
+    }
+
+    .powered-by a {
+      text-decoration: none;
+    }
+
+    hr {
+      border: 0;
+      border-bottom: 1px solid #f6f6f6;
+      Margin: 20px 0;
+    }
+    /* -------------------------------------
+          RESPONSIVE AND MOBILE FRIENDLY STYLES
+      ------------------------------------- */
+
+    @media only screen and (max-width: 620px) {
+      table[class=body] h1 {
+        font-size: 28px !important;
+        margin-bottom: 10px !important;
+      }
+      table[class=body] p,
+      table[class=body] ul,
+      table[class=body] ol,
+      table[class=body] td,
+      table[class=body] span,
+      table[class=body] a {
+        font-size: 16px !important;
+      }
+      table[class=body] .wrapper,
+      table[class=body] .article {
+        padding: 10px !important;
+      }
+      table[class=body] .content {
+        padding: 0 !important;
+      }
+      table[class=body] .container {
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      table[class=body] .main {
+        border-left-width: 0 !important;
+        border-radius: 0 !important;
+        border-right-width: 0 !important;
+      }
+      table[class=body] .btn table {
+        width: 100% !important;
+      }
+      table[class=body] .btn a {
+        width: 100% !important;
+      }
+      table[class=body] .img-responsive {
+        height: auto !important;
+        max-width: 100% !important;
+        width: auto !important;
+      }
+    }
+    /* -------------------------------------
+          PRESERVE THESE STYLES IN THE HEAD
+      ------------------------------------- */
+
+    @media all {
+      .ExternalClass {
+        width: 100%;
+      }
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+      .apple-link a {
+        color: inherit !important;
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        text-decoration: none !important;
+      }
+      .btn-primary table td:hover {
+        background-color: #34495e !important;
+      }
+      .btn-primary a:hover {
+        background-color: #34495e !important;
+        border-color: #34495e !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="">
+  <table border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+      <td>&nbsp;</td>
+      <td class="container">
+        <div class="content">
+
+          <!-- START CENTERED WHITE CONTAINER -->
+          <span class="preheader">Labelbox adds analytics, improved label review and better exports...</span>
+          <table class="main">
+
+            <!-- START MAIN CONTENT AREA -->
+            <tr>
+              <td class="wrapper">
+                <table border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td>
+                      <p>Hello,</p>
+                      <p>
+                        Labelbox is on a mission to enable organizations to easily adapt and train artificial intelligence. Over the past month, we’ve focused our efforts to make Labelbox a better fit inside organizations that are building expert artificial intelligence applications. Read on to learn about new features in Labelbox.
+                      </p>
+                      <!-- <h2>Product updates</h2> -->
+                      <h2>Labeling Metrics</h2>
+                      <p>Project and per-labeler metrics provide you the information necessary to effectively manage the data labeling process to quantitative quality and productivity standards.
+                        <br><br>
+                        Quickly understand labeling activity right from the project overview page.<br>
+                            <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/product-march/analytics.png" width="100%">
+                      </p>
+                      <p>We’ve also added performance metrics per labeler such as time per label and labeling activity overall. These metrics provide insight on ways to ensure labeling accuracy and optimize labeling costs.</p>
+
+                      <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/product-march/analytics2.png" width="100%">
+                      <hr>
+
+                      <h2>Improved Review</h2>
+                      <p>Reviewing labels is an essential part of creating the quality training data needed to build expert AI systems. Labelbox now has a Review Mode that combines with the Activity table to form a flexible review workflow. And, skipped data can be reviewed and edited now too.
+
+                        <h3>New Review screen</h3>
+                          <p>
+                            Review Mode allows you to traverse through all of the data labels quickly and precisely. Use ↑ / ↓ keyboard arrow keys to seek and ←/→ arrow keys to change page.
+                          </p>
+                          <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/product-march/review1.png" width="100%">
+                          <br>
+                          <h3>Review & edit skipped items</h3>
+                            <p>
+                              If you are labeling data, you can go back and make a change to a skipped item. For example, to find and review all skipped images, filter the Activity table on Type and select only Skipped items. Click review on any of the items and Review Mode will open.
+                            </p>
+                            <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/product-march/review2.png" width="100%">
+                          <hr>
+                          <h2>Improved exports</h2>
+
+                          <p>Export generation is now managed in a task bar. Keep using Labelbox while export generation is in progress. Labelbox now supports concurrent exports.</p>
+                          <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/product-march/improved_export.png" width="100%">
+                          <p>Also, you will notice that it is now possible to export image segmentation coordinates in a simple XY format.</p>
+
+                          <h3>Support for popular formats: PASCAL VOC and COCO</h3>
+                          <p>Scripts to easily convert Labelbox output to popular formats are available here: <a href="https://github.com/Labelbox/Labelbox/tree/master/scripts" target="_blank">https://github.com/Labelbox/Labelbox/tree/master/scripts</a></p>
+
+                          <h2>Please support us</h2>
+                          <p>If you like Labelbox, please support us by starring our open source repository on Github: <a href="https://github.com/Labelbox/Labelbox" target="_blank">https://github.com/Labelbox/Labelbox</a></p>
+
+                          <p>Thanks for using Labelbox. I'd love to hear how you plan on using Labelbox in your organization. Is there anything we can build to solve your problems? Anything you'd like to see in Labelbox?</p>
+                          <p>Cheers,<br>Manu Sharma<br>CEO & Co-founder @ Labelbox</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- END MAIN CONTENT AREA -->
+          </table>
+
+          <!-- START FOOTER -->
+          <div class="footer">
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td class="content-block">
+                  <span class="apple-link">© <a href="https://www.labelbox.io/" target="_blank">Labelbox</a> | All rights reserved <br> Made with <love>♥</love> in San Francisco</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- END FOOTER -->
+
+          <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</body>
+
+</html>
