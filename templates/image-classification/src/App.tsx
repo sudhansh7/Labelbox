@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { History } from './history/history';
 import { LinearProgress } from 'material-ui/Progress';
 import { LabelInformation } from './label-information';
+import { getQueryParam } from './query-param';
 
 const AppContainer = styled.div`
   display: flex;
@@ -174,7 +175,9 @@ class App extends React.Component {
         {this.state.loading && (<LinearProgress color="primary" />)}
         <AppContainer>
           <Header>
-            <Logo src={logo} />
+            <a href={`https://app.labelbox.io/projects/${getQueryParam('project')}/overview`} style={{marginBottom: '30px'}}>
+              <Logo src={logo} />
+            </a>
             <History
               title="Classify Image"
               hasBack={Boolean(this.state.previousLabel)}
