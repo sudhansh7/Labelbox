@@ -70,9 +70,16 @@ export function Tool(
         <div
           style={{display: 'flex', flexGrow: '1', alignItems: 'center'} as any}
         >
-          <div style={{display: 'flex', flexDirection: 'column', marginLeft: '15px', lineHeight: '15px', alignItems: 'start'} as any}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginLeft: '15px',
+            lineHeight: '15px',
+            alignItems: 'start',
+            textAlign: 'left',
+          } as any}>
             <div style={{display: 'flex'}}>
-              <div >{name}</div>
+              <div style={{maxWidth: '140px'}}>{name}</div>
               <div style={{marginLeft: '5px'}}>({count})</div>
             </div>
             {

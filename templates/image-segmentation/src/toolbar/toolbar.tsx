@@ -72,7 +72,15 @@ export function ToolMenu(
           <ExpansionPanelDetails style={{display: 'flex', flexDirection: 'column', padding: '0px', overflowY: 'auto', maxHeight: '60vh'}}>
             {
               tools.slice(0, 9).map(({name}, index) => (
-                <div key={index} style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px', textAlign: 'left'} as any}>
+                <div key={index} style={{
+                  display: 'flex',
+                  flexGrow: 1,
+                  borderBottom: '1px solid #c1c1c1',
+                  fontSize: '12px',
+                  padding: '10px 15px',
+                  color: 'grey',
+                  minHeight: '10px',
+                }}>
                   <div style={{display: 'flex', flexGrow: '1'} as any}>
                     <div style={{flex: '60'}}>{name}</div>
                     <div style={{flex: '40'}}>{index + 1}</div>
