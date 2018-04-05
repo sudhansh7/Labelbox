@@ -11,7 +11,8 @@ import Typography from 'material-ui/Typography';
 import Icon from 'material-ui/Icon';
 import styled from 'styled-components';
 /* import ExpandMoreIcon from 'material-ui-icons/ExpandMore';*/
-import { Classification, ClassificationField } from './classification';
+import { Classification,  } from './classification';
+import { ClassificationField } from '../app.reducer';
 
 const ActionButtons = styled.div`
   display: flex;

@@ -1,3 +1,4 @@
+// tslint:disable
 import * as React from 'react';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 import Radio, { RadioGroup } from 'material-ui/Radio';
