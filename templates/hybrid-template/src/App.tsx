@@ -116,7 +116,8 @@ const addId = (item: any) => ({id: guid(), ...item});
 class App extends React.Component {
   public state: AppState = {
     ...defaultState,
-    tools: screenText.tools.map(addId)
+    tools: screenText.tools.map(addId),
+    classifications: screenText.classifications
   };
 
   componentWillMount () {
