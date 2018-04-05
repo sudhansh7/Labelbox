@@ -1,0 +1,78 @@
+.app {
+  display: flex;
+  background-color: #f2f2f2;
+  height: 100vh;
+}
+
+.leaflet-bottom.leaflet-right{
+  display: none;
+}
+
+.content{
+  margin-top: 3vh;
+  margin-right: 5vh;
+  height: 92vh;
+  display: flex;
+  flex-grow: 1;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar{
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo{
+  margin-left: 20px;
+}
+
+.toolbar{
+  box-shadow: 2px 0px 13px #bfbfbf;
+  background-color: white;
+  display: flex;
+  width: 250px;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.labeling-frame {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.form-controls{
+  margin-top: 10px;
+  color: grey;
+}
+
+.sr-only {
+  display: none;
+}
+
+.leaflet-draw.leaflet-control{
+  /* opacity: 0.2; */
+  display: none;
+}
+
+.leaflet-draw-tooltip br{
+  /* display: none; */
+  display: none;
+}
+
+.leaflet-vertex-icon, .leaflet-editing-icon, .leaflet-middle-icon {
+  margin-left: -5px !important;
+  margin-top: -5px !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 100%;
+}
+
+.leaflet-draw-tooltip-subtext{
+  display: none;
+}
