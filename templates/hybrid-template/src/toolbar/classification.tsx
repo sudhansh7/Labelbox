@@ -13,7 +13,12 @@ export interface ClassificationLabel {
 
 export function Classification({field}: {field: ClassificationField}){
   return (
-    <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{paddingBottom: '20px', width: '100%'}}>
+    <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{
+      paddingLeft: '15px',
+      marginTop: '10px',
+      width: '100%',
+      borderBottom: '1px solid #e0e0e0'
+    }}>
       <FormLabel component="legend">{field.instructions}</FormLabel>
       {
         field.type === FieldTypes.RADIO ?
