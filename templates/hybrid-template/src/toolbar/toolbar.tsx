@@ -11,6 +11,7 @@ import Typography from 'material-ui/Typography';
 import Icon from 'material-ui/Icon';
 import styled from 'styled-components';
 /* import ExpandMoreIcon from 'material-ui-icons/ExpandMore';*/
+import { Classification, ClassificationField } from './classification';
 
 const ActionButtons = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const ActionButtons = styled.div`
 export function ToolMenu(
   {
     tools,
+    classifications,
     toolChange,
     currentTool,
     visibilityToggle,
@@ -32,6 +34,7 @@ export function ToolMenu(
     onReset,
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
+    classifications: ClassificationField[],
     toolChange: (id: string | undefined) => void;
     currentTool: string | undefined;
     visibilityToggle: (toolIndex: string) => void;
@@ -62,6 +65,7 @@ export function ToolMenu(
               />
             ))}
           </div>
+          {classifications.map((field) => (<Classification field={field} />))}
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 

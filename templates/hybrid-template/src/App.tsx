@@ -94,7 +94,8 @@ const defaultState = {
   drawnAnnotationBounds: [],
   hiddenTools: [],
   deletedAnnotations: [],
-  tools: []
+  tools: [],
+  classifications: [],
 };
 
 // I load the script async
@@ -189,7 +190,11 @@ class App extends React.Component {
       Labelbox.getTemplateCustomization()
         .subscribe((customization: any) => {
           if (customization.tools) {
-            this.setState({...this.state, tools: customization.tools.map(addId)});
+            this.setState({
+              ...this.state,
+              tools: customization.tools.map(addId),
+              classifications: customization.tools
+            });
           }
         });
       const preloadFunction = (asset: Asset) => {
@@ -343,6 +348,7 @@ class App extends React.Component {
               </a>
               <ToolMenu
                 tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
+                classifications={this.state.classifications}
                 currentTool={this.state.currentToolId}
                 toolChange={(toolId: string) => this.setTool(toolId)}
                 visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}

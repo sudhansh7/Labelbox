@@ -4,6 +4,22 @@ import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
 type Geometry = {lat: number, lng:number}[] | {lat: number, lng: number};
 
+export enum FieldTypes {
+  CHECKLIST = 'checklist',
+  RADIO = 'radio',
+}
+
+export interface ClassificationField {
+  name: string,
+  instructions: string,
+  required: boolean,
+  type: FieldTypes,
+  options: {
+    label: string, value: string
+  }[],
+};
+
+
 export interface Annotation {
   id: string;
   color: string;
@@ -29,6 +45,7 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Geometry;
+  classifications: ClassificationField[]
   existingLabel?: {
     typeName: 'Any' | 'Skip',
     createdBy: string,
