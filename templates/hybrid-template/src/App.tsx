@@ -189,11 +189,12 @@ class App extends React.Component {
       // TODO will probably need erro handleing here
       Labelbox.getTemplateCustomization()
         .subscribe((customization: any) => {
-          if (customization.tools) {
+          if (customization.tools || customization.classifications) {
             this.setState({
               ...this.state,
               tools: customization.tools.map(addId),
-              classifications: customization.tools
+              // TODO
+              /* classifications: customization.classifications || []*/
             });
           }
         });
