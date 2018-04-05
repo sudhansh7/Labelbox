@@ -1,4 +1,7 @@
-import { FieldTypes } from './app.reducer';
+enum FieldTypes {
+  CHECKLIST = 'checklist',
+  RADIO = 'radio',
+}
 
 export const screenText = {
   tools: [

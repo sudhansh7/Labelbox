@@ -1,9 +1,46 @@
 import { ToolType } from './labeling-screen/segment-image';
 import { MapClick, MouseMove } from './labeling-screen/segment-image';
+import { screenText } from './customization';
+const addId = (item: any) => ({id: guid(), ...item});
 
-export const appReducer = (state: any = {}, action: any = {}) => {
-  console.log('appReducer', state, action);
-  return state;
+const defaultState = {
+  loading: true,
+  imageInfo: undefined,
+  currentToolId: undefined,
+  annotations: [],
+  drawnAnnotationBounds: [],
+  hiddenTools: [],
+  deletedAnnotations: [],
+  tools: screenText.tools.map(addId),
+  classifications: screenText.classifications
+};
+
+enum Actions {
+  // TODO this is just a temporary action so I can move everything into redux
+  SYNC = 'SYNC'
+}
+
+// TODO delete
+export function syncState(newState: AppState){
+  return {
+    type: Actions.SYNC,
+    payload: {
+      state: newState
+    }
+  }
+}
+
+
+export const appReducer = (state: AppState = defaultState, action: any = {}) => {
+  const { type, payload } = action;
+  switch (type) {
+    case Actions.SYNC:{
+      return payload.state;
+    }
+    default: {
+      return state;
+    }
+  }
 }
 
 
