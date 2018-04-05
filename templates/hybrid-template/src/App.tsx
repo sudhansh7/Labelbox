@@ -114,6 +114,9 @@ const getLabelbox = ():Promise<any> => {
 const addId = (item: any) => ({id: guid(), ...item});
 
 class App extends React.Component {
+  public props: {
+    state: AppState
+  };
   public state: AppState = {
     ...defaultState,
     tools: screenText.tools.map(addId),
@@ -332,6 +335,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('Redux State', this.props.state);
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       this.setState(updateAnnotation(this.state, annotationId, {geometry: newBounds}));
     };

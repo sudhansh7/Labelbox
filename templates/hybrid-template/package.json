@@ -17,6 +17,7 @@
     "react-leaflet": "^1.8.0",
     "react-leaflet-draw": "^0.18.0",
     "react-scripts-ts": "2.13.0",
+    "redux": "^3.7.2",
     "rxjs": "^5.5.6",
     "serve": "^6.4.9",
     "styled-components": "^3.1.6",
@@ -47,12 +48,12 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^21.1.8",
     "@types/node": "^9.4.0",
     "@types/react": "^16.0.35",
     "@types/react-dom": "^16.0.3",
-    "typescript": "^2.6.2",
-    "@types/jest": "^21.1.8",
+    "jest": "20.0.4",
     "ts-jest": "^20.0.7",
-    "jest": "20.0.4"
+    "typescript": "^2.6.2"
   }
 }
