@@ -15,7 +15,7 @@ export function Classification({field}: {field: ClassificationField}){
   return (
     <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{
       paddingLeft: '15px',
-      marginTop: '10px',
+      marginTop: '15px',
       width: '100%',
       borderBottom: '1px solid #e0e0e0'
     }}>
