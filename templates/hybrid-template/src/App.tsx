@@ -89,6 +89,7 @@ export const theme = createMuiTheme({
   }
 });
 
+// TODO I  would like to delete as I have two now
 const defaultState = {
   loading: true,
   imageInfo: undefined,
@@ -122,11 +123,6 @@ class App extends React.Component {
   public props: {
     state: AppState
   };
-  /* public state: AppState = {*/
-  /* ...defaultState,*/
-  /* tools: screenText.tools.map(addId),*/
-  /* classifications: screenText.classifications*/
-  /* };*/
 
   componentWillMount () {
     // TODO kinda of of a hack to have this function here
