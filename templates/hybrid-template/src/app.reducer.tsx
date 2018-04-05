@@ -1,6 +1,12 @@
 import { ToolType } from './labeling-screen/segment-image';
 import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
+export const appReducer = (state: any = {}, action: any = {}) => {
+  console.log('appReducer', state, action);
+  return state;
+}
+
+
 type Geometry = {lat: number, lng:number}[] | {lat: number, lng: number};
 
 export enum FieldTypes {

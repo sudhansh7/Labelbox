@@ -112,6 +112,8 @@ const getLabelbox = ():Promise<any> => {
 
 const addId = (item: any) => ({id: guid(), ...item});
 
+// TODO the goal is make this a function
+// goint to be some code haha
 class App extends React.Component {
   public props: {
     state: AppState
