@@ -1,4 +1,3 @@
-// tslint:disable
 import { ToolType } from './labeling-screen/segment-image';
 import { MapClick, MouseMove } from './labeling-screen/segment-image';
 
@@ -141,7 +140,7 @@ export const generateAnnotationsFromLabel = (state: AppState, label: string): An
     return [];
   }
 
-  const annotations = Object.keys(classes).reduce((annotations, className) => {
+  return Object.keys(classes).reduce((annotations, className) => {
     const tool = selectToolByName(state, className);
     if (!tool){
       console.log('Tool not found', className, state);
@@ -162,8 +161,6 @@ export const generateAnnotationsFromLabel = (state: AppState, label: string): An
 
     return [...annotations, ...newAnnotations];
   }, []);
-
-  return annotations;
 }
 
 export const generateLabel = (state: AppState) => {
@@ -177,27 +174,27 @@ export const generateLabel = (state: AppState) => {
     return Array.isArray(geometry) ? geometry.map(toPoint) : toPoint(geometry);
   };
 
-  const annotationsByTool = state.annotations.reduce((annotationsByTool, annotation) => {
-    if (!annotationsByTool[annotation.toolId]) {
-      annotationsByTool[annotation.toolId] = []
+  const annotationsByTool = state.annotations.reduce((annotationsByToolTemp, annotation) => {
+    if (!annotationsByToolTemp[annotation.toolId]) {
+      annotationsByToolTemp[annotation.toolId] = []
     }
 
     return {
-      ...annotationsByTool,
+      ...annotationsByToolTemp,
       [annotation.toolId]: [
-        ...annotationsByTool[annotation.toolId],
+        ...annotationsByToolTemp[annotation.toolId],
         annotation
       ]
     };
   }, {})
 
-  const label = Object.keys(annotationsByTool).reduce((label, toolId) => {
+  const label = Object.keys(annotationsByTool).reduce((labelTemp, toolId) => {
     const tool = state.tools.find(({id}) => id === toolId);
     if (!tool) {
       throw new Error('tool not foudn' + toolId);
     }
     return {
-      ...label,
+      ...labelTemp,
       [tool.name]: annotationsByTool[toolId].map(getPoints),
     }
 
@@ -271,6 +268,7 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
   }
   const rectId = state.rectangleInProgressId ? state.rectangleInProgressId : guid();
 
+  // tslint:disable-next-line
   const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds as {lat: number, lng: number}[];
   const boxAnnotation:Annotation = {
     id: rectId,

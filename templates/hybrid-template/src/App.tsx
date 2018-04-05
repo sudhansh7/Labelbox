@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 import './App.css';
 import './icons.css';
@@ -131,9 +130,9 @@ class App extends React.Component {
       if (this.state.currentToolId){
 
         const selector = '.leaflet-draw-actions a[title="Delete last point drawn"]';
-        const undo: HTMLElement | null = document.querySelector(selector);
-        if (undo) {
-          undo.click();
+        const undoElement: HTMLElement | null = document.querySelector(selector);
+        if (undoElement) {
+          undoElement.click();
         }
       } else {
         if (this.state.deletedAnnotations.length > 0) {
@@ -177,7 +176,7 @@ class App extends React.Component {
       .merge(keyDownSteam('9'))
       .merge(keyDownSteam('0'))
       .subscribe((key) => {
-        const tool = this.state.tools[parseInt(key) - 1]
+        const tool = this.state.tools[parseInt(key, 10) - 1]
         if (tool){
           this.setTool(tool.id);
         }

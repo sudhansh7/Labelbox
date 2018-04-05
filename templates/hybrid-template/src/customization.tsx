@@ -1,4 +1,3 @@
-// tslint:disable
 import { FieldTypes } from './app.reducer';
 
 export const screenText = {

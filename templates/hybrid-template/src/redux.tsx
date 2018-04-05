@@ -1,4 +1,3 @@
-// tslint:disable
 import { combineReducers, createStore } from "redux";
 
 const appReducer = (state: any = {}, action: any = {}) => {

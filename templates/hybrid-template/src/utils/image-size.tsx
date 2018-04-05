@@ -1,4 +1,3 @@
-// tslint:disable
 // TODO name this better (mind blanking for what this is called);
 function returnSameItemForSameParamaters(func: Function){
   const calls = {};

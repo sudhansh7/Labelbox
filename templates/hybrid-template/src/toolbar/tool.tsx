@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 /* import { Circle } from './circle';*/
 import Icon from 'material-ui/Icon';
@@ -36,7 +35,6 @@ export function Tool(
           display: 'flex',
           alignItems: 'center',
           backgroundColor: 'none',
-          // tslint:disable-next-line
         } as any}
         onClick={visibilityToggle}
       >
@@ -61,7 +59,6 @@ export function Tool(
           textTransform: 'none',
           borderRadius: '0px',
           borderBottom: '1px solid #c1c1c1'
-          // tslint:disable-next-line
         } as any}
         color={selected ? 'primary' : 'inherit'}
         raised={selected}
@@ -88,7 +85,6 @@ export function Tool(
               </div>
             }
           </div>
-          {/* tslint:disable-next-line */}
           <div style={{display: 'flex', flexGrow: '1'} as any}></div>
         </div>
       </Button>

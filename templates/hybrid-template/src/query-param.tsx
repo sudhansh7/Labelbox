@@ -1,4 +1,3 @@
-// tslint:disable
 export function getQueryParam(name: string) {
   const queryString: {[queryparam: string]: any} = {};
   const query = window.location.search.substring(1);

@@ -1,4 +1,3 @@
-// tslint:disable
 import { Observable } from 'rxjs';
 
 const keyMap = {

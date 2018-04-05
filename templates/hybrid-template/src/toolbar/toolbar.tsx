@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 import { Tool } from './tool';
 import Button from 'material-ui/Button';
@@ -49,7 +48,6 @@ export function ToolMenu(
     <div className="toolbar">
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', width: '100%'} as any}>
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-          {/* tslint:disable-next-line */}
           <div style={{margin: '20px 15px 10px', fontWeight: '500', color: '#5b5b5b'} as any}>Select a class below</div>
           <div style={{overflowY: 'auto'}}>
             {tools.map(({id, name, color, count, visible, tool}, index) => (
