@@ -10,7 +10,23 @@ export interface ClassificationLabel {
   [classificationName: string]: string | string[]
 }
 
-export function Classification({field}: {field: ClassificationField}){
+function toggleValue(items: string[] = [], item: string){
+  console.log(items, item)
+  const index = items.findIndex((str) => str === item);
+  if (index === -1){
+    return [...items, item];
+  } else {
+    return [
+      ...items.slice(0, index),
+      ...items.slice(index + 1),
+    ]
+  }
+}
+
+export function Classification(
+  {field, answer, onAnswer}:
+  {field: ClassificationField, answer?: string | string[], onAnswer: (answer: string | string[]) => void}
+){
   return (
     <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{
       paddingLeft: '15px',
@@ -21,10 +37,9 @@ export function Classification({field}: {field: ClassificationField}){
       <FormLabel component="legend">{field.instructions}</FormLabel>
       {
         field.type === FieldTypes.RADIO ?
-          // TODO will need to fill in check and on change
           ( <RadioGroup
-            value={''}
-            onChange={(event, value) => console.log('field changed', event, value)}
+            value={answer as string}
+            onChange={(_, value) => onAnswer(value)}
             >
             {
               field.options.map(({value, label}:{value: string, label: string}) => (
@@ -34,15 +49,14 @@ export function Classification({field}: {field: ClassificationField}){
           </RadioGroup> ) :
           ( <List>
             {
-              // TODO will need to fill in check and on change
               field.options.map(({value, label}:{value: string, label: string}) => (
                 <ListItem value={value} disableGutters={true} style={{padding: '0px'}} key={value}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         color="primary"
-                        checked={false}
-                        onChange={(e) => console.log(field.name, e.target.checked, value)}
+                        checked={((answer || []) as string[]).indexOf(value) !== -1}
+                        onChange={(e) => onAnswer(toggleValue(answer as string[], value))}
                       />
                     }
                     label={label}

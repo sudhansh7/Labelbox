@@ -30,6 +30,7 @@ export function ToolMenu(
     disableSubmit,
     onSubmit,
     onSkip,
+    onClassificationAnswer,
     editing,
     onReset,
   }: {
@@ -40,6 +41,7 @@ export function ToolMenu(
     visibilityToggle: (toolIndex: string) => void;
     disableSubmit: boolean;
     onSubmit: () => void;
+    onClassificationAnswer: (fieldId: string, answer: string | string[]) => void;
     onSkip: () => void;
     onReset: () => void;
     editing: boolean;
@@ -64,7 +66,13 @@ export function ToolMenu(
               />
             ))}
           </div>
-          {classificationFields.map((field) => (<Classification key={field.id} field={field} />))}
+          {classificationFields.map((field) => (
+            <Classification
+              key={field.id}
+              field={field}
+              answer={field.userAnswer}
+              onAnswer={(answer: string | string[]) => onClassificationAnswer(field.id, answer)}
+            />))}
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 

@@ -26,6 +26,7 @@ import {
   syncState,
   userClickedSetTool,
   imageFinishedLoading,
+  userAnsweredClassification,
 } from './app.reducer';
 import { selectIntentFromMapClick } from './app.selectors';
 import { BrokenImage } from './broken-image';
@@ -346,6 +347,7 @@ class App extends React.Component {
                 visibilityToggle={(toolId: string) => dispatch(syncState(toggleVisiblityOfTool(this.props.state, toolId)))}
                 disableSubmit={isSubmitDisabled(this.props.state)}
                 onSubmit={() => this.submit()}
+                onClassificationAnswer={(fieldId: string, answer: string | string[]) => dispatch(userAnsweredClassification(fieldId, answer))}
                 onSkip={() => this.next({skip: true})}
                 editing={Boolean(this.props.state.existingLabel)}
                 onReset={() => this.props.state.label && dispatch(syncState({
