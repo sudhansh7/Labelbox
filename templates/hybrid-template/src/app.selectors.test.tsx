@@ -1,8 +1,14 @@
+import {
+  appReducer,
+  userFinishedAnnotation,
+} from './app.reducer';
+import {
+  createMockGeometry,
+  selectFirstTool,
+  reduceActions,
+} from './app.reducer.test';
+import { selectLabelFromState } from './app.selectors';
 
-/* import {*/
-/* appReducer*/
-/* } from './app.reducer';*/
-/* import { selectIntentFromMapClick } from './app.selectors';*/
 
 // TODO finish these tests
 describe('app.selectors', () => {
@@ -20,4 +26,21 @@ describe('app.selectors', () => {
       expect(1).toEqual(1);
     });
   });
+
+  describe('selectLabelFromState', () => {
+    it('should return a blank string if there are no labels', () => {
+      expect(selectLabelFromState(appReducer())).toEqual('{}');
+    });
+
+    it('should return a segmentation as xy', () => {
+      const state = appReducer(undefined);
+      const finalState = reduceActions(appReducer, [
+        selectFirstTool(state),
+        userFinishedAnnotation(createMockGeometry()),
+      ], state);
+      expect(selectLabelFromState(finalState)).toEqual('{\"Vegetation\":[[{\"x\":0,\"y\":0},{\"x\":1,\"y\":0},{\"x\":0,\"y\":1},{\"x\":1,\"y\":1}]]}');
+    });
+
+  });
+
 });
