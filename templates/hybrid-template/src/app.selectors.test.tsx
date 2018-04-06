@@ -1,6 +1,7 @@
 import {
   appReducer,
   userFinishedAnnotation,
+  userAnsweredClassification,
 } from './app.reducer';
 import {
   createMockGeometry,
@@ -50,13 +51,24 @@ describe('app.selectors', () => {
     });
 
 
-    it('should ', () => {
+    it('should return classification items', () => {
       const state = appReducer(undefined);
+      const fieldId = state.classificationFields[0].id;
       const finalState = reduceActions(appReducer, [
         selectFirstTool(state),
         userFinishedAnnotation(createMockGeometry()),
+        userAnsweredClassification(fieldId, 'model_s')
       ], state);
-      expect(selectLabelFromState(finalState)).toEqual('{\"Vegetation\":[[{\"x\":0,\"y\":0},{\"x\":1,\"y\":0},{\"x\":0,\"y\":1},{\"x\":1,\"y\":1}]]}');
+
+      expect(selectLabelFromState(finalState)).toEqual(JSON.stringify({
+        Vegetation: [[
+          {x: 0, y: 0},
+          {x: 1, y: 0},
+          {x: 0, y: 1},
+          {x: 1, y: 1},
+        ]],
+        model: 'model_s'
+      }));
     });
 
   });
