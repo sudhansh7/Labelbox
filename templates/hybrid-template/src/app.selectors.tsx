@@ -5,6 +5,7 @@ import {
   userClickedAnnotation,
   Action,
   Annotation,
+  ClassificationField,
 } from './app.reducer';
 import { guid } from './utils/utils';
 import { MapClick } from './labeling-screen/segment-image';
@@ -15,7 +16,11 @@ export const getSelectedRectangleTool = (state: AppState) => {
 
 export const selectIntentFromMapClick = (state: AppState, click: MapClick): Action | undefined => {
   const selectedRectangleTool = getSelectedRectangleTool(state);
-  if (selectedRectangleTool && Array.isArray(state.drawnAnnotationBounds) && state.drawnAnnotationBounds.length === 2) {
+  if (
+    selectedRectangleTool &&
+    Array.isArray(state.drawnAnnotationBounds) &&
+    state.drawnAnnotationBounds.length === 2
+  ) {
     return userCompletedBoundingBox();
   } else if (!state.currentToolId && !click.shapeId){
     return userDeselectedAnnotation();
@@ -67,6 +72,11 @@ export const selectAnnotationsFromLabel = (state: AppState, label: string): Anno
 
     return [...annotations, ...newAnnotations];
   }, []);
+}
+
+
+export const selectClassificationFieldsFromLabel = (state: AppState, label: string): ClassificationField[] => {
+  return []
 }
 
 
