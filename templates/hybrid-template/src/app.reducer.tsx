@@ -35,7 +35,6 @@ enum Actions {
 
 // TODO delete
 export function syncState(newState: AppState){
-  console.log('TODO your done yet you need to remove this action');
   return {
     type: Actions.SYNC,
     payload: {

@@ -301,7 +301,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('Redux State', this.props.state);
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
       dispatch(syncState(updateAnnotation(this.props.state, annotationId, {geometry: newBounds})));
     };
