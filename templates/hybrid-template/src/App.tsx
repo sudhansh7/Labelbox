@@ -20,12 +20,13 @@ import {
   generateLabel,
   selectToolbarState,
   updateAnnotation,
-  editShape,
+  deselectAllAnnotations,
   userClickedMap,
   mouseMove,
   generateAnnotationsFromLabel,
   removeTempBoundingBox,
   syncState,
+  userClickedSetTool,
 } from './app.reducer';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
@@ -158,7 +159,10 @@ class App extends React.Component {
 
     keyDownSteam('escape').subscribe(() => {
       // Turn off current tool and editing
-      dispatch(syncState({...editShape(removeTempBoundingBox(this.props.state)), currentToolId: undefined}));
+      dispatch(syncState({
+        ...deselectAllAnnotations(removeTempBoundingBox(this.props.state)),
+        currentToolId: undefined
+      }));
     });
 
     keyDownSteam('f').subscribe(() => {
@@ -180,7 +184,7 @@ class App extends React.Component {
       .subscribe((key) => {
         const tool = this.props.state.tools[parseInt(key, 10) - 1]
         if (tool){
-          this.setTool(tool.id);
+          dispatch(userClickedSetTool(tool.id));
         }
       });
 
@@ -327,10 +331,6 @@ class App extends React.Component {
     }
   }
 
-  setTool(toolId: string) {
-    dispatch(syncState({...editShape(this.props.state), currentToolId: toolId}));
-  }
-
   setLabel(labelId: string){
     this.startLoading();
     getLabelbox().then((Labelbox) => {
@@ -360,7 +360,7 @@ class App extends React.Component {
                 tools={selectToolbarState(this.props.state.tools, this.props.state.annotations, this.props.state.hiddenTools)}
                 classifications={this.props.state.classifications}
                 currentTool={this.props.state.currentToolId}
-                toolChange={(toolId: string) => this.setTool(toolId)}
+                toolChange={(toolId: string) => dispatch(userClickedSetTool(toolId))}
                 visibilityToggle={(toolId: string) => dispatch(syncState(toggleVisiblityOfTool(this.props.state, toolId)))}
                 disableSubmit={isSubmitDisabled(this.props.state)}
                 onSubmit={() => this.submit()}

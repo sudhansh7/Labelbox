@@ -17,11 +17,13 @@ const defaultState = {
 
 enum Actions {
   // TODO this is just a temporary action so I can move everything into redux
-  SYNC = 'SYNC'
+  SYNC = 'SYNC',
+  USER_CLICKED_SET_TOOL = 'USER_CLICKED_SET_TOOL',
 }
 
 // TODO delete
 export function syncState(newState: AppState){
+  console.log('TODO your done yet you need to remove this action');
   return {
     type: Actions.SYNC,
     payload: {
@@ -30,12 +32,26 @@ export function syncState(newState: AppState){
   }
 }
 
+export function userClickedSetTool(toolId: string) {
+  console.log('SET TOOL', toolId)
+  return {
+    type: Actions.USER_CLICKED_SET_TOOL,
+    payload: {toolId}
+  }
+}
+
 
 export const appReducer = (state: AppState = defaultState, action: any = {}) => {
   const { type, payload } = action;
   switch (type) {
-    case Actions.SYNC:{
+    case Actions.SYNC: {
       return payload.state;
+    }
+    case Actions.USER_CLICKED_SET_TOOL: {
+      return {
+        ...deselectAllAnnotations(state),
+        currentToolId: payload.toolId
+      };
     }
     default: {
       return state;
@@ -279,15 +295,18 @@ export const updateAnnotation = (state: AppState, annotationId: string, fields: 
   };
 };
 
-export const editShape = (state: AppState, annotationId?: string) => {
-  let updatedState = state.annotations.filter(({editing}) => editing)
+export function deselectAllAnnotations(state: AppState) {
+  return state.annotations.filter(({editing}) => editing)
     .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), state);
+}
 
-  if (annotationId) {
-    updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
-  }
 
-  return updatedState;
+export const userSelectedAnnotationToEdit = (state: AppState, annotationId: string) => {
+  return updateAnnotation(
+    deselectAllAnnotations(state),
+    annotationId,
+    {editing: true}
+  )
 };
 
 
@@ -357,9 +376,9 @@ export const userClickedMap = (state: AppState, click: MapClick) => {
   if (selectedRectangleTool && Array.isArray(state.drawnAnnotationBounds) && state.drawnAnnotationBounds.length === 2) {
     return finalizeTempBoundingBox(state);
   } else if (!state.currentToolId && !click.shapeId){
-    return editShape(state);
+    return deselectAllAnnotations(state);
   } else if (click.shapeId){
-    return editShape(state, click.shapeId);
+    return userSelectedAnnotationToEdit(state, click.shapeId);
   }
   return state;
 }
