@@ -123,10 +123,44 @@ describe('app.selectors', () => {
     });
 
     describe('state does have a label', () => {
-      it('current label is Skip and the user hasnt made any changes', () => {
+      it('no unsaved changes if the current label is Skip and the user hasnt made any changes', () => {
+        const state = {
+          ...appReducer(),
+          // TODO this should be an action
+          label: 'Skip'
+        };
+        expect(selectDoesStateIncludeUnsavedChanges(state)).toEqual(false);
       });
-      it('', () => {});
-      it('', () => {});
+      it('there are unsaved changes if the current label is Skip and the user has made changes', () => {
+        const state = {
+          ...appReducer(undefined),
+          label: 'Skip'
+        };
+        const fieldId = state.classificationFields[0].id;
+        const finalState = appReducer(state, userAnsweredClassification(fieldId, 'model_s'))
+        expect(selectDoesStateIncludeUnsavedChanges(finalState)).toEqual(true);
+      });
+      it('if there is a label that matches the current state', () => {
+        const state = appReducer(undefined)
+        const fieldId = state.classificationFields[0].id;
+        const nextState = appReducer(state, userAnsweredClassification(fieldId, 'model_s'));
+        const stateWithClassification = {
+          ...nextState,
+          label: selectLabelFromState(nextState)
+        }
+        expect(selectDoesStateIncludeUnsavedChanges(stateWithClassification)).toEqual(false);
+      });
+
+      it('if there is a label that matches the current state', () => {
+        const state = appReducer(undefined)
+        const fieldId = state.classificationFields[0].id;
+        const nextState = appReducer(state, userAnsweredClassification(fieldId, 'model_s'));
+        const stateWithClassification = {
+          ...nextState,
+          label: selectLabelFromState(appReducer(state, userAnsweredClassification(fieldId, 'model_x')))
+        }
+        expect(selectDoesStateIncludeUnsavedChanges(stateWithClassification)).toEqual(true);
+      });
     });
   });
 
