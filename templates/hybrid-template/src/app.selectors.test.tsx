@@ -78,7 +78,16 @@ describe('app.selectors', () => {
   });
 
   describe('selectClassificationFieldsFromLabel', () => {
-    it('should be able to return the classifcations fields given a label', () => {
+    // TODO
+    it('should return fields if no option is provided', () => {
+      const { classifications: [model, imageProblems] } =  screenText;
+      expect(selectClassificationFieldsFromLabel(appReducer(), '')).toEqual([
+        {...model,id: jasmine.any(String)},
+        {...imageProblems,id: jasmine.any(String)},
+      ]);
+    });
+
+    xit('should be able to return the classifcations fields given a label', () => {
       const label = JSON.stringify({
         model: 'model_s',
         image_problems: ['blur', 'saturated']

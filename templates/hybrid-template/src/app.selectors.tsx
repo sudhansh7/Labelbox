@@ -76,7 +76,15 @@ export const selectAnnotationsFromLabel = (state: AppState, label: string): Anno
 
 
 export const selectClassificationFieldsFromLabel = (state: AppState, label: string): ClassificationField[] => {
-  return []
+  const info = parseIfPossible(label);
+  if (!info){
+    return state.classificationFields;
+  }
+
+
+  return state.classificationFields.map((field) => {
+    return field;
+  });
 }
 
 
