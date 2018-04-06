@@ -95,7 +95,7 @@ export const selectLabelFromState = (state: AppState) => {
     };
   }, {})
 
-  const label = Object.keys(annotationsByTool).reduce((labelTemp, toolId) => {
+  const labelWithAnnotations = Object.keys(annotationsByTool).reduce((labelTemp, toolId) => {
     const tool = state.tools.find(({id}) => id === toolId);
     if (!tool) {
       throw new Error('tool not foudn' + toolId);
@@ -107,5 +107,16 @@ export const selectLabelFromState = (state: AppState) => {
 
   }, {})
 
-  return JSON.stringify(label);
+  const labelWithClassifications = state.classificationFields.reduce((classifications, field) => {
+    if (field.userAnswer) {
+      return {
+        ...classifications,
+        [field.name]: field.userAnswer
+      };
+    } else {
+      return classifications;
+    }
+  }, {});
+
+  return JSON.stringify(Object.assign({}, labelWithAnnotations, labelWithClassifications));
 }
