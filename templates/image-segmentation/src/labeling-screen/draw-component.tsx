@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 import { EditControl, } from 'react-leaflet-draw';
 import { ToolType } from './segment-image';
@@ -80,14 +79,10 @@ export class LeafletDraw extends React.Component{
 
     return (
       <EditControl
-        // tslint:disable-next-line
         ref={() => setTool(selectedTool)}
         position="topright"
-        // tslint:disable-next-line
         onEdited={(e:any) => console.log('woot')}
-        // tslint:disable-next-line
         onCreated={onCreate}
-        // tslint:disable-next-line
         onDeleted={() => console.log('woot')}
         onDrawVertex={vertexDrawn}
         draw={{

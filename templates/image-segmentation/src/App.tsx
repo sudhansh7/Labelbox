@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 import './App.css';
 import './icons.css';
@@ -10,28 +9,37 @@ import { ToolMenu } from './toolbar/toolbar';
 import { getSizeOnImage } from './utils/image-size';
 import { keyComboStream, keyDownSteam } from './key-binding-helpers';
 import { logo } from './logo';
-import { screenText } from './customization';
+/* import { screenText } from './customization';*/
 import { LinearProgress } from 'material-ui/Progress';
 import {
   AppState,
-  guid,
-  toggleVisiblityOfTool,
-  onNewAnnotation,
   deleteSelectedAnnotation,
-  generateLabel,
-  selectToolbarState,
-  updateAnnotation,
-  editShape,
-  userClickedMap,
+  deselectAllAnnotations,
+  imageFinishedLoading,
   mouseMove,
-  generateAnnotationsFromLabel,
+  onNewAnnotation,
   removeTempBoundingBox,
+  selectToolbarState,
+  syncState,
+  toggleVisiblityOfTool,
+  updateAnnotation,
+  userAnsweredClassification,
+  userClickedSetTool,
 } from './app.reducer';
+import {
+  selectIntentFromMapClick,
+  selectAnnotationsFromLabel,
+  selectLabelFromState,
+  selectClassificationFieldsFromLabel,
+  selectDoesStateIncludeUnsavedChanges,
+} from './app.selectors';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
 import styled from 'styled-components';
 import { LabelInformation } from './label-information';
 import { getQueryParam } from './query-param';
+import { dispatch } from './redux';
+import { addId } from './utils/utils';
 
 const Toolbar = styled.div`
   display: flex;
@@ -39,7 +47,7 @@ const Toolbar = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-`
+`;
 
 interface Asset {
   id: string,
@@ -52,28 +60,8 @@ interface Asset {
   createdAt?: string,
 }
 
-function hasUserChangedLabel(state: AppState){
-  if (state.label) {
-    // We dont set this.state.label until the user clicks confirm
-    const labelDerviedFromState = generateLabel(state);
-    if (state.label === 'Skip' && labelDerviedFromState === '{}'){
-      return false;
-    }
-    if (state.label !== labelDerviedFromState) {
-      return true;
-    }
-  }
-
-  // TODO I dont like that state.label isn't saved until we sumbit
-  if (!state.label && state.annotations.length > 0) {
-    return true;
-  }
-
-  return false;
-}
-
 function isSubmitDisabled(state: AppState){
-  return state.loading || !hasUserChangedLabel(state);
+  return state.loading || !selectDoesStateIncludeUnsavedChanges(state);
 }
 
 export const primary = '#5495e3';
@@ -85,17 +73,6 @@ export const theme = createMuiTheme({
     }
   }
 });
-
-const defaultState = {
-  loading: true,
-  imageInfo: undefined,
-  currentToolId: undefined,
-  annotations: [],
-  drawnAnnotationBounds: [],
-  hiddenTools: [],
-  deletedAnnotations: [],
-  tools: []
-};
 
 // I load the script async
 const getLabelbox = ():Promise<any> => {
@@ -110,12 +87,11 @@ const getLabelbox = ():Promise<any> => {
   }
 }
 
-const addId = (item: any) => ({id: guid(), ...item});
-
+// TODO the goal is make this a function
+// goint to be some code haha
 class App extends React.Component {
-  public state: AppState = {
-    ...defaultState,
-    tools: screenText.tools.map(addId)
+  public props: {
+    state: AppState
   };
 
   componentWillMount () {
@@ -123,25 +99,25 @@ class App extends React.Component {
     // would love to have the drawing be rendered by state
     // not some dom click
     const undo = () => {
-      if (this.state.currentToolId){
+      if (this.props.state.currentToolId){
 
         const selector = '.leaflet-draw-actions a[title="Delete last point drawn"]';
-        const undo: HTMLElement | null = document.querySelector(selector);
-        if (undo) {
-          undo.click();
+        const undoElement: HTMLElement | null = document.querySelector(selector);
+        if (undoElement) {
+          undoElement.click();
         }
       } else {
-        if (this.state.deletedAnnotations.length > 0) {
-          this.setState({
-            ...this.state,
+        if (this.props.state.deletedAnnotations.length > 0) {
+          dispatch(syncState({
+            ...this.props.state,
             annotations: [
-              ...this.state.annotations,
-              this.state.deletedAnnotations[0]
+              ...this.props.state.annotations,
+              this.props.state.deletedAnnotations[0]
             ],
             deletedAnnotations: [
-              ...this.state.deletedAnnotations.slice(1)
+              ...this.props.state.deletedAnnotations.slice(1)
             ]
-          });
+          }))
         }
       }
     };
@@ -152,12 +128,15 @@ class App extends React.Component {
 
     keyDownSteam('escape').subscribe(() => {
       // Turn off current tool and editing
-      this.setState({...editShape(removeTempBoundingBox(this.state)), currentToolId: undefined});
+      dispatch(syncState({
+        ...deselectAllAnnotations(removeTempBoundingBox(this.props.state)),
+        currentToolId: undefined
+      }));
     });
 
     keyDownSteam('f').subscribe(() => {
-      if (this.state.currentToolId) {
-        this.setState(onNewAnnotation(this.state, this.state.drawnAnnotationBounds))
+      if (this.props.state.currentToolId) {
+        dispatch(syncState(onNewAnnotation(this.props.state, this.props.state.drawnAnnotationBounds)));
       }
     });
 
@@ -172,24 +151,29 @@ class App extends React.Component {
       .merge(keyDownSteam('9'))
       .merge(keyDownSteam('0'))
       .subscribe((key) => {
-        const tool = this.state.tools[parseInt(key) - 1]
+        const tool = this.props.state.tools[parseInt(key, 10) - 1]
         if (tool){
-          this.setTool(tool.id);
+          dispatch(userClickedSetTool(tool.id));
         }
       });
 
     keyDownSteam('del')
       .merge(keyDownSteam('backspace'))
       .subscribe(() => {
-        this.setState(deleteSelectedAnnotation(this.state));
+        dispatch(syncState(deleteSelectedAnnotation(this.props.state)));
       });
 
     getLabelbox().then((Labelbox: any) => {
       // TODO will probably need erro handleing here
       Labelbox.getTemplateCustomization()
         .subscribe((customization: any) => {
-          if (customization.tools) {
-            this.setState({...this.state, tools: customization.tools.map(addId)});
+          if (customization.tools || customization.classifications) {
+            dispatch(syncState({
+              ...this.props.state,
+              tools: customization.tools.map(addId),
+              // TODO
+              /* classifications: customization.classifications || []*/
+            }));
           }
         });
       const preloadFunction = (asset: Asset) => {
@@ -225,13 +209,11 @@ class App extends React.Component {
 
         this.startLoading();
         const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-          const stateWithTools = {
-            ...defaultState,
-            tools: this.state.tools,
-          };
-          const annotations = generateAnnotationsFromLabel(stateWithTools, asset.label);
-          this.setState({
-            annotations: annotations,
+          // TODO this is questionable
+          dispatch(syncState({
+            ...this.props.state,
+            annotations: selectAnnotationsFromLabel(this.props.state, asset.label),
+            classificationFields: selectClassificationFieldsFromLabel(this.props.state, asset.label),
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
@@ -247,33 +229,31 @@ class App extends React.Component {
               {
                 existingLabel: undefined
               },
-          })
+          // TODO the above state does not match AppState
+          } as AppState))
         };
         getSizeOnImage(imageUrl).then(
           updateImageInfo,
-          () => this.setState({...this.state, errorLoadingImage: imageUrl, loading: false})
+          () => dispatch(syncState({...this.props.state, errorLoadingImage: imageUrl, loading: false}))
         );
       });
     });
 
     window.onbeforeunload = () => {
-      if (this.state.annotations.length > 0 || this.state.currentToolId) {
+      if (this.props.state.annotations.length > 0 || this.props.state.currentToolId) {
         return "Are you sure that you want to leave this page?";
       } else {
         return
       }
     }
-
-
-
   }
 
   startLoading() {
-    this.setState({
-      ...this.state,
+    dispatch(syncState({
+      ...this.props.state,
       loading: true,
       imageInfo: undefined
-    });
+    }));
   }
 
   next(label: {label?: string, skip?: boolean}) {
@@ -281,12 +261,12 @@ class App extends React.Component {
     getLabelbox().then((Labelbox) => {
       if (label.label) {
         // Yea wording is confusing here...
-        // basically if we have a this.state.label it means the user
+        // basically if we have a this.props.state.label it means the user
         // is reviewing the label and when they click submit they don't
         // want to jump all the way to the next asset
         // However, if they are labeling away when they click submit they should
         // indeed jump to the next asset
-        const goToNextUnlabeledAsset = !this.state.label;
+        const goToNextUnlabeledAsset = !this.props.state.label;
         Labelbox.setLabelForAsset(label.label, 'Any').then(() => {
           if (goToNextUnlabeledAsset){
             this.jumpToNextAsset();
@@ -308,13 +288,9 @@ class App extends React.Component {
   }
 
   submit(){
-    if (!isSubmitDisabled(this.state)){
-      this.next({label: generateLabel(this.state)})
+    if (!isSubmitDisabled(this.props.state)){
+      this.next({label: selectLabelFromState(this.props.state)})
     }
-  }
-
-  setTool(toolId: string) {
-    this.setState({...editShape(this.state), currentToolId: toolId});
   }
 
   setLabel(labelId: string){
@@ -326,14 +302,20 @@ class App extends React.Component {
 
   render() {
     const onAnnotationEdit = (annotationId: string, newBounds: {lat: number, lng: number}[]) => {
-      this.setState(updateAnnotation(this.state, annotationId, {geometry: newBounds}));
+      dispatch(syncState(updateAnnotation(this.props.state, annotationId, {geometry: newBounds})));
     };
-    const currentTool = this.state.tools.find((tool) => tool.id === this.state.currentToolId);
-    const isEditing = this.state.annotations.some(({editing}) => editing === true);
+    const currentTool = this.props.state.tools.find((tool) => tool.id === this.props.state.currentToolId);
+    const isEditing = this.props.state.annotations.some(({editing}) => editing === true);
+    const handleMapClick = (click: MapClick) => {
+      const action = selectIntentFromMapClick(this.props.state, click);
+      if (action) {
+        dispatch(action);
+      }
+    }
     return (
       <MuiThemeProvider theme={theme}>
         {
-          this.state.loading && <LinearProgress color="primary" style={{position: 'absolute', top: '0px', width: '100vw'}} />
+          this.props.state.loading && <LinearProgress color="primary" style={{position: 'absolute', top: '0px', width: '100vw'}} />
         }
         <div className="app">
           <div className="content">
@@ -342,54 +324,57 @@ class App extends React.Component {
                 <img src={logo} width="100px" style={{marginLeft: '30px'}}/>
               </a>
               <ToolMenu
-                tools={selectToolbarState(this.state.tools, this.state.annotations, this.state.hiddenTools)}
-                currentTool={this.state.currentToolId}
-                toolChange={(toolId: string) => this.setTool(toolId)}
-                visibilityToggle={(toolId: string) => this.setState(toggleVisiblityOfTool(this.state, toolId))}
-                disableSubmit={isSubmitDisabled(this.state)}
+                tools={selectToolbarState(this.props.state.tools, this.props.state.annotations, this.props.state.hiddenTools)}
+                classificationFields={this.props.state.classificationFields}
+                currentTool={this.props.state.currentToolId}
+                toolChange={(toolId: string) => dispatch(userClickedSetTool(toolId))}
+                visibilityToggle={(toolId: string) => dispatch(syncState(toggleVisiblityOfTool(this.props.state, toolId)))}
+                disableSubmit={isSubmitDisabled(this.props.state)}
                 onSubmit={() => this.submit()}
+                onClassificationAnswer={(fieldId: string, answer: string | string[]) => dispatch(userAnsweredClassification(fieldId, answer))}
                 onSkip={() => this.next({skip: true})}
-                editing={Boolean(this.state.existingLabel)}
-                onReset={() => this.state.label && this.setState({
-                  ...this.state,
-                  annotations: generateAnnotationsFromLabel(this.state, this.state.label)
-                })}
+                editing={Boolean(this.props.state.existingLabel)}
+                onReset={() => this.props.state.label && dispatch(syncState({
+                  ...this.props.state,
+                  annotations: selectAnnotationsFromLabel(this.props.state, this.props.state.label),
+                  classificationFields: selectClassificationFieldsFromLabel(this.props.state, this.props.state.label),
+                }))}
               />
             </div>
             <div className="labeling-frame">
               <Toolbar>
                 <History
                   title="Outline listed objects"
-                  hasBack={Boolean(this.state.previousLabel)}
-                  goBack={() => this.state.previousLabel && this.setLabel(this.state.previousLabel)}
-                  hasNext={Boolean(this.state.existingLabel)}
-                  goNext={() => this.state.nextLabel ? this.setLabel(this.state.nextLabel) : this.jumpToNextAsset()}
-                  isCurrent={Boolean(!this.state.existingLabel)}
+                  hasBack={Boolean(this.props.state.previousLabel)}
+                  goBack={() => this.props.state.previousLabel && this.setLabel(this.props.state.previousLabel)}
+                  hasNext={Boolean(this.props.state.existingLabel)}
+                  goNext={() => this.props.state.nextLabel ? this.setLabel(this.props.state.nextLabel) : this.jumpToNextAsset()}
+                  isCurrent={Boolean(!this.props.state.existingLabel)}
                   goCurrent={() => this.jumpToNextAsset()}
                 />
-                {this.state.existingLabel && <LabelInformation {...this.state.existingLabel} />}
+                {this.props.state.existingLabel && <LabelInformation {...this.props.state.existingLabel} />}
               </Toolbar>
-              { this.state.errorLoadingImage && <BrokenImage imageUrl={this.state.errorLoadingImage} /> }
+              { this.props.state.errorLoadingImage && <BrokenImage imageUrl={this.props.state.errorLoadingImage} /> }
               {
-                this.state.imageInfo ? <SegmentImage
-                  imageUrl={this.state.imageInfo.url}
-                  imageSize={this.state.imageInfo}
-                  annotations={this.state.annotations.filter(({toolId}) => this.state.hiddenTools.indexOf(toolId) === -1)}
-                  loading={this.state.loading}
-                  onImageLoaded={() => this.setState({...this.state, loading: false})}
+                this.props.state.imageInfo ? <SegmentImage
+                  imageUrl={this.props.state.imageInfo.url}
+                  imageSize={this.props.state.imageInfo}
+                  annotations={this.props.state.annotations.filter(({toolId}) => this.props.state.hiddenTools.indexOf(toolId) === -1)}
+                  loading={this.props.state.loading}
+                  onImageLoaded={() => dispatch(imageFinishedLoading())}
                   drawColor={currentTool ? currentTool.color : undefined}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   isEditing={isEditing}
-                  onNewAnnotation={(bounds) => this.setState(onNewAnnotation(this.state, bounds))}
+                  onNewAnnotation={(bounds) => dispatch(syncState(onNewAnnotation(this.props.state, bounds)))}
                   onMouseMove={(move: MouseMove) => {
-                    const updatedStateFromMouseMove = mouseMove(this.state, move);
+                    const updatedStateFromMouseMove = mouseMove(this.props.state, move);
                     if (updatedStateFromMouseMove){
-                      this.setState(updatedStateFromMouseMove)
+                      dispatch(syncState(updatedStateFromMouseMove))
                     }
                   }}
-                  onMapClick={(e: MapClick) => this.setState(userClickedMap(this.state, e))}
+                  onMapClick={handleMapClick}
                   onAnnotationEdit={onAnnotationEdit}
-                  onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => this.setState({...this.state, drawnAnnotationBounds})}
+                  onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => dispatch(syncState({...this.props.state, drawnAnnotationBounds}))}
                 /> : <div style={{opacity: 0.6, height: '100%', widht: '100%', backgroundColor: '#dddddd'}}></div>
               }
             </div>

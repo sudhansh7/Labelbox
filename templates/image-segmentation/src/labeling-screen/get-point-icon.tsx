@@ -1,4 +1,3 @@
-// tslint:disable
 import { Icon } from 'leaflet';
 const tinycolor = require("tinycolor2");
 

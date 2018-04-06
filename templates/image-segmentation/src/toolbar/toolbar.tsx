@@ -1,4 +1,3 @@
-// tslint:disable
 import * as React from 'react';
 import { Tool } from './tool';
 import Button from 'material-ui/Button';
@@ -11,6 +10,8 @@ import Typography from 'material-ui/Typography';
 import Icon from 'material-ui/Icon';
 import styled from 'styled-components';
 /* import ExpandMoreIcon from 'material-ui-icons/ExpandMore';*/
+import { Classification,  } from './classification';
+import { ClassificationField } from '../app.reducer';
 
 const ActionButtons = styled.div`
   display: flex;
@@ -22,21 +23,25 @@ const ActionButtons = styled.div`
 export function ToolMenu(
   {
     tools,
+    classificationFields,
     toolChange,
     currentTool,
     visibilityToggle,
     disableSubmit,
     onSubmit,
     onSkip,
+    onClassificationAnswer,
     editing,
     onReset,
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
+    classificationFields: ClassificationField[],
     toolChange: (id: string | undefined) => void;
     currentTool: string | undefined;
     visibilityToggle: (toolIndex: string) => void;
     disableSubmit: boolean;
     onSubmit: () => void;
+    onClassificationAnswer: (fieldId: string, answer: string | string[]) => void;
     onSkip: () => void;
     onReset: () => void;
     editing: boolean;
@@ -45,8 +50,7 @@ export function ToolMenu(
     <div className="toolbar">
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', width: '100%'} as any}>
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
-          {/* tslint:disable-next-line */}
-          <div style={{margin: '20px 15px 10px', fontWeight: '700'} as any}>Select a class below</div>
+          <div style={{margin: '20px 15px 10px', fontWeight: '500', color: '#5b5b5b'} as any}>Select a class below</div>
           <div style={{overflowY: 'auto'}}>
             {tools.map(({id, name, color, count, visible, tool}, index) => (
               <Tool
@@ -62,6 +66,13 @@ export function ToolMenu(
               />
             ))}
           </div>
+          {classificationFields.map((field) => (
+            <Classification
+              key={field.id}
+              field={field}
+              answer={field.userAnswer}
+              onAnswer={(answer: string | string[]) => onClassificationAnswer(field.id, answer)}
+            />))}
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 

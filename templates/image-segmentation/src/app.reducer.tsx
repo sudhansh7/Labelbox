@@ -1,8 +1,176 @@
-// tslint:disable
 import { ToolType } from './labeling-screen/segment-image';
-import { MapClick, MouseMove } from './labeling-screen/segment-image';
+import { MouseMove } from './labeling-screen/segment-image';
+// TODO move screenText into your mock
+// users are complaning that seeing this customization when
+// their template loads is annoying
+import { screenText } from './customization';
+import { getSelectedRectangleTool } from './app.selectors';
+import { addId, guid } from './utils/utils';
+
+const defaultState = {
+  loading: true,
+  imageInfo: undefined,
+  currentToolId: undefined,
+  annotations: [],
+  drawnAnnotationBounds: [],
+  hiddenTools: [],
+  deletedAnnotations: [],
+  tools: screenText.tools.map(addId),
+  classificationFields: screenText.classifications.map(addId)
+};
+
+export type Action = {type: any, payload?: any};
+
+enum Actions {
+  // TODO this is just a temporary action so I can move everything into redux
+  SYNC = 'SYNC',
+  USER_CLICKED_SET_TOOL = 'USER_CLICKED_SET_TOOL',
+  USER_CLICKED_ANNOTATION = 'USER_CLICKED_ANNOTATION',
+  USER_FINISHED_CREATING_ANNOTATION = 'USER_FINISHED_CREATING_ANNOTATION',
+  USER_COMPLETED_BOUNDING_BOX = 'USER_COMPLETED_BOUNDING_BOX',
+  USER_DESELECTED_ANNOTATION = 'USER_DESELECTED_ANNOTATION',
+  IMAGE_FINISHED_LOADING = 'IMAGE_FINISHED_LOADING',
+  USER_ANSWERED_CLASSIFCIATION = 'USER_ANSWERED_CLASSIFCIATION'
+}
+
+// TODO delete
+export function syncState(newState: AppState){
+  return {
+    type: Actions.SYNC,
+    payload: {
+      state: newState
+    }
+  }
+}
+
+export function userDeselectedAnnotation(){
+  return {
+    type: Actions.USER_DESELECTED_ANNOTATION,
+    payload: {}
+  }
+}
+
+export function userAnsweredClassification(fieldId: string, answer: string | string[]){
+  return {
+    type: Actions.USER_ANSWERED_CLASSIFCIATION,
+    payload: {fieldId, answer}
+  }
+}
+
+export function userClickedSetTool(toolId: string) {
+  return {
+    type: Actions.USER_CLICKED_SET_TOOL,
+    payload: {toolId}
+  }
+}
+
+export function userFinishedAnnotation(geometry: Geometry){
+  return {
+    type: Actions.USER_FINISHED_CREATING_ANNOTATION,
+    payload: {geometry}
+  }
+}
+
+export function userClickedAnnotation(annotationId: string) {
+  return {
+    type: Actions.USER_CLICKED_ANNOTATION,
+    payload: {annotationId}
+  }
+}
+
+export const userCompletedBoundingBox = () => {
+  return {
+    type: Actions.USER_COMPLETED_BOUNDING_BOX,
+    payload: {}
+  }
+}
+
+export const imageFinishedLoading = ():Action => {
+  return {
+    type: Actions.IMAGE_FINISHED_LOADING,
+    payload: {}
+  }
+}
+
+export const appReducer = (state: AppState = defaultState, action: any = {}): AppState => {
+  const { type, payload } = action;
+  switch (type) {
+    case Actions.SYNC: {
+      return payload.state;
+    }
+    case Actions.USER_CLICKED_SET_TOOL: {
+      return {
+        ...deselectAllAnnotations(state),
+        currentToolId: payload.toolId
+      };
+    }
+    case Actions.USER_FINISHED_CREATING_ANNOTATION: {
+      return onNewAnnotation(state, payload.geometry);
+    }
+    case Actions.USER_CLICKED_ANNOTATION: {
+      return userSelectedAnnotationToEdit(state, payload.annotationId);
+    }
+    case Actions.USER_COMPLETED_BOUNDING_BOX: {
+      return finalizeTempBoundingBox(state);
+    }
+    case Actions.USER_DESELECTED_ANNOTATION: {
+      return deselectAllAnnotations(state);
+    }
+    case Actions.IMAGE_FINISHED_LOADING:{
+      return {
+        ...state,
+        loading: false
+      }
+    }
+    case Actions.USER_ANSWERED_CLASSIFCIATION: {
+      return changeClassificationAnswer(state, payload.fieldId, payload.answer);
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
 
 type Geometry = {lat: number, lng:number}[] | {lat: number, lng: number};
+
+function changeClassificationAnswer(state: AppState, fieldId: string, userAnswer: string | string[]) {
+  if (!state.classificationFields){
+    throw new Error(`Error: classificationFields should never be undefined`);
+  }
+  const indexOfChangedField = state.classificationFields.findIndex(({id}) => id === fieldId);
+  if (indexOfChangedField === -1){
+    throw new Error(`Invalid Dispatch to Change Classification. ID ${fieldId} does not exist in classificationFields.`);
+  }
+  return {
+    ...state,
+    classificationFields: [
+      ...state.classificationFields.slice(0, indexOfChangedField),
+      {
+        ...state.classificationFields[indexOfChangedField],
+        userAnswer
+      },
+      ...state.classificationFields.slice(indexOfChangedField + 1),
+    ]
+  }
+}
+
+export enum FieldTypes {
+  CHECKLIST = 'checklist',
+  RADIO = 'radio',
+}
+
+export interface ClassificationField {
+  id: string,
+  name: string,
+  instructions: string,
+  type: FieldTypes,
+  options: {
+    label: string, value: string
+  }[],
+  userAnswer?: string[] | string;
+};
+
 
 export interface Annotation {
   id: string;
@@ -29,6 +197,7 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Geometry;
+  classificationFields: ClassificationField[]
   existingLabel?: {
     typeName: 'Any' | 'Skip',
     createdBy: string,
@@ -39,16 +208,6 @@ export interface AppState {
   rectangleInProgressId?: string;
   errorLoadingImage?: string;
   label?: string;
-}
-
-export function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
 }
 
 export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
@@ -63,7 +222,7 @@ export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
 };
 
 
-export const onNewAnnotation = (state: AppState, geometry: Geometry): AppState => {
+export function onNewAnnotation(state: AppState, geometry: Geometry): AppState {
   const currentTool = state.tools.find(({id}) => id === state.currentToolId);
   if (currentTool === undefined) {
     throw new Error('should not be able to add an annotation without a tool');
@@ -105,91 +264,6 @@ export const deleteSelectedAnnotation = (state: AppState): AppState => {
   }
 }
 
-function parseIfPossible(str: string){
-  try {
-    return JSON.parse(str);
-  } catch(e) {
-    return undefined;
-  }
-}
-
-
-const selectToolByName = (state: AppState, toolName: string) => {
-  return state.tools.find((tool) => tool.name === toolName);
-}
-
-export const generateAnnotationsFromLabel = (state: AppState, label: string): Annotation[] => {
-  const classes = parseIfPossible(label);
-  if (!classes){
-    return [];
-  }
-
-  const annotations = Object.keys(classes).reduce((annotations, className) => {
-    const tool = selectToolByName(state, className);
-    if (!tool){
-      console.log('Tool not found', className, state);
-      return annotations
-    }
-    const newAnnotations = classes[className].map((shape: {x: number, y: number}[]) => {
-      const toCoord = ({y, x}:{x: number, y: number}) => ({lat: y, lng: x});
-      const geometry = Array.isArray(shape) ? shape.map(toCoord) : toCoord(shape);
-      return {
-        id: guid(),
-        geometry,
-        color: tool.color,
-        editing: false,
-        toolName: tool.tool,
-        toolId: tool.id
-      }
-    });
-
-    return [...annotations, ...newAnnotations];
-  }, []);
-
-  return annotations;
-}
-
-export const generateLabel = (state: AppState) => {
-  const getPoints = ({geometry}: Annotation) => {
-    const toPoint = ({lat, lng}: {lat: number, lng: number}) => ({
-      // These leaflet Latlngs have like 13 decimal points
-      // pixels locations dont have decimal points
-      x: Math.round(lng),
-      y: Math.round(lat)
-    });
-    return Array.isArray(geometry) ? geometry.map(toPoint) : toPoint(geometry);
-  };
-
-  const annotationsByTool = state.annotations.reduce((annotationsByTool, annotation) => {
-    if (!annotationsByTool[annotation.toolId]) {
-      annotationsByTool[annotation.toolId] = []
-    }
-
-    return {
-      ...annotationsByTool,
-      [annotation.toolId]: [
-        ...annotationsByTool[annotation.toolId],
-        annotation
-      ]
-    };
-  }, {})
-
-  const label = Object.keys(annotationsByTool).reduce((label, toolId) => {
-    const tool = state.tools.find(({id}) => id === toolId);
-    if (!tool) {
-      throw new Error('tool not foudn' + toolId);
-    }
-    return {
-      ...label,
-      [tool.name]: annotationsByTool[toolId].map(getPoints),
-    }
-
-  }, {})
-
-  return JSON.stringify(label);
-}
-
-
 export function selectToolbarState(currentTools: Tool[], annotations: Annotation[], hiddenTools: string[]) {
   return currentTools
     .map(({id, name, color, tool}) => {
@@ -222,21 +296,20 @@ export const updateAnnotation = (state: AppState, annotationId: string, fields: 
   };
 };
 
-export const editShape = (state: AppState, annotationId?: string) => {
-  let updatedState = state.annotations.filter(({editing}) => editing)
+export function deselectAllAnnotations(state: AppState) {
+  return state.annotations.filter(({editing}) => editing)
     .reduce((appState, annotation) => updateAnnotation(appState, annotation.id, {editing: false}), state);
+}
 
-  if (annotationId) {
-    updatedState = updateAnnotation(updatedState, annotationId, {editing: true})
-  }
 
-  return updatedState;
+export function userSelectedAnnotationToEdit(state: AppState, annotationId: string) {
+  return updateAnnotation(
+    deselectAllAnnotations(state),
+    annotationId,
+    {editing: true}
+  )
 };
 
-
-const getSelectedRectangleTool = (state: AppState) => {
-  return state.tools.find((tool) => tool.tool === 'rectangle' && tool.id === state.currentToolId);
-}
 
 export const removeTempBoundingBox = (state: AppState) => {
   return {
@@ -254,6 +327,7 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
   }
   const rectId = state.rectangleInProgressId ? state.rectangleInProgressId : guid();
 
+  // tslint:disable-next-line
   const [{lat: startLat, lng: startLng}] = state.drawnAnnotationBounds as {lat: number, lng: number}[];
   const boxAnnotation:Annotation = {
     id: rectId,
@@ -285,25 +359,13 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
   }
 }
 
-const finalizeTempBoundingBox = (state: AppState) => {
+function finalizeTempBoundingBox(state: AppState) {
   return {
     ...state,
     drawnAnnotationBounds: [],
     currentToolId: undefined,
     rectangleInProgressId: undefined,
   }
-}
-
-export const userClickedMap = (state: AppState, click: MapClick) => {
-  const selectedRectangleTool = getSelectedRectangleTool(state);
-  if (selectedRectangleTool && Array.isArray(state.drawnAnnotationBounds) && state.drawnAnnotationBounds.length === 2) {
-    return finalizeTempBoundingBox(state);
-  } else if (!state.currentToolId && !click.shapeId){
-    return editShape(state);
-  } else if (click.shapeId){
-    return editShape(state, click.shapeId);
-  }
-  return state;
 }
 
 export const mouseMove = (state: AppState, move: MouseMove):AppState | undefined => {
