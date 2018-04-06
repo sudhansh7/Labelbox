@@ -13,22 +13,24 @@ import { logo } from './logo';
 import { LinearProgress } from 'material-ui/Progress';
 import {
   AppState,
-  toggleVisiblityOfTool,
-  onNewAnnotation,
   deleteSelectedAnnotation,
-  generateLabel,
-  selectToolbarState,
-  updateAnnotation,
   deselectAllAnnotations,
-  mouseMove,
-  generateAnnotationsFromLabel,
-  removeTempBoundingBox,
-  syncState,
-  userClickedSetTool,
   imageFinishedLoading,
+  mouseMove,
+  onNewAnnotation,
+  removeTempBoundingBox,
+  selectToolbarState,
+  syncState,
+  toggleVisiblityOfTool,
+  updateAnnotation,
   userAnsweredClassification,
+  userClickedSetTool,
 } from './app.reducer';
-import { selectIntentFromMapClick } from './app.selectors';
+import {
+  selectIntentFromMapClick,
+  selectAnnotationsFromLabel,
+  selectLabelFromState,
+} from './app.selectors';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
 import styled from 'styled-components';
@@ -59,7 +61,7 @@ interface Asset {
 function hasUserChangedLabel(state: AppState){
   if (state.label) {
     // We dont set this.state.label until the user clicks confirm
-    const labelDerviedFromState = generateLabel(state);
+    const labelDerviedFromState = selectLabelFromState(state);
     if (state.label === 'Skip' && labelDerviedFromState === '{}'){
       return false;
     }
@@ -228,7 +230,7 @@ class App extends React.Component {
           // TODO this is questionable
           dispatch(syncState({
             ...this.props.state,
-            annotations: generateAnnotationsFromLabel(this.props.state, asset.label),
+            annotations: selectAnnotationsFromLabel(this.props.state, asset.label),
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
@@ -304,7 +306,7 @@ class App extends React.Component {
 
   submit(){
     if (!isSubmitDisabled(this.props.state)){
-      this.next({label: generateLabel(this.props.state)})
+      this.next({label: selectLabelFromState(this.props.state)})
     }
   }
 
@@ -352,7 +354,7 @@ class App extends React.Component {
                 editing={Boolean(this.props.state.existingLabel)}
                 onReset={() => this.props.state.label && dispatch(syncState({
                   ...this.props.state,
-                  annotations: generateAnnotationsFromLabel(this.props.state, this.props.state.label)
+                  annotations: selectAnnotationsFromLabel(this.props.state, this.props.state.label)
                 }))}
               />
             </div>
