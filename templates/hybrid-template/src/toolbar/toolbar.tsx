@@ -64,7 +64,7 @@ export function ToolMenu(
               />
             ))}
           </div>
-          {classificationFields.map((field) => (<Classification key={field.name} field={field} />))}
+          {classificationFields.map((field) => (<Classification key={field.id} field={field} />))}
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 

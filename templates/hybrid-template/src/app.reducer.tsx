@@ -13,7 +13,7 @@ const defaultState = {
   hiddenTools: [],
   deletedAnnotations: [],
   tools: screenText.tools.map(addId),
-  classificationFields: screenText.classifications
+  classificationFields: screenText.classifications.map(addId)
 };
 
 export type Action = {type: any, payload?: any};
@@ -127,6 +127,7 @@ export enum FieldTypes {
 }
 
 export interface ClassificationField {
+  id: string,
   name: string,
   instructions: string,
   required: boolean,
