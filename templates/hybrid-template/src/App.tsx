@@ -30,6 +30,8 @@ import {
   selectIntentFromMapClick,
   selectAnnotationsFromLabel,
   selectLabelFromState,
+  selectClassificationFieldsFromLabel,
+  selectDoesStateIncludeUnsavedChanges,
 } from './app.selectors';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
@@ -58,29 +60,8 @@ interface Asset {
   createdAt?: string,
 }
 
-function hasUserChangedLabel(state: AppState){
-  if (state.label) {
-    // We dont set this.state.label until the user clicks confirm
-    // TODO selectDoesStateHaveUnsavedChanges()
-    const labelDerviedFromState = selectLabelFromState(state);
-    if (state.label === 'Skip' && labelDerviedFromState === '{}'){
-      return false;
-    }
-    if (state.label !== labelDerviedFromState) {
-      return true;
-    }
-  }
-
-  // TODO I dont like that state.label isn't saved until we sumbit
-  if (!state.label && state.annotations.length > 0) {
-    return true;
-  }
-
-  return false;
-}
-
 function isSubmitDisabled(state: AppState){
-  return state.loading || !hasUserChangedLabel(state);
+  return state.loading || !selectDoesStateIncludeUnsavedChanges(state);
 }
 
 export const primary = '#5495e3';
@@ -232,6 +213,7 @@ class App extends React.Component {
           dispatch(syncState({
             ...this.props.state,
             annotations: selectAnnotationsFromLabel(this.props.state, asset.label),
+            classificationFields: selectClassificationFieldsFromLabel(this.props.state, asset.label),
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
@@ -355,7 +337,8 @@ class App extends React.Component {
                 editing={Boolean(this.props.state.existingLabel)}
                 onReset={() => this.props.state.label && dispatch(syncState({
                   ...this.props.state,
-                  annotations: selectAnnotationsFromLabel(this.props.state, this.props.state.label)
+                  annotations: selectAnnotationsFromLabel(this.props.state, this.props.state.label),
+                  classificationFields: selectClassificationFieldsFromLabel(this.props.state, this.props.state.label),
                 }))}
               />
             </div>
