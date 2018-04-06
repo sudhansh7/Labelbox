@@ -170,9 +170,8 @@ class App extends React.Component {
           if (customization.tools || customization.classifications) {
             dispatch(syncState({
               ...this.props.state,
-              tools: customization.tools.map(addId),
-              // TODO
-              /* classifications: customization.classifications || []*/
+              tools: customization.tools.map(addId) || [],
+              classificationFields: customization.classifications.map(addId) || []
             }));
           }
         });
