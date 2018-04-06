@@ -1,5 +1,8 @@
 import { ToolType } from './labeling-screen/segment-image';
 import { MouseMove } from './labeling-screen/segment-image';
+// TODO move screenText into your mock
+// users are complaning that seeing this customization when
+// their template loads is annoying
 import { screenText } from './customization';
 import { getSelectedRectangleTool } from './app.selectors';
 import { addId, guid } from './utils/utils';
@@ -27,6 +30,7 @@ enum Actions {
   USER_COMPLETED_BOUNDING_BOX = 'USER_COMPLETED_BOUNDING_BOX',
   USER_DESELECTED_ANNOTATION = 'USER_DESELECTED_ANNOTATION',
   IMAGE_FINISHED_LOADING = 'IMAGE_FINISHED_LOADING',
+  USER_ANSWERED_CLASSIFCIATION = 'USER_ANSWERED_CLASSIFCIATION'
 }
 
 // TODO delete
@@ -44,6 +48,13 @@ export function userDeselectedAnnotation(){
   return {
     type: Actions.USER_DESELECTED_ANNOTATION,
     payload: {}
+  }
+}
+
+export function userAnsweredClassification(fieldId: string, answer: string | string[]){
+  return {
+    type: Actions.USER_ANSWERED_CLASSIFCIATION,
+    payload: {fieldId, answer}
   }
 }
 
@@ -82,7 +93,7 @@ export const imageFinishedLoading = ():Action => {
   }
 }
 
-export const appReducer = (state: AppState = defaultState, action: any = {}) => {
+export const appReducer = (state: AppState = defaultState, action: any = {}): AppState => {
   const { type, payload } = action;
   switch (type) {
     case Actions.SYNC: {
@@ -112,6 +123,9 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
         loading: false
       }
     }
+    case Actions.USER_ANSWERED_CLASSIFCIATION: {
+      return changeClassificationAnswer(state, payload.fieldId, payload.answer);
+    }
     default: {
       return state;
     }
@@ -120,6 +134,27 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
 
 
 type Geometry = {lat: number, lng:number}[] | {lat: number, lng: number};
+
+function changeClassificationAnswer(state: AppState, fieldId: string, userAnswer: string | string[]) {
+  if (!state.classificationFields){
+    throw new Error(`Error: classificationFields should never be undefined`);
+  }
+  const indexOfChangedField = state.classificationFields.findIndex(({id}) => id === fieldId);
+  if (indexOfChangedField === -1){
+    throw new Error(`Invalid Dispatch to Change Classification. ID ${fieldId} does not exist in classificationFields.`);
+  }
+  return {
+    ...state,
+    classificationFields: [
+      ...state.classificationFields.slice(0, indexOfChangedField),
+      {
+        ...state.classificationFields[indexOfChangedField],
+        userAnswer
+      },
+      ...state.classificationFields.slice(indexOfChangedField + 1),
+    ]
+  }
+}
 
 export enum FieldTypes {
   CHECKLIST = 'checklist',
@@ -135,6 +170,7 @@ export interface ClassificationField {
   options: {
     label: string, value: string
   }[],
+  userAnswer?: string[] | string;
 };
 
 

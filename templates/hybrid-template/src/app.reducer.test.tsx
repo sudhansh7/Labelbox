@@ -5,6 +5,7 @@ import {
   userFinishedAnnotation,
   AppState,
   Action,
+  userAnsweredClassification,
 } from './app.reducer';
 
 const reduceActions = (reducer: any, actions: any[], startingState: AppState | undefined = undefined) => {
@@ -76,6 +77,16 @@ describe('appReducer', () => {
       );
       expect(clickedAnnotationState.annotations[0].editing).toEqual(true);
     });
-  })
+  });
+
+  describe('userAnsweredClassification', () => {
+    it('should change the classification for an item', () => {
+      const defaultState = appReducer();
+      const fieldId = defaultState.classificationFields[0].id;
+      const state = appReducer(defaultState, userAnsweredClassification(fieldId, 'newValue'))
+      const classification = state.classificationFields.find(({id}) => id === fieldId);
+      expect(classification && classification.userAnswer).toEqual('newValue');
+    });
+  });
 
 });
