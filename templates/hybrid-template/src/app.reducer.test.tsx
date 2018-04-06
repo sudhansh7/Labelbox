@@ -47,8 +47,18 @@ describe('appReducer', () => {
       expect(state.currentToolId).toEqual('toolid');
     });
     it('should remove any shape that are being edited', () => {
-      const state = appReducer(undefined, userClickedSetTool('toolid'))
-      expect(state.currentToolId).toEqual('toolid');
+      const state = appReducer(undefined);
+      const withAnnotation = reduceActions(appReducer, [
+        selectFirstTool(state),
+        userFinishedAnnotation(createGeometry()),
+      ], state);
+      const clickedAnnotationState = appReducer(
+        withAnnotation,
+        userClickedAnnotation(withAnnotation.annotations[0].id)
+      );
+      expect(clickedAnnotationState.annotations[0].editing).toEqual(true);
+      const newToolSelected = appReducer(clickedAnnotationState, userClickedSetTool('toolid'));
+      expect(newToolSelected.annotations[0].editing).toEqual(false);
     });
   });
 
