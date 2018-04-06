@@ -27,7 +27,7 @@ export function Classification(
   {field: ClassificationField, answer?: string | string[], onAnswer: (answer: string | string[]) => void}
 ){
   return (
-    <FormControl component="fieldset" {...{required: field.required}} key={field.instructions} style={{
+    <FormControl component="fieldset" key={field.instructions} style={{
       paddingLeft: '15px',
       marginTop: '15px',
       width: '100%',
