@@ -11,6 +11,7 @@ import {
 import {
   selectLabelFromState,
   selectClassificationFieldsFromLabel,
+  selectDoesStateIncludeUnsavedChanges,
 } from './app.selectors';
 import { screenText } from './customization';
 
@@ -98,6 +99,20 @@ describe('app.selectors', () => {
         {...imageProblems, userAnswer: ['blur', 'saturated'], id: jasmine.any(String)},
       ]);
     })
+  });
+
+  describe('selectDoesStateIncludeUnsavedChanges', () => {
+    describe('state does not have a label', () => {
+      it('it should return false if no annotations or classifications have been made', () => {});
+      it('it should return true if an annotation has been made', () => {});
+      it('it should return true if a classification has been made', () => {});
+    });
+
+    describe('state does have a label', () => {
+      it('it should return false if no annotations or classifications have been made', () => {});
+      it('it should return true if an annotation has been made', () => {});
+      it('it should return true if a classification has been made', () => {});
+    });
   });
 
 });

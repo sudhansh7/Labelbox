@@ -144,3 +144,25 @@ export const selectLabelFromState = (state: AppState) => {
 
   return JSON.stringify(Object.assign({}, labelWithAnnotations, labelWithClassifications));
 }
+
+
+export function selectDoesStateIncludeUnsavedChanges(state: AppState){
+  if (state.label) {
+    // We dont set this.state.label until the user clicks confirm
+    // TODO selectDoesStateHaveUnsavedChanges()
+    const labelDerviedFromState = selectLabelFromState(state);
+    if (state.label === 'Skip' && labelDerviedFromState === '{}'){
+      return false;
+    }
+    if (state.label !== labelDerviedFromState) {
+      return true;
+    }
+  }
+
+  // TODO I dont like that state.label isn't saved until we sumbit
+  if (!state.label && state.annotations.length > 0) {
+    return true;
+  }
+
+  return false;
+}

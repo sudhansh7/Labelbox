@@ -61,6 +61,7 @@ interface Asset {
 function hasUserChangedLabel(state: AppState){
   if (state.label) {
     // We dont set this.state.label until the user clicks confirm
+    // TODO selectDoesStateHaveUnsavedChanges()
     const labelDerviedFromState = selectLabelFromState(state);
     if (state.label === 'Skip' && labelDerviedFromState === '{}'){
       return false;

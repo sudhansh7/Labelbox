@@ -165,7 +165,6 @@ export interface ClassificationField {
   id: string,
   name: string,
   instructions: string,
-  required: boolean,
   type: FieldTypes,
   options: {
     label: string, value: string

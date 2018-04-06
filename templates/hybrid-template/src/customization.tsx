@@ -15,7 +15,6 @@ export const screenText = {
       name: 'model',
       instructions: "Select the car model",
       type: FieldTypes.RADIO,
-      required: true,
       options: [
         { value: "model_s", label: "Tesla Model S"},
         { value: "model_3", label: "Tesla Model 3"},
@@ -26,7 +25,6 @@ export const screenText = {
       name: 'image_problems',
       instructions: "Select all that apply",
       type: FieldTypes.CHECKLIST,
-      required: false,
       options: [
         { value: "blur", label: "Blurry"},
         { value: "saturated", label: "Over Saturated"},
