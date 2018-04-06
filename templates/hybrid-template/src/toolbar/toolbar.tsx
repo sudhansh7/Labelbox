@@ -23,7 +23,7 @@ const ActionButtons = styled.div`
 export function ToolMenu(
   {
     tools,
-    classifications,
+    classificationFields,
     toolChange,
     currentTool,
     visibilityToggle,
@@ -34,7 +34,7 @@ export function ToolMenu(
     onReset,
   }: {
     tools: {id: string, name: string, color: string, count: number, visible: boolean, tool: ToolType}[];
-    classifications: ClassificationField[],
+    classificationFields: ClassificationField[],
     toolChange: (id: string | undefined) => void;
     currentTool: string | undefined;
     visibilityToggle: (toolIndex: string) => void;
@@ -64,7 +64,7 @@ export function ToolMenu(
               />
             ))}
           </div>
-          {classifications.map((field) => (<Classification key={field.name} field={field} />))}
+          {classificationFields.map((field) => (<Classification key={field.name} field={field} />))}
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 

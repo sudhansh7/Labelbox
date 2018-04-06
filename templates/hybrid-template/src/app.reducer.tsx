@@ -13,7 +13,7 @@ const defaultState = {
   hiddenTools: [],
   deletedAnnotations: [],
   tools: screenText.tools.map(addId),
-  classifications: screenText.classifications
+  classificationFields: screenText.classifications
 };
 
 export type Action = {type: any, payload?: any};
@@ -162,7 +162,7 @@ export interface AppState {
   loading: boolean;
   tools: Tool[];
   drawnAnnotationBounds: Geometry;
-  classifications: ClassificationField[]
+  classificationFields: ClassificationField[]
   existingLabel?: {
     typeName: 'Any' | 'Skip',
     createdBy: string,

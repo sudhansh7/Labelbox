@@ -344,7 +344,7 @@ class App extends React.Component {
               </a>
               <ToolMenu
                 tools={selectToolbarState(this.props.state.tools, this.props.state.annotations, this.props.state.hiddenTools)}
-                classifications={this.props.state.classifications}
+                classificationFields={this.props.state.classificationFields}
                 currentTool={this.props.state.currentToolId}
                 toolChange={(toolId: string) => dispatch(userClickedSetTool(toolId))}
                 visibilityToggle={(toolId: string) => dispatch(syncState(toggleVisiblityOfTool(this.props.state, toolId)))}
