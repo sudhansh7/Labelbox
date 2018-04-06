@@ -26,6 +26,7 @@ enum Actions {
   USER_FINISHED_CREATING_ANNOTATION = 'USER_FINISHED_CREATING_ANNOTATION',
   USER_COMPLETED_BOUNDING_BOX = 'USER_COMPLETED_BOUNDING_BOX',
   USER_DESELECTED_ANNOTATION = 'USER_DESELECTED_ANNOTATION',
+  IMAGE_FINISHED_LOADING = 'IMAGE_FINISHED_LOADING',
 }
 
 // TODO delete
@@ -74,6 +75,13 @@ export const userCompletedBoundingBox = () => {
   }
 }
 
+export const imageFinishedLoading = ():Action => {
+  return {
+    type: Actions.IMAGE_FINISHED_LOADING,
+    payload: {}
+  }
+}
+
 export const appReducer = (state: AppState = defaultState, action: any = {}) => {
   const { type, payload } = action;
   switch (type) {
@@ -97,6 +105,12 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
     }
     case Actions.USER_DESELECTED_ANNOTATION: {
       return deselectAllAnnotations(state);
+    }
+    case Actions.IMAGE_FINISHED_LOADING:{
+      return {
+        ...state,
+        loading: false
+      }
     }
     default: {
       return state;

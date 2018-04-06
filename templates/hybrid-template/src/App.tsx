@@ -26,6 +26,7 @@ import {
   removeTempBoundingBox,
   syncState,
   userClickedSetTool,
+  imageFinishedLoading,
 } from './app.reducer';
 import { selectIntentFromMapClick } from './app.selectors';
 import { BrokenImage } from './broken-image';
@@ -398,7 +399,7 @@ class App extends React.Component {
                   imageSize={this.props.state.imageInfo}
                   annotations={this.props.state.annotations.filter(({toolId}) => this.props.state.hiddenTools.indexOf(toolId) === -1)}
                   loading={this.props.state.loading}
-                  onImageLoaded={() => dispatch(syncState({...this.props.state, loading: false}))}
+                  onImageLoaded={() => dispatch(imageFinishedLoading())}
                   drawColor={currentTool ? currentTool.color : undefined}
                   selectedTool={currentTool ? currentTool.tool : undefined}
                   isEditing={isEditing}
