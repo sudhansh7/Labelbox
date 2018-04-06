@@ -170,3 +170,7 @@ export function selectDoesStateIncludeUnsavedChanges(state: AppState){
   }
 
 }
+
+export function isUserDrawingRectangle(state: AppState): Boolean{
+  return Boolean(state.rectangleInProgressId);
+}
