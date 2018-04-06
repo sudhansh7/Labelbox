@@ -4,6 +4,7 @@ import {
   userClickedAnnotation,
   userFinishedAnnotation,
   AppState,
+  Action,
 } from './app.reducer';
 
 const reduceActions = (reducer: any, actions: any[], startingState: AppState | undefined = undefined) => {
@@ -19,7 +20,6 @@ const createGeometry = () => {
   ];
 }
 
-type Action = {type: any, payload?: any};
 
 const selectFirstTool = (state: AppState): Action => {
   return userClickedSetTool(state.tools[0].id);
@@ -77,4 +77,5 @@ describe('appReducer', () => {
       expect(clickedAnnotationState.annotations[0].editing).toEqual(true);
     });
   })
+
 });

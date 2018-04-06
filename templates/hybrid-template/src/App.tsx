@@ -21,13 +21,13 @@ import {
   selectToolbarState,
   updateAnnotation,
   deselectAllAnnotations,
-  userClickedMap,
   mouseMove,
   generateAnnotationsFromLabel,
   removeTempBoundingBox,
   syncState,
   userClickedSetTool,
 } from './app.reducer';
+import { selectIntentFromMapClick } from './app.selectors';
 import { BrokenImage } from './broken-image';
 import { History } from './history/history';
 import styled from 'styled-components';
@@ -345,6 +345,12 @@ class App extends React.Component {
     };
     const currentTool = this.props.state.tools.find((tool) => tool.id === this.props.state.currentToolId);
     const isEditing = this.props.state.annotations.some(({editing}) => editing === true);
+    const handleMapClick = (click: MapClick) => {
+      const action = selectIntentFromMapClick(this.props.state, click);
+      if (action) {
+        dispatch(action);
+      }
+    }
     return (
       <MuiThemeProvider theme={theme}>
         {
@@ -403,7 +409,7 @@ class App extends React.Component {
                       dispatch(syncState(updatedStateFromMouseMove))
                     }
                   }}
-                  onMapClick={(e: MapClick) => dispatch(syncState(userClickedMap(this.props.state, e)))}
+                  onMapClick={handleMapClick}
                   onAnnotationEdit={onAnnotationEdit}
                   onDrawnAnnotationUpdate={(drawnAnnotationBounds: any) => dispatch(syncState({...this.props.state, drawnAnnotationBounds}))}
                 /> : <div style={{opacity: 0.6, height: '100%', widht: '100%', backgroundColor: '#dddddd'}}></div>

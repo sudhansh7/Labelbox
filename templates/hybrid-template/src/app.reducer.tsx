@@ -1,6 +1,7 @@
 import { ToolType } from './labeling-screen/segment-image';
-import { MapClick, MouseMove } from './labeling-screen/segment-image';
+import { MouseMove } from './labeling-screen/segment-image';
 import { screenText } from './customization';
+import { getSelectedRectangleTool } from './app.selectors';
 const addId = (item: any) => ({id: guid(), ...item});
 
 const defaultState = {
@@ -15,12 +16,16 @@ const defaultState = {
   classifications: screenText.classifications
 };
 
+export type Action = {type: any, payload?: any};
+
 enum Actions {
   // TODO this is just a temporary action so I can move everything into redux
   SYNC = 'SYNC',
   USER_CLICKED_SET_TOOL = 'USER_CLICKED_SET_TOOL',
   USER_CLICKED_ANNOTATION = 'USER_CLICKED_ANNOTATION',
   USER_FINISHED_CREATING_ANNOTATION = 'USER_FINISHED_CREATING_ANNOTATION',
+  USER_COMPLETED_BOUNDING_BOX = 'USER_COMPLETED_BOUNDING_BOX',
+  USER_DESELECTED_ANNOTATION = 'USER_DESELECTED_ANNOTATION',
 }
 
 // TODO delete
@@ -31,6 +36,13 @@ export function syncState(newState: AppState){
     payload: {
       state: newState
     }
+  }
+}
+
+export function userDeselectedAnnotation(){
+  return {
+    type: Actions.USER_DESELECTED_ANNOTATION,
+    payload: {}
   }
 }
 
@@ -55,6 +67,13 @@ export function userClickedAnnotation(annotationId: string) {
   }
 }
 
+export const userCompletedBoundingBox = () => {
+  return {
+    type: Actions.USER_COMPLETED_BOUNDING_BOX,
+    payload: {}
+  }
+}
+
 export const appReducer = (state: AppState = defaultState, action: any = {}) => {
   const { type, payload } = action;
   switch (type) {
@@ -72,6 +91,12 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
     }
     case Actions.USER_CLICKED_ANNOTATION: {
       return userSelectedAnnotationToEdit(state, payload.annotationId);
+    }
+    case Actions.USER_FINISHED_CREATING_ANNOTATION: {
+      return finalizeTempBoundingBox(state);
+    }
+    case Actions.USER_DESELECTED_ANNOTATION: {
+      return deselectAllAnnotations(state);
     }
     default: {
       return state;
@@ -330,10 +355,6 @@ export function userSelectedAnnotationToEdit(state: AppState, annotationId: stri
 };
 
 
-const getSelectedRectangleTool = (state: AppState) => {
-  return state.tools.find((tool) => tool.tool === 'rectangle' && tool.id === state.currentToolId);
-}
-
 export const removeTempBoundingBox = (state: AppState) => {
   return {
     ...state,
@@ -382,25 +403,13 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
   }
 }
 
-const finalizeTempBoundingBox = (state: AppState) => {
+function finalizeTempBoundingBox(state: AppState) {
   return {
     ...state,
     drawnAnnotationBounds: [],
     currentToolId: undefined,
     rectangleInProgressId: undefined,
   }
-}
-
-export const userClickedMap = (state: AppState, click: MapClick) => {
-  const selectedRectangleTool = getSelectedRectangleTool(state);
-  if (selectedRectangleTool && Array.isArray(state.drawnAnnotationBounds) && state.drawnAnnotationBounds.length === 2) {
-    return finalizeTempBoundingBox(state);
-  } else if (!state.currentToolId && !click.shapeId){
-    return deselectAllAnnotations(state);
-  } else if (click.shapeId){
-    return userSelectedAnnotationToEdit(state, click.shapeId);
-  }
-  return state;
 }
 
 export const mouseMove = (state: AppState, move: MouseMove):AppState | undefined => {
