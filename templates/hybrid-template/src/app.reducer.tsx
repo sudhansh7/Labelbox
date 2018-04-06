@@ -158,7 +158,7 @@ export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
 };
 
 
-export const onNewAnnotation = (state: AppState, geometry: Geometry): AppState => {
+export function onNewAnnotation(state: AppState, geometry: Geometry): AppState {
   const currentTool = state.tools.find(({id}) => id === state.currentToolId);
   if (currentTool === undefined) {
     throw new Error('should not be able to add an annotation without a tool');
@@ -321,7 +321,7 @@ export function deselectAllAnnotations(state: AppState) {
 }
 
 
-export const userSelectedAnnotationToEdit = (state: AppState, annotationId: string) => {
+export function userSelectedAnnotationToEdit(state: AppState, annotationId: string) {
   return updateAnnotation(
     deselectAllAnnotations(state),
     annotationId,
