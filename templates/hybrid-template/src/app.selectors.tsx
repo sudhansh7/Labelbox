@@ -157,12 +157,20 @@ export function selectDoesStateIncludeUnsavedChanges(state: AppState){
     if (state.label !== labelDerviedFromState) {
       return true;
     }
+
+    return false;
+  } else {
+    // TODO I dont like that state.label isn't saved until we sumbit
+    if (state.annotations.length > 0) {
+      return true;
+    }
+
+    const userAnsweredClassification = state.classificationFields.some(({userAnswer}) => Boolean(userAnswer));
+    if (userAnsweredClassification){
+      return true;
+    }
+
+    return false;
   }
 
-  // TODO I dont like that state.label isn't saved until we sumbit
-  if (!state.label && state.annotations.length > 0) {
-    return true;
-  }
-
-  return false;
 }

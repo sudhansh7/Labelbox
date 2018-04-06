@@ -103,15 +103,30 @@ describe('app.selectors', () => {
 
   describe('selectDoesStateIncludeUnsavedChanges', () => {
     describe('state does not have a label', () => {
-      it('it should return false if no annotations or classifications have been made', () => {});
-      it('it should return true if an annotation has been made', () => {});
-      it('it should return true if a classification has been made', () => {});
+      it('it should return false if no annotations or classifications have been made', () => {
+        expect(selectDoesStateIncludeUnsavedChanges(appReducer())).toEqual(false);
+      });
+      it('it should return true if an annotation has been made', () => {
+        const state = appReducer(undefined);
+        const finalState = reduceActions(appReducer, [
+          selectFirstTool(state),
+          userFinishedAnnotation(createMockGeometry()),
+        ]);
+        expect(selectDoesStateIncludeUnsavedChanges(finalState)).toEqual(true);
+      });
+      it('it should return true if a classification has been made', () => {
+        const state = appReducer(undefined);
+        const fieldId = state.classificationFields[0].id;
+        const finalState = appReducer(state, userAnsweredClassification(fieldId, 'model_s'))
+        expect(selectDoesStateIncludeUnsavedChanges(finalState)).toEqual(true);
+      });
     });
 
     describe('state does have a label', () => {
-      it('it should return false if no annotations or classifications have been made', () => {});
-      it('it should return true if an annotation has been made', () => {});
-      it('it should return true if a classification has been made', () => {});
+      it('current label is Skip and the user hasnt made any changes', () => {
+      });
+      it('', () => {});
+      it('', () => {});
     });
   });
 
