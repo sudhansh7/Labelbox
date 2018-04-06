@@ -11,7 +11,6 @@ export interface ClassificationLabel {
 }
 
 function toggleValue(items: string[] = [], item: string){
-  console.log(items, item)
   const index = items.findIndex((str) => str === item);
   if (index === -1){
     return [...items, item];
