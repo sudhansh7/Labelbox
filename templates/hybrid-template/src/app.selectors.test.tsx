@@ -87,15 +87,15 @@ describe('app.selectors', () => {
       ]);
     });
 
-    xit('should be able to return the classifcations fields given a label', () => {
+    it('should be able to return the classifcations fields given a label', () => {
       const label = JSON.stringify({
         model: 'model_s',
         image_problems: ['blur', 'saturated']
       })
       const { classifications: [model, imageProblems] } =  screenText;
       expect(selectClassificationFieldsFromLabel(appReducer(), label)).toEqual([
-        {...model, userAnswer: 'model_s'},
-        {...imageProblems, userAnswer: ['blur', 'saturated']},
+        {...model, userAnswer: 'model_s', id: jasmine.any(String)},
+        {...imageProblems, userAnswer: ['blur', 'saturated'], id: jasmine.any(String)},
       ]);
     })
   });

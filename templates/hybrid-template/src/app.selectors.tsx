@@ -81,9 +81,15 @@ export const selectClassificationFieldsFromLabel = (state: AppState, label: stri
     return state.classificationFields;
   }
 
-
   return state.classificationFields.map((field) => {
-    return field;
+    if (info[field.name]){
+      return {
+        ...field,
+        userAnswer: info[field.name]
+      };
+    } else {
+      return field;
+    }
   });
 }
 
