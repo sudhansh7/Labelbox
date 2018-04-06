@@ -54,8 +54,7 @@ export const selectAnnotationsFromLabel = (state: AppState, label: string): Anno
   return Object.keys(classes).reduce((annotations, className) => {
     const tool = selectToolByName(state, className);
     if (!tool){
-      console.log('Tool not found', className, state);
-      return annotations
+      return annotations;
     }
     const newAnnotations = classes[className].map((shape: {x: number, y: number}[]) => {
       const toCoord = ({y, x}:{x: number, y: number}) => ({lat: y, lng: x});
@@ -76,20 +75,17 @@ export const selectAnnotationsFromLabel = (state: AppState, label: string): Anno
 
 
 export const selectClassificationFieldsFromLabel = (state: AppState, label: string): ClassificationField[] => {
+  const classificationWithNoAnswers = state.classificationFields.map(({userAnswer, ...field}) => field);
   const info = parseIfPossible(label);
   if (!info){
-    return state.classificationFields;
+    return classificationWithNoAnswers;
   }
 
-  return state.classificationFields.map((field) => {
-    if (info[field.name]){
-      return {
-        ...field,
-        userAnswer: info[field.name]
-      };
-    } else {
-      return field;
-    }
+  return classificationWithNoAnswers.map((field) => {
+    return {
+      ...field,
+      userAnswer: info[field.name]
+    };
   });
 }
 
