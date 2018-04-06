@@ -91,19 +91,6 @@ export const theme = createMuiTheme({
   }
 });
 
-// TODO I  would like to delete as I have two now
-const defaultState = {
-  loading: true,
-  imageInfo: undefined,
-  currentToolId: undefined,
-  annotations: [],
-  drawnAnnotationBounds: [],
-  hiddenTools: [],
-  deletedAnnotations: [],
-  tools: [],
-  classifications: [],
-};
-
 // I load the script async
 const getLabelbox = ():Promise<any> => {
   if ((window as any).Labelbox){
@@ -241,15 +228,10 @@ class App extends React.Component {
 
         this.startLoading();
         const updateImageInfo = ({height, width}: {height: number, width: number}) => {
-          const stateWithTools = {
-            ...defaultState,
-            tools: this.props.state.tools,
-          };
-          const annotations = generateAnnotationsFromLabel(stateWithTools, asset.label);
           // TODO this is questionable
           dispatch(syncState({
             ...this.props.state,
-            annotations: annotations,
+            annotations: generateAnnotationsFromLabel(this.props.state, asset.label),
             imageInfo: {width, height, url: imageUrl},
             previousLabel: asset.previous,
             nextLabel: asset.next,
