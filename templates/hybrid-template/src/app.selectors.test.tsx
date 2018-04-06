@@ -34,6 +34,24 @@ describe('app.selectors', () => {
 
     it('should return a segmentation as xy', () => {
       const state = appReducer(undefined);
+      const geometry = createMockGeometry();
+      const finalState = reduceActions(appReducer, [
+        selectFirstTool(state),
+        userFinishedAnnotation(geometry),
+      ], state);
+      expect(selectLabelFromState(finalState)).toEqual(JSON.stringify({
+        Vegetation: [[
+          {x: 0, y: 0},
+          {x: 1, y: 0},
+          {x: 0, y: 1},
+          {x: 1, y: 1},
+        ]]
+      }));
+    });
+
+
+    it('should ', () => {
+      const state = appReducer(undefined);
       const finalState = reduceActions(appReducer, [
         selectFirstTool(state),
         userFinishedAnnotation(createMockGeometry()),
