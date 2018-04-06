@@ -65,14 +65,14 @@ export function ToolMenu(
                 selected={id === currentTool}
               />
             ))}
+            {classificationFields.map((field) => (
+              <Classification
+                key={field.id}
+                field={field}
+                answer={field.userAnswer}
+                onAnswer={(answer: string | string[]) => onClassificationAnswer(field.id, answer)}
+              />))}
           </div>
-          {classificationFields.map((field) => (
-            <Classification
-              key={field.id}
-              field={field}
-              answer={field.userAnswer}
-              onAnswer={(answer: string | string[]) => onClassificationAnswer(field.id, answer)}
-            />))}
         </div>
         <div style={{display: 'flex', flexGrow: '1'} as any}></div>
 
