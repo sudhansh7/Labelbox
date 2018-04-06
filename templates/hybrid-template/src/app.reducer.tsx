@@ -2,7 +2,7 @@ import { ToolType } from './labeling-screen/segment-image';
 import { MouseMove } from './labeling-screen/segment-image';
 import { screenText } from './customization';
 import { getSelectedRectangleTool } from './app.selectors';
-const addId = (item: any) => ({id: guid(), ...item});
+import { addId, guid } from './utils/utils';
 
 const defaultState = {
   loading: true,
@@ -174,16 +174,6 @@ export interface AppState {
   rectangleInProgressId?: string;
   errorLoadingImage?: string;
   label?: string;
-}
-
-export function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
 }
 
 export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {

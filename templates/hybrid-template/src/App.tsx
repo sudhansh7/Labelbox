@@ -13,7 +13,6 @@ import { logo } from './logo';
 import { LinearProgress } from 'material-ui/Progress';
 import {
   AppState,
-  guid,
   toggleVisiblityOfTool,
   onNewAnnotation,
   deleteSelectedAnnotation,
@@ -35,8 +34,7 @@ import styled from 'styled-components';
 import { LabelInformation } from './label-information';
 import { getQueryParam } from './query-param';
 import { dispatch } from './redux';
-
-
+import { addId } from './utils/utils';
 
 const Toolbar = styled.div`
   display: flex;
@@ -44,7 +42,7 @@ const Toolbar = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-`
+`;
 
 interface Asset {
   id: string,
@@ -103,8 +101,6 @@ const getLabelbox = ():Promise<any> => {
     });
   }
 }
-
-const addId = (item: any) => ({id: guid(), ...item});
 
 // TODO the goal is make this a function
 // goint to be some code haha
