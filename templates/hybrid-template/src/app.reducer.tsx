@@ -92,7 +92,7 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
     case Actions.USER_CLICKED_ANNOTATION: {
       return userSelectedAnnotationToEdit(state, payload.annotationId);
     }
-    case Actions.USER_FINISHED_CREATING_ANNOTATION: {
+    case Actions.USER_COMPLETED_BOUNDING_BOX: {
       return finalizeTempBoundingBox(state);
     }
     case Actions.USER_DESELECTED_ANNOTATION: {
