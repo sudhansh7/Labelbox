@@ -3,10 +3,11 @@ import {
   userClickedSetTool,
   userClickedAnnotation,
   userFinishedAnnotation,
+  AppState,
 } from './app.reducer';
 
-const reduceActions = (reducer: any, actions: any[]) => {
-  return actions.reduce((state, action) => reducer(state, action), undefined);
+const reduceActions = (reducer: any, actions: any[], startingState: AppState | undefined = undefined) => {
+  return actions.reduce((state, action) => reducer(state, action), startingState);
 }
 
 const createGeometry = () => {
@@ -18,32 +19,25 @@ const createGeometry = () => {
   ];
 }
 
+type Action = {type: any, payload?: any};
+
+const selectFirstTool = (state: AppState): Action => {
+  return userClickedSetTool(state.tools[0].id);
+}
 
 describe('appReducer', () => {
 
   describe('userFinishedAnnotation', () => {
     fit('should create a new annotation with the currently selected tool', () => {
+      const geometry = createGeometry();
       const state = appReducer(undefined);
-      const newState = appReducer(state, userClickedSetTool(state.tools[0].id));
-      const finalState = appReducer(newState, userFinishedAnnotation(createGeometry()));
-      expect(finalState.annotations).toEqual([{
-        "color": "pink",
-        "editing": false,
-        "geometry": [
-          {"lat": 0, "lng": 0},
-          {"lat": 0, "lng": 1},
-          {"lat": 1, "lng": 0},
-          {"lat": 1, "lng": 1}
-        ],
-        "id": jasmine.any(String),
-        "toolId": jasmine.any(String),
-        "toolName": "polygon"
-      }]);
-      /* const state = reduceActions(appReducer, [*/
-      /* userClickedSetTool('toolId'),*/
-      /* userFinishedAnnotation(createGeometry()),*/
-      /* ])*/
-      /* console.log('my lenght', state.annotations.length);*/
+      const finalState = reduceActions(appReducer, [
+        selectFirstTool(state),
+        userFinishedAnnotation(geometry),
+      ], state);
+
+      expect(finalState.annotations.length).toEqual(1);
+      expect(finalState.annotations[0].geometry).toEqual(geometry);
     });
   });
 
