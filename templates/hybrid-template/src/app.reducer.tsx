@@ -50,7 +50,7 @@ export function userFinishedAnnotation(geometry: Geometry){
 
 export function userClickedAnnotation(annotationId: string) {
   return {
-    type: Actions.USER_CLICKED_SET_TOOL,
+    type: Actions.USER_CLICKED_ANNOTATION,
     payload: {annotationId}
   }
 }
@@ -68,8 +68,10 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
       };
     }
     case Actions.USER_FINISHED_CREATING_ANNOTATION: {
-      console.log(payload.geometry);
       return onNewAnnotation(state, payload.geometry);
+    }
+    case Actions.USER_CLICKED_ANNOTATION: {
+      return userSelectedAnnotationToEdit(state, payload.annotationId);
     }
     default: {
       return state;
@@ -157,7 +159,6 @@ export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
 
 
 export const onNewAnnotation = (state: AppState, geometry: Geometry): AppState => {
-  console.log(state.currentToolId)
   const currentTool = state.tools.find(({id}) => id === state.currentToolId);
   if (currentTool === undefined) {
     throw new Error('should not be able to add an annotation without a tool');

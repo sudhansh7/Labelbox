@@ -28,7 +28,7 @@ const selectFirstTool = (state: AppState): Action => {
 describe('appReducer', () => {
 
   describe('userFinishedAnnotation', () => {
-    fit('should create a new annotation with the currently selected tool', () => {
+    it('should create a new annotation with the currently selected tool', () => {
       const geometry = createGeometry();
       const state = appReducer(undefined);
       const finalState = reduceActions(appReducer, [
@@ -53,7 +53,18 @@ describe('appReducer', () => {
   });
 
   describe('userClickedAnnotation', () => {
-    const state = appReducer(undefined, userClickedSetTool('toolid'))
-    expect(state.currentToolId).toEqual('toolid');
+
+    it('should select annotation',  () => {
+      const state = appReducer(undefined);
+      const withAnnotation = reduceActions(appReducer, [
+        selectFirstTool(state),
+        userFinishedAnnotation(createGeometry()),
+      ], state);
+      const clickedAnnotationState = appReducer(
+        withAnnotation,
+        userClickedAnnotation(withAnnotation.annotations[0].id)
+      );
+      expect(clickedAnnotationState.annotations[0].editing).toEqual(true);
+    });
   })
 });
