@@ -19,6 +19,8 @@ enum Actions {
   // TODO this is just a temporary action so I can move everything into redux
   SYNC = 'SYNC',
   USER_CLICKED_SET_TOOL = 'USER_CLICKED_SET_TOOL',
+  USER_CLICKED_ANNOTATION = 'USER_CLICKED_ANNOTATION',
+  USER_FINISHED_CREATING_ANNOTATION = 'USER_FINISHED_CREATING_ANNOTATION',
 }
 
 // TODO delete
@@ -33,13 +35,25 @@ export function syncState(newState: AppState){
 }
 
 export function userClickedSetTool(toolId: string) {
-  console.log('SET TOOL', toolId)
   return {
     type: Actions.USER_CLICKED_SET_TOOL,
     payload: {toolId}
   }
 }
 
+export function userFinishedAnnotation(geometry: Geometry){
+  return {
+    type: Actions.USER_FINISHED_CREATING_ANNOTATION,
+    payload: {geometry}
+  }
+}
+
+export function userClickedAnnotation(annotationId: string) {
+  return {
+    type: Actions.USER_CLICKED_SET_TOOL,
+    payload: {annotationId}
+  }
+}
 
 export const appReducer = (state: AppState = defaultState, action: any = {}) => {
   const { type, payload } = action;
@@ -52,6 +66,10 @@ export const appReducer = (state: AppState = defaultState, action: any = {}) => 
         ...deselectAllAnnotations(state),
         currentToolId: payload.toolId
       };
+    }
+    case Actions.USER_FINISHED_CREATING_ANNOTATION: {
+      console.log(payload.geometry);
+      return onNewAnnotation(state, payload.geometry);
     }
     default: {
       return state;
@@ -139,6 +157,7 @@ export const toggleVisiblityOfTool = (state: AppState, toolId: string) => {
 
 
 export const onNewAnnotation = (state: AppState, geometry: Geometry): AppState => {
+  console.log(state.currentToolId)
   const currentTool = state.tools.find(({id}) => id === state.currentToolId);
   if (currentTool === undefined) {
     throw new Error('should not be able to add an annotation without a tool');
