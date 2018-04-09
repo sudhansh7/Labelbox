@@ -29,9 +29,7 @@ class App extends Component {
   next(submission){
     this.setState(defaultState);
     const getNext = () => {
-      window.Labelbox.fetchNextAssetToLabel().then((data) => {
-        this.setState({data, loading: false});
-      });
+      window.Labelbox.fetchNextAssetToLabel();
     };
     if (!submission) {
       getNext();
@@ -43,7 +41,14 @@ class App extends Component {
   }
 
   componentWillMount(){
-    this.next();
+    window.Labelbox.currentAsset().subscribe((asset) => {
+      if (!asset){
+        this.setState({loading: true});
+        return;
+      }
+
+      this.setState({data: asset.data, loading: false});
+    });
   }
 
   render() {
