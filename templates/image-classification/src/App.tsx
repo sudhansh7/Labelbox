@@ -83,6 +83,7 @@ const readAsJson = (str?: string) => {
 
 class App extends React.Component {
   public state: {
+    assetId?: string;
     label?: Label;
     imageUrl?: string;
     previousLabel?: string;
@@ -124,11 +125,15 @@ class App extends React.Component {
         if (!asset){
           return;
         }
+        // Only refresh the label if the asset has changed.
+        // the reason for this is because we will clear out what the user is currently labeling
+        const label = asset.id === this.state.assetId ? this.state.label : readAsJson(asset.label);
         this.setState({
+          assetId: asset.id,
           imageUrl: asset.data,
           previousLabel: asset.previous,
           nextLabel: asset.next,
-          label: readAsJson(asset.label),
+          label,
           ... asset.createdAt ?
             {
               existingLabel: {
