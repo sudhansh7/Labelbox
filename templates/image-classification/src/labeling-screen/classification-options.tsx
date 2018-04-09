@@ -7,6 +7,7 @@ import List, { ListItem } from 'material-ui/List';
 import styled, {css} from 'styled-components';
 import Button from 'material-ui/Button';
 import { reject, equals } from 'ramda';
+import KeyBinding from 'react-keybinding-component';
 
 const Sidebar = styled.div`
   box-shadow: 2px 0px 13px #bfbfbf;
@@ -101,6 +102,17 @@ export default class ClassificationForm extends React.Component {
           remove(currentValues, checkboxValue)
       });
     }
+    const isSubmitDisabled = !canUserSubmitForm(this.state.customization, this.props.label) || this.props.loading;
+    const onKeyup = (e: KeyboardEvent) => {
+      if (e.keyCode === 65) {
+        this.props.onSkip();
+      } else if (e.keyCode === 69){
+        if (!isSubmitDisabled){
+          this.props.onSubmit();
+        }
+      }
+    }
+
     return (
       <Sidebar>
         <div style={{overflowY: 'auto'}}>
@@ -147,13 +159,14 @@ export default class ClassificationForm extends React.Component {
         </div>
         <Divider />
         <ActionButtons>
-          <Button onClick={() => this.props.onSkip()} >Skip</Button>
+          <KeyBinding onKey={onKeyup } />
+          <Button onClick={() => this.props.onSkip()} >Skip (a)</Button>
           <Button
             variant="raised"
             color="primary"
-            disabled={!canUserSubmitForm(this.state.customization, this.props.label) || this.props.loading}
+            disabled={isSubmitDisabled}
             onClick={() => this.props.onSubmit()}
-          >Submit</Button>
+          >Submit (e)</Button>
         </ActionButtons>
       </Sidebar>
     );
