@@ -95,6 +95,8 @@ to get started.
  Supported annotation tools are:
  - Rectangle
  - Polygon
+ - Line
+ - Point
 
 For example, let's say we want to configure the labeling interface to segment 2
 objects in an image. One object is required to be labeled using a rectangle
@@ -190,6 +192,80 @@ Classify an image from a set of categories. Classification interface supports si
 ]
 ```
 
+### Image Segmentation & Classification
+It is also possible to do image segmentation & classification together in the same interface. Just customize your image segmentation interface with JSON input like this:
+
+```json
+{
+  "tools": [
+    {
+      "name": "Car",
+      "color": "navy",
+      "tool": "polygon"
+    },
+    {
+      "name": "Tree",
+      "color": "green",
+      "tool": "polygon"
+    },
+    {
+      "name": "Road Sign",
+      "color": "orange",
+      "tool": "polygon"
+    },
+    {
+      "name": "Person",
+      "color": "pink",
+      "tool": "rectangle"
+    },
+    {
+      "name": "Corner of Building",
+      "color": "red",
+      "tool": "point"
+    }
+  ],
+  "classifications": [
+    {
+      "name": "model",
+      "instructions": "Select the car model",
+      "type": "radio",
+      "options": [
+        {
+          "value": "model_s",
+          "label": "Tesla Model S"
+        },
+        {
+          "value": "model_3",
+          "label": "Tesla Model 3"
+        },
+        {
+          "value": "model_x",
+          "label": "Tesla Model X"
+        }
+      ]
+    },
+    {
+      "name": "image_problems",
+      "instructions": "Select all that apply",
+      "type": "checklist",
+      "options": [
+        {
+          "value": "blur",
+          "label": "Blurry"
+        },
+        {
+          "value": "saturated",
+          "label": "Over Saturated"
+        },
+        {
+          "value": "pixelated",
+          "label": "Pixelated"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ### Text Classification Interface
 Classify text form a set of categories. Categories can be customized in a
