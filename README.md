@@ -10,7 +10,7 @@ Table of Contents
    * [Labeling Interfaces](#labeling-interfaces)
       * [Image Segmentation](#image-segmentation-interface)
       * [Image Classification](#image-classification-interface)
-      * [Image Segmentation & Classification] (#image-segmentation--classification)
+      * [Image Segmentation & Classification](#image-segmentation--classification)
       * [Text Classification](#text-classification-interface)
    * [Exporting Labels](#exporting-labels)
       * [Segmentation Masks](#segmentation-masks)
