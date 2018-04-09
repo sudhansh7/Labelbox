@@ -1,6 +1,14 @@
 # API Reference
 
-## Labelbox.currentAsset()
+* [Labelbox.currentAsset()](#labelbox.currentasset)
+* [Labelbox.enablePreloading()](#labelbox.enablepreloading)
+* [Labelbox.setLabelForAsset()](#labelbox.setlabelforasset)
+* [Labelbox.fetchNextAsset()](#labelbox.fetchnextasset)
+* [Labelbox.setLabelAsCurrentAsset()](#labelbox.setlabelascurrentasset)
+* [Labelbox.skip()](#labelbox.skip)
+* [Labelbox.getTemplateCustomization()](#labelbox.gettemplatecustomization)
+
+## Labelbox.currentAsset
 
 **Overview:**
 
@@ -32,7 +40,7 @@ const subscription = Labelbox.currentAsset().subscribe((asset) => {
 subscription.unsubscribe();
 ```
 
-## Labelbox.enablePreloading()
+## Labelbox.enablePreloading
 
 **Overview:**
 
@@ -64,7 +72,7 @@ const preloadFunction = (asset: Asset) => {
 Labelbox.enablePreloading({preloadFunction})
 ```
 
-## Labelbox.setLabelForAsset()
+## Labelbox.setLabelForAsset
 
 **Overview**
 
@@ -76,7 +84,7 @@ This function takes a string (JSON.stringify(myJsonLabel)** and will return a pr
 Labelbox.setLabelForAsset('good').then(() => console.log('Success!'));
 ```
 
-## Labelbox.fetchNextAsset()
+## Labelbox.fetchNextAsset
 
 **Overview**
 
@@ -92,7 +100,7 @@ function label(label){
 }
 ```
 
-## Labelbox.setLabelAsCurrentAsset()
+## Labelbox.setLabelAsCurrentAsset
 
 **Overview**
 
@@ -106,7 +114,7 @@ function goBack(){
 }
 ```
 
-## Labelbox.skip()
+## Labelbox.skip
 
 **Overview**
 
@@ -118,7 +126,7 @@ Labelbox.skip() is identical to setLabelForAsset('Skip', 'Skip'). The Label that
 Labelbox.skip().then(() => console.log('Skipped!'))
 ```
 
-## Labelbox.getTemplateCustomization()
+## Labelbox.getTemplateCustomization
 
 **Overview**
 
