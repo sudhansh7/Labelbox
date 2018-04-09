@@ -21,6 +21,7 @@ Table of Contents
       * [Using labeling-api.js](#using-labeling-apijs)
       * [Hello World Example](#hello-world-example)
       * [Full Example](#full-example)
+      * [Full API Reference](#full-api-reference)
       * [Reference Interfaces](#reference-interfaces)
       * [Local Development of Labeling Interfaces](#local-development-of-labeling-interfaces)
       * [Installing a Labeling Frontend in labelbox.io](#installing-a-labeling-frontend-in-labelboxio)
@@ -228,25 +229,28 @@ labeling tasks. All of the pre-made labeling interfaces are open source.
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 <div id="form"></div>
 <script>
-function next(label){
-  if (label) {
-    Labelbox.setLabelForAsset(label);
-  }
-  Labelbox.fetchNextAssetToLabel().then(drawItem);
+function label(label){
+  Labelbox.setLabelForAsset(label).then(() => {
+    Labelbox.fetchNextAssetToLabel();
+  });
 }
 
+Labelbox.currentAsset().subscribe((asset) => {
+  if (asset){
+    drawItem(asset.data);
+  }
+})
 function drawItem(dataToLabel){
   const labelForm = `
     <img src="${dataToLabel}" style="width: 300px;"></img>
     <div style="display: flex;">
-      <button onclick="next('bad')">Bad Quality</button>
-      <button onclick="next('good')">Good Quality</button>
+      <button onclick="label('bad')">Bad Quality</button>
+      <button onclick="label('good')">Good Quality</button>
     </div>
   `;
   document.querySelector('#form').innerHTML = labelForm;
 }
 
-next();
 </script>
 ```
 
@@ -300,31 +304,32 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 <script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
 <div id="form"></div>
 <script>
-function next(label){
-  if (label) {
-    Labelbox.setLabelForAsset(label).then(() => {
-      Labelbox.fetchNextAssetToLabel().then(drawItem);
-    });
-  } else {
-    Labelbox.fetchNextAssetToLabel().then(drawItem);
-  }
+function label(label){
+  Labelbox.setLabelForAsset(label).then(() => {
+    Labelbox.fetchNextAssetToLabel();
+  });
 }
 
+Labelbox.currentAsset().subscribe((asset) => {
+  if (asset){
+    drawItem(asset.data);
+  }
+})
 function drawItem(dataToLabel){
   const labelForm = `
     <img src="${dataToLabel}" style="width: 300px;"></img>
     <div style="display: flex;">
-      <button onclick="next('bad')">Bad Quality</button>
-      <button onclick="next('good')">Good Quality</button>
+      <button onclick="label('bad')">Bad Quality</button>
+      <button onclick="label('good')">Good Quality</button>
     </div>
   `;
   document.querySelector('#form').innerHTML = labelForm;
 }
 
-next();
 </script>
 ```
 
+### [Full API Reference](docs/api-reference.md)
 
 ### Reference Interfaces
 
