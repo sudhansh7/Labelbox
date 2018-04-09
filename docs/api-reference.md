@@ -1,12 +1,12 @@
 # API Reference
 
-* [Labelbox.currentAsset()](#labelbox.currentasset)
-* [Labelbox.enablePreloading()](#labelbox.enablepreloading)
-* [Labelbox.setLabelForAsset()](#labelbox.setlabelforasset)
-* [Labelbox.fetchNextAsset()](#labelbox.fetchnextasset)
-* [Labelbox.setLabelAsCurrentAsset()](#labelbox.setlabelascurrentasset)
-* [Labelbox.skip()](#labelbox.skip)
-* [Labelbox.getTemplateCustomization()](#labelbox.gettemplatecustomization)
+* [Labelbox.currentAsset()](#labelboxcurrentasset)
+* [Labelbox.enablePreloading()](#labelboxenablepreloading)
+* [Labelbox.setLabelForAsset()](#labelboxsetlabelforasset)
+* [Labelbox.fetchNextAsset()](#labelboxfetchnextasset)
+* [Labelbox.setLabelAsCurrentAsset()](#labelboxsetlabelascurrentasset)
+* [Labelbox.skip()](#labelboxskip)
+* [Labelbox.getTemplateCustomization()](#labelboxgettemplatecustomization)
 
 ## Labelbox.currentAsset
 
