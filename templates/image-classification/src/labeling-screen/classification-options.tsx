@@ -115,7 +115,7 @@ export default class ClassificationForm extends React.Component {
 
     return (
       <Sidebar>
-        <div style={{overflowY: 'auto'}}>
+        <div style={{overflowY: 'auto', maxHeight: '90%'}}>
           {
             this.state.customization.map((field) => {
               return (
