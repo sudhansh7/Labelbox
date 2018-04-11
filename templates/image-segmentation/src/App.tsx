@@ -211,6 +211,7 @@ class App extends React.Component {
           // TODO this is questionable
           dispatch(syncState({
             ...this.props.state,
+            errorLoadingImage: undefined,
             annotations: selectAnnotationsFromLabel(this.props.state, asset.label),
             classificationFields: selectClassificationFieldsFromLabel(this.props.state, asset.label),
             imageInfo: {width, height, url: imageUrl},
