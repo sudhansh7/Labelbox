@@ -74,10 +74,11 @@ export function Tool(
             lineHeight: '15px',
             alignItems: 'start',
             textAlign: 'left',
+            width: '100%'
           } as any}>
-            <div style={{display: 'flex'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
               <div style={{maxWidth: '140px'}}>{name}</div>
-              <div style={{marginLeft: '5px'}}>({count})</div>
+              <div style={{marginLeft: '5px', paddingRight: '10px'}}>({count})</div>
             </div>
             {
               selected && <div style={{fontSize: '9px'}}>
