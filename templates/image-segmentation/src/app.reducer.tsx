@@ -114,7 +114,8 @@ enum OrderTo {
 }
 
 function reorderSelectedAnnotation(state: AppState, orderTo: OrderTo){
-  const selectedAnnotationIndex = state.annotations.findIndex(({editing}) => editing = true); if (selectedAnnotationIndex === -1){
+  const selectedAnnotationIndex = state.annotations.findIndex(({editing}) => editing === true);
+  if (selectedAnnotationIndex === -1){
     return state;
   }
   const selected = state.annotations[selectedAnnotationIndex];
@@ -124,8 +125,8 @@ function reorderSelectedAnnotation(state: AppState, orderTo: OrderTo){
   ]
   return {
     ...state,
-    annotations: orderTo === OrderTo.bottom ?
-              annotations.concat(selected) :
+    annotations: orderTo === OrderTo.top ?
+              [...annotations, selected] :
               [selected, ...annotations],
   }
 }
