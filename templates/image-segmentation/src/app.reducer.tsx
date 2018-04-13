@@ -124,7 +124,7 @@ function reorderSelectedAnnotation(state: AppState, orderTo: OrderTo){
   ]
   return {
     ...state,
-    annotations: orderTo === OrderTo.top ?
+    annotations: orderTo === OrderTo.bottom ?
               annotations.concat(selected) :
               [selected, ...annotations],
   }

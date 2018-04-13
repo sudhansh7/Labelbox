@@ -116,6 +116,8 @@ export function SegmentImage({
     }
   }
 
+
+
   return (
     <div style={{opacity: loading ? 0.6 : 1, height: '100%', widht: '100%'}}>
       <Map
@@ -139,45 +141,54 @@ export function SegmentImage({
             onDrawnAnnotationUpdate={onDrawnAnnotationUpdate}
           />
         </FeatureGroup>
-        {annotations.filter(({toolName}) => toolName === 'polygon').map(({id, color, geometry, editing}, index) => (
-          <Polygon
-            key={id}
-            positions={geometry}
-            color={color}
-            ref={(shape: any) => onShapeCreation(shape, id, editing)}
-            onClick={(e: LeafletEvent) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id})}}
-          />
-        ))}
-        {annotations.filter(({toolName}) => toolName === 'rectangle').map(({id, color, geometry, editing}, index) => (
-          <Rectangle
-            key={id}
-            bounds={Array.isArray(geometry) && latLngBounds(geometry)}
-            color={color}
-            ref={(shape: any) => onShapeCreation(shape, id, editing)}
-            onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
-          />
-        ))}
-        {annotations.filter(({toolName}) => toolName === 'line').map(({id, color, geometry, editing}, index) => (
-          <Polyline
-            key={id}
-            positions={geometry}
-            color={color}
-            ref={(shape: any) => onShapeCreation(shape, id, editing)}
-            onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
-          />
-        ))}
-        {annotations.filter(({toolName}) => toolName === 'point').map(({id, color, geometry, editing}, index) => (
-          <Marker
-            key={id}
-            position={geometry}
-            icon={getPointIcon(color)}
-            color={color}
-            draggable={true}
-            onDrag={debounce((e: any) => onAnnotationEdit(id, e.latlng), 500)}
-            ref={(shape: any) => onShapeCreation(shape, id, editing)}
-            onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
-          />
-        ))}
+        {annotations.map(({id, color, geometry, editing, toolName}, index) => {
+           if (toolName === 'polygon'){
+            return (
+              <Polygon
+                key={id+index}
+                positions={geometry}
+                color={color}
+                ref={(shape: any) => onShapeCreation(shape, id, editing)}
+                onClick={(e: LeafletEvent) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id})}}
+              />
+            )
+           } else if (toolName === 'rectangle'){
+             return (
+              <Rectangle
+                key={id+index}
+                bounds={Array.isArray(geometry) && latLngBounds(geometry)}
+                color={color}
+                ref={(shape: any) => onShapeCreation(shape, id, editing)}
+                onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+              />
+             )
+           } else if (toolName === 'line'){
+             return (
+              <Polyline
+                key={id+index}
+                positions={geometry}
+                color={color}
+                ref={(shape: any) => onShapeCreation(shape, id, editing)}
+                onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+              />
+             )
+           } else if (toolName === 'point'){
+             return (
+              <Marker
+                key={id+index}
+                position={geometry}
+                icon={getPointIcon(color)}
+                color={color}
+                draggable={true}
+                onDrag={debounce((e: any) => onAnnotationEdit(id, e.latlng), 500)}
+                ref={(shape: any) => onShapeCreation(shape, id, editing)}
+                onClick={(e: any) => { DomEvent.stop(e); onMapClick({location: e.latlng, shapeId: id}) }}
+              />
+             )
+           }
+           console.log('Uknown shape', toolName);
+           return (<div></div>)
+        })}
       </Map>
     </div>
   );
