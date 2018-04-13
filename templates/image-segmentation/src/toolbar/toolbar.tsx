@@ -137,6 +137,18 @@ export function ToolMenu(
                 <div style={{flex: '40'}}>a</div>
               </div>
             </div>
+            <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
+              <div style={{display: 'flex', flexGrow: '1'} as any}>
+                <div style={{flex: '60'}}>Bring to front</div>
+                <div style={{flex: '40'}}>cmd/ctrl ↑</div>
+              </div>
+            </div>
+            <div style={{display: 'flex', flexGrow: '1', borderBottom: '1px solid #c1c1c1', fontSize: '12px', padding: '10px 15px', color: 'grey', minHeight: '10px'} as any}>
+              <div style={{display: 'flex', flexGrow: '1'} as any}>
+                <div style={{flex: '60'}}>Send to back</div>
+                <div style={{flex: '40'}}>cmd/ctrl ↓</div>
+              </div>
+            </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
