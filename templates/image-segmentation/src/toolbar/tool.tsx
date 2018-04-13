@@ -2,10 +2,12 @@ import * as React from 'react';
 /* import { Circle } from './circle';*/
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
+import Tooltip from 'material-ui/Tooltip';
 import { ToolType } from '../labeling-screen/segment-image';
 
 export function Tool(
-  { color, name, count, onClick, selected, visible, visibilityToggle, toolName }: {
+  { color, name, count, onClick, selected, visible, visibilityToggle, toolName, tooltip }: {
+    tooltip: string | undefined,
     color: string,
     name: string,
     toolName: ToolType,
@@ -16,6 +18,51 @@ export function Tool(
     visibilityToggle: () => void
   }
 ) {
+  const ToolButton = () => (
+    <Button
+      style={{
+        display: 'flex',
+        flexGrow: '1',
+        alignItems: 'center',
+        width: '100%',
+        padding: '10px 0px',
+        paddingBottom: '5px',
+        cursor: 'pointer',
+        textTransform: 'none',
+        borderRadius: '0px',
+        borderBottom: '1px solid #c1c1c1'
+      } as any}
+      color={selected ? 'primary' : 'inherit'}
+      raised={selected}
+      onClick={() => onClick()}
+    >
+      <div
+        style={{display: 'flex', flexGrow: '1', alignItems: 'center'} as any}
+      >
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginLeft: '15px',
+          lineHeight: '15px',
+          alignItems: 'start',
+          textAlign: 'left',
+          width: '100%'
+        } as any}>
+          <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
+            <div style={{maxWidth: '140px'}}>{name}</div>
+            <div style={{marginLeft: '5px', paddingRight: '10px'}}>({count})</div>
+          </div>
+          {
+            selected && <div style={{fontSize: '9px'}}>
+              Draw a {toolName}
+            </div>
+          }
+        </div>
+        <div style={{display: 'flex', flexGrow: '1'} as any}></div>
+      </div>
+    </Button>
+  );
+
   return (
     <div style={{
       display: 'flex',
@@ -47,48 +94,17 @@ export function Tool(
           visibility
         </Icon>
       </Button>
-      <Button
-        style={{
-          display: 'flex',
-          flexGrow: '1',
-          alignItems: 'center',
-          width: '100%',
-          padding: '10px 0px',
-          paddingBottom: '5px',
-          cursor: 'pointer',
-          textTransform: 'none',
-          borderRadius: '0px',
-          borderBottom: '1px solid #c1c1c1'
-        } as any}
-        color={selected ? 'primary' : 'inherit'}
-        raised={selected}
-        onClick={() => onClick()}
-      >
-        <div
-          style={{display: 'flex', flexGrow: '1', alignItems: 'center'} as any}
-        >
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginLeft: '15px',
-            lineHeight: '15px',
-            alignItems: 'start',
-            textAlign: 'left',
-            width: '100%'
-          } as any}>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-              <div style={{maxWidth: '140px'}}>{name}</div>
-              <div style={{marginLeft: '5px', paddingRight: '10px'}}>({count})</div>
-            </div>
-            {
-              selected && <div style={{fontSize: '9px'}}>
-                Draw a {toolName}
+      {
+        typeof tooltip === 'string' ?
+          (
+            <Tooltip title={tooltip} placement="top" style={{display: 'flex', flexGrow: 1}}>
+              <div style={{display: 'flex', flexGrow: 1}}>
+                <ToolButton />
               </div>
-            }
-          </div>
-          <div style={{display: 'flex', flexGrow: '1'} as any}></div>
-        </div>
-      </Button>
+            </Tooltip>
+          ) :
+          (<ToolButton />)
+      }
     </div>
   );
 }

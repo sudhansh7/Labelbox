@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tool } from './tool';
 import Button from 'material-ui/Button';
+import Tooltip from 'material-ui/Tooltip';
 import { ToolType } from '../labeling-screen/segment-image';
 import ExpansionPanel, {
   ExpansionPanelSummary,
@@ -51,11 +52,12 @@ export function ToolMenu(
       <div style={{display: 'flex', flexGrow: '1', flexDirection: 'column', width: '100%'} as any}>
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
           <div style={{margin: '20px 15px 10px', fontWeight: '500', color: '#5b5b5b'} as any}>Select a class below</div>
-          <div style={{overflowY: 'auto'}}>
+          <div style={{overflowY: 'auto', overflowX: 'hidden'}}>
             {tools.map(({id, name, color, count, visible, tool}, index) => (
               <Tool
-                key={index}
                 name={name}
+                key={index}
+                tooltip={index < 9 ? (index + 1).toString() : undefined}
                 toolName={tool}
                 color={color}
                 count={count}
@@ -143,13 +145,19 @@ export function ToolMenu(
             (
               <ActionButtons>
                 <Button disabled={disableSubmit} onClick={() => onReset()}>Reset</Button>
-                <Button disabled={disableSubmit} color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
+                <Tooltip title="e" placement="right">
+                  <Button disabled={disableSubmit} color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
+                </Tooltip>
               </ActionButtons>
             ) :
             (
               <ActionButtons>
-                <Button onClick={() => onSkip()}>Skip</Button>
-                <Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button>
+                <Tooltip title="a" placement="left">
+                  <Button onClick={() => onSkip()}>Skip</Button>
+                </Tooltip>
+                <Tooltip title="e" placement="right">
+                  <div><Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button></div>
+                </Tooltip>
               </ActionButtons>
             )
         }
