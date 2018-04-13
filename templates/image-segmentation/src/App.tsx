@@ -25,6 +25,8 @@ import {
   updateAnnotation,
   userAnsweredClassification,
   userClickedSetTool,
+  userMovedLayerUp,
+  userMovedLayerDown,
 } from './app.reducer';
 import {
   selectIntentFromMapClick,
@@ -125,11 +127,11 @@ class App extends React.Component {
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
 
     keyComboStream(['cmd', 'ctrl'], 'down').subscribe(() => {
-      console.log('move selected annotatoin down');
+      dispatch(userMovedLayerDown());
     });
 
     keyComboStream(['cmd', 'ctrl'], 'up').subscribe(() => {
-      console.log('move selected annotatoin up');
+      dispatch(userMovedLayerUp());
     });
 
     keyDownSteam('e').subscribe(() => this.submit());

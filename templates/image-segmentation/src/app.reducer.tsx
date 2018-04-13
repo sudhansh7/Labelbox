@@ -30,7 +30,9 @@ enum Actions {
   USER_COMPLETED_BOUNDING_BOX = 'USER_COMPLETED_BOUNDING_BOX',
   USER_DESELECTED_ANNOTATION = 'USER_DESELECTED_ANNOTATION',
   IMAGE_FINISHED_LOADING = 'IMAGE_FINISHED_LOADING',
-  USER_ANSWERED_CLASSIFCIATION = 'USER_ANSWERED_CLASSIFCIATION'
+  USER_ANSWERED_CLASSIFCIATION = 'USER_ANSWERED_CLASSIFCIATION',
+  USER_MOVED_LAYER_DOWN = 'USER_MOVED_LAYER_DOWN',
+  USER_MOVED_LAYER_UP = 'USER_MOVED_LAYER_UP',
 }
 
 // TODO delete
@@ -85,10 +87,46 @@ export const userCompletedBoundingBox = () => {
   }
 }
 
+export const userMovedLayerDown = () => {
+  return {
+    type: Actions.USER_MOVED_LAYER_DOWN,
+    payload: {}
+  }
+}
+
+export const userMovedLayerUp = () => {
+  return {
+    type: Actions.USER_MOVED_LAYER_UP,
+    payload: {}
+  }
+}
+
 export const imageFinishedLoading = ():Action => {
   return {
     type: Actions.IMAGE_FINISHED_LOADING,
     payload: {}
+  }
+}
+
+enum OrderTo {
+  top = 'top',
+  bottom = 'bottom',
+}
+
+function reorderSelectedAnnotation(state: AppState, orderTo: OrderTo){
+  const selectedAnnotationIndex = state.annotations.findIndex(({editing}) => editing = true); if (selectedAnnotationIndex === -1){
+    return state;
+  }
+  const selected = state.annotations[selectedAnnotationIndex];
+  const annotations = [
+    ...state.annotations.slice(0, selectedAnnotationIndex),
+    ...state.annotations.slice(selectedAnnotationIndex + 1),
+  ]
+  return {
+    ...state,
+    annotations: orderTo === OrderTo.top ?
+              annotations.concat(selected) :
+              [selected, ...annotations],
   }
 }
 
@@ -112,6 +150,12 @@ export const appReducer = (state: AppState = defaultState, action: any = {}): Ap
     }
     case Actions.USER_COMPLETED_BOUNDING_BOX: {
       return finalizeTempBoundingBox(state);
+    }
+    case Actions.USER_MOVED_LAYER_UP: {
+      return reorderSelectedAnnotation(state, OrderTo.top);
+    }
+    case Actions.USER_MOVED_LAYER_DOWN: {
+      return reorderSelectedAnnotation(state, OrderTo.bottom);
     }
     case Actions.USER_DESELECTED_ANNOTATION: {
       return deselectAllAnnotations(state);
