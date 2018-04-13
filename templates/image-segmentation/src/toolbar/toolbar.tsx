@@ -57,7 +57,7 @@ export function ToolMenu(
               <Tool
                 name={name}
                 key={index}
-                tooltip={index < 9 ? (index + 1).toString() : undefined}
+                tooltip={index < 9 ? ('or press ' + (index + 1)).toString() : undefined}
                 toolName={tool}
                 color={color}
                 count={count}
@@ -145,17 +145,17 @@ export function ToolMenu(
             (
               <ActionButtons>
                 <Button disabled={disableSubmit} onClick={() => onReset()}>Reset</Button>
-                <Tooltip title="e" placement="right">
+                <Tooltip title="or press e" placement="right">
                   <Button disabled={disableSubmit} color="primary" raised={true} onClick={() => onSubmit()}>Save</Button>
                 </Tooltip>
               </ActionButtons>
             ) :
             (
               <ActionButtons>
-                <Tooltip title="a" placement="left">
+                <Tooltip title="or press a" placement="left">
                   <Button onClick={() => onSkip()}>Skip</Button>
                 </Tooltip>
-                <Tooltip title="e" placement="right">
+                <Tooltip title="or press e" placement="right">
                   <div><Button color="primary" raised={true} disabled={disableSubmit} onClick={() => onSubmit()}>Submit</Button></div>
                 </Tooltip>
               </ActionButtons>
