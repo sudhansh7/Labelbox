@@ -23,6 +23,8 @@ const keyMap = {
   7: 55,
   8: 56,
   9: 57,
+  up:	38,
+  down: 40,
 };
 
 type mappedKeys = 'space' |
@@ -46,7 +48,9 @@ type mappedKeys = 'space' |
   '7' |
   '8' |
   '9' |
-  '0';
+  '0' |
+  'up'|
+  'down';
 
 const keyEvent = (keyCode: number, event: string) => Observable.fromEvent(document, event)
   .filter((e: KeyboardEvent) => e.keyCode === keyCode)

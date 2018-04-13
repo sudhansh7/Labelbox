@@ -123,6 +123,15 @@ class App extends React.Component {
     };
 
     keyComboStream(['cmd', 'ctrl'], 'z').subscribe(undo);
+
+    keyComboStream(['cmd', 'ctrl'], 'down').subscribe(() => {
+      console.log('move selected annotatoin down');
+    });
+
+    keyComboStream(['cmd', 'ctrl'], 'up').subscribe(() => {
+      console.log('move selected annotatoin up');
+    });
+
     keyDownSteam('e').subscribe(() => this.submit());
     keyDownSteam('a').subscribe(() => this.next({skip: true}));
 
