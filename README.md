@@ -273,7 +273,7 @@ Classify text form a set of categories. Categories can be customized in a
 fashion similar to the Image Segmentation Interface example above.
 
 ## Exporting labels
-Labels are exported in CSV or JSON format. For geometic labels (segmentation, key point, etc...) the coordinates are exported in X-Y coordinates or [WKT strings](https://en.wikipedia.org/wiki/Well-known_text). The coordinate origin for geometric labels is the top left point of the image.
+Labels are exported in CSV or JSON format. For geometic labels (segmentation, key point, etc...) the coordinates are exported in X-Y coordinates or [WKT strings](https://en.wikipedia.org/wiki/Well-known_text). The coordinate origin for geometric labels is the bottom left point of the image.
 
 For parsing the WKT format, We recommend using python [Shapely](https://pypi.python.org/pypi/Shapely).
 
