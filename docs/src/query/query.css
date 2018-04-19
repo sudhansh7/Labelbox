@@ -2,6 +2,7 @@
 .CodeMirror-gutters,
 .CodeMirror-linenumber,
 .CodeMirror-gutter-elt,
+.variable-editor,
 CodeMirror-gutter-wrapper {
   display: none !important;
 }
