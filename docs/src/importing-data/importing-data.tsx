@@ -13,7 +13,7 @@ const query = stripIndent`
 
 export function ImportingData() {
   return (
-    <div>
+    <div style={{display: 'flex', flexGrow: 1}}>
       hi
       <Query query={query}/>
     </div>
