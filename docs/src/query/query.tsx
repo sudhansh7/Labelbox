@@ -23,17 +23,23 @@ export class Query extends React.Component {
     const { query } = this.props;
 
     return (
-      <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
-        <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
-          color: '#b6bbbf',
-          fontSize: '40px',
-          zIndex: 100,
-          position:'absolute',
-          marginLeft: 'calc(50% - 50px)',
-          cursor: 'pointer',
-          paddingTop: '5px'
-        }}>play_circle_filled</Icon>
-        <GraphiQL fetcher={graphQLFetcher} query={query} />
+      <div>
+        <div style={{display: 'flex', justifyContent: 'end'}}>
+          <div>Python</div>
+          <div>Curl</div>
+        </div>
+        <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
+          <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
+            color: '#b6bbbf',
+            fontSize: '40px',
+            zIndex: 100,
+            position:'absolute',
+            marginLeft: 'calc(50% - 50px)',
+            cursor: 'pointer',
+            paddingTop: '5px'
+          }}>play_circle_filled</Icon>
+          <GraphiQL fetcher={graphQLFetcher} query={query} />
+        </div>
       </div>
     );
   }
