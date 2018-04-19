@@ -7,7 +7,11 @@ import Icon from 'material-ui/Icon';
 function graphQLFetcher(graphQLParams: any) {
   return fetch('https://api.labelbox.io/graphql', {
     method: 'post',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      // TODO improve auth here
+      'Authorizatoin': 'Bearer ' + localStorage.getItem('labelbox-jwt'),
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(graphQLParams),
   }).then(response => response.json());
 }
