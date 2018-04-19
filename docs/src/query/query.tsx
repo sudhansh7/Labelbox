@@ -10,6 +10,8 @@ const ExportButton = styled.div`
   background-color: #b6bbbf;
   padding: 10px;
   margin-right: 10px;
+  opacity: 0.75;
+font-size: 12px;
 `;
 
 
@@ -33,10 +35,6 @@ export class Query extends React.Component {
 
     return (
       <div>
-        <div style={{display: 'flex', justifyContent: 'end'}}>
-          <div>Python</div>
-          <div>Curl</div>
-        </div>
         <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
           <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
             color: '#b6bbbf',
@@ -47,7 +45,7 @@ export class Query extends React.Component {
             cursor: 'pointer',
             paddingTop: '5px'
           }}>play_circle_filled</Icon>
-          <div style={{position: 'absolute', bottom: '0px', marginLeft: 'calc(50% - 100px)', zIndex: 100}}>
+          <div style={{position: 'absolute', bottom: '15px', marginLeft: 'calc(50% - 125px)', zIndex: 100, color: 'white'}}>
             <div style={{display: 'flex'}}>
               <ExportButton>
                 Python
