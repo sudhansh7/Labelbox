@@ -7,18 +7,17 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import AceEditor from 'react-ace';
-import { codeBlock } from 'common-tags';
 import 'brace/mode/python';
 import 'brace/theme/github';
 
 const getCurlForQuery = (query: string, apiKey?: string):string => {
-  return codeBlock`
-    curl 'https://api.labelbox.io/graphql'
-      -H 'Authorization: Bearer ${apiKey ? apiKey : '<API_KEY_HERE>'}'
-      -d '{"query":""${query.replace(/\n/g, '').replace(/ /g, '')}""}'
-  `;
+  return [
+    `curl 'https://api.labelbox.io/graphql'`,
+    `-H 'Authorization: Bearer ${apiKey ? apiKey : '<API_KEY_HERE>'}'`,
+    `-H 'content-type: application/json'`,
+    `-d '{"query":"${query.replace(/\n/g, '').replace(/ /g, '').replace(/"/g, '\\"')}"}'`
+  ].join(' \\\n   ')
 }
-
 
 export function GetQueryAsCurl({ onClose, query, apiKey }: {query: string; onClose: () => void, apiKey?: string}){
   return (
