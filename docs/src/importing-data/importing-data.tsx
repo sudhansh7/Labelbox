@@ -45,7 +45,7 @@ export class ImportingData extends React.Component {
         <Warning>The api calls below may change in the future</Warning>
 
         {!this.state.apiKey && <AlertBanner>
-          <Input placeholder="API Key" />
+          <Input placeholder="API Key" onKeyUp={(e:any) => e.keyCode === 13 && this.setState({...this.state, apiKey: e.target.value})} />
           <div style={{fontSize: '12px', marginTop: '10px'}}>
             Enter your api key to have the below queries run against the data in your account.
             If you don't have an API Key please contact our support team.
