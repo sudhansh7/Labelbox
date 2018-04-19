@@ -4,6 +4,15 @@ import 'graphiql/graphiql.css';
 import './query.css'
 import Icon from 'material-ui/Icon';
 
+import styled from 'styled-components';
+
+const ExportButton = styled.div`
+  background-color: #b6bbbf;
+  padding: 10px;
+  margin-right: 10px;
+`;
+
+
 function graphQLFetcher(graphQLParams: any) {
   return fetch('https://api.labelbox.io/graphql', {
     method: 'post',
@@ -38,6 +47,16 @@ export class Query extends React.Component {
             cursor: 'pointer',
             paddingTop: '5px'
           }}>play_circle_filled</Icon>
+          <div style={{position: 'absolute', bottom: '0px', marginLeft: 'calc(50% - 100px)', zIndex: 100}}>
+            <div style={{display: 'flex'}}>
+              <ExportButton>
+                Python
+              </ExportButton>
+              <ExportButton>
+                Curl
+              </ExportButton>
+            </div>
+          </div>
           <GraphiQL fetcher={graphQLFetcher} query={query} />
         </div>
       </div>
