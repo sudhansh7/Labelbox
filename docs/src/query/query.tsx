@@ -3,15 +3,17 @@ import GraphiQL from 'graphiql';
 import 'graphiql/graphiql.css';
 import './query.css'
 import Icon from 'material-ui/Icon';
+import { GetQueryAsPython } from './get-query-as-python';
 
 import styled from 'styled-components';
 
-const ExportButton = styled.div`
+const GetCodeButton = styled.div`
   background-color: #b6bbbf;
   padding: 10px;
   margin-right: 10px;
   opacity: 0.75;
-font-size: 12px;
+  font-size: 12px;
+  cursor: pointer;
 `;
 
 
@@ -28,13 +30,18 @@ function graphQLFetcher(graphQLParams: any) {
 }
 
 export class Query extends React.Component {
+  public state = {
+    showQueryInPython: false,
+  }
   public props: { query: string};
   private ref: any;
+
   render(){
     const { query } = this.props;
 
     return (
       <div>
+        {this.state.showQueryInPython && (<GetQueryAsPython onClose={() => this.setState({...this.state, showQueryInPython: false})} query={query} />)}
         <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
           <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
             color: '#b6bbbf',
@@ -47,12 +54,12 @@ export class Query extends React.Component {
           }}>play_circle_filled</Icon>
           <div style={{position: 'absolute', bottom: '15px', marginLeft: 'calc(50% - 125px)', zIndex: 100, color: 'white'}}>
             <div style={{display: 'flex'}}>
-              <ExportButton>
+              <GetCodeButton onClick={() => this.setState({...this.state, showQueryInPython: true})}>
                 Python
-              </ExportButton>
-              <ExportButton>
+              </GetCodeButton>
+              <GetCodeButton>
                 Curl
-              </ExportButton>
+              </GetCodeButton>
             </div>
           </div>
           <GraphiQL fetcher={graphQLFetcher} query={query} />
