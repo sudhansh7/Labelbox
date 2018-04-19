@@ -12,18 +12,24 @@ function graphQLFetcher(graphQLParams: any) {
   }).then(response => response.json());
 }
 
-export function Query({query}: {query: string}) {
-  return (
-    <div style={{display: 'flex', flexGrow: 1, position: 'relative'}} ref={(e) => console.log(e && e.querySelector)}>
-      <Icon onClick={() => (document as any).querySelector('.execute-button').click()} style={{
-        color: '#b6bbbf',
-        fontSize: '40px',
-        zIndex: 100,
-        position:'absolute',
-        marginLeft: 'calc(50% - 50px)',
-        cursor: 'pointer',
-      }}>play_circle_filled</Icon>
-      <GraphiQL fetcher={graphQLFetcher} query={query} />
-    </div>
-  );
+export class Query extends React.Component {
+  public props: { query: string};
+  private ref: any;
+  render(){
+    const { query } = this.props;
+
+    return (
+      <div style={{display: 'flex', flexGrow: 1, position: 'relative'}} ref={(e) => this.ref = e}>
+        <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
+          color: '#b6bbbf',
+          fontSize: '40px',
+          zIndex: 100,
+          position:'absolute',
+          marginLeft: 'calc(50% - 50px)',
+          cursor: 'pointer',
+        }}>play_circle_filled</Icon>
+        <GraphiQL fetcher={graphQLFetcher} query={query} />
+      </div>
+    );
+  }
 }
