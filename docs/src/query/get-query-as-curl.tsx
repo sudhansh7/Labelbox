@@ -11,22 +11,16 @@ import { codeBlock } from 'common-tags';
 import 'brace/mode/python';
 import 'brace/theme/github';
 
-const getPythonCodeForQuery = (query: string):string => {
+const getCurlForQuery = (query: string):string => {
   return codeBlock`
-    from graphqlclient import GraphQLClient
-    client = GraphQLClient('https://api.labelbox.io/graphql')
-    client.inject_token('Bearer <JWT_HERE>')
-
-    data = client.execute('''
-      ${query}
-    ''')
-
-    print(data)
+    curl 'https://api.labelbox.io/graphql'
+      -H 'Authorization: Bearer <JWT_HERE>'
+      -d '{"query":""${query.replace(/\n/g, '').replace(/ /g, '')}""}'
   `;
 }
 
 
-export function GetQueryAsPython({ onClose, query }: {query: string; onClose: () => void}){
+export function GetQueryAsCurl({ onClose, query }: {query: string; onClose: () => void}){
   return (
     <Dialog
       open={true}
@@ -34,24 +28,14 @@ export function GetQueryAsPython({ onClose, query }: {query: string; onClose: ()
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Query in Python</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Query as CURL</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          <div> First install the GraphqlQLClient library </div>
           <AceEditor
             theme="github"
-            value="pip install graphqlclient"
-            height="30px"
+            value={getCurlForQuery(query)}
           />
 
-          <div style={{marginTop: '30px'}}>
-            Then you can send this query through python with the below code.
-          </div>
-          <AceEditor
-            mode="python"
-            theme="github"
-            value={getPythonCodeForQuery(query)}
-          />
         </DialogContentText>
       </DialogContent>
       <DialogActions>

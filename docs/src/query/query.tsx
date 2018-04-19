@@ -4,6 +4,7 @@ import 'graphiql/graphiql.css';
 import './query.css'
 import Icon from 'material-ui/Icon';
 import { GetQueryAsPython } from './get-query-as-python';
+import { GetQueryAsCurl } from './get-query-as-curl';
 
 import styled from 'styled-components';
 
@@ -32,6 +33,7 @@ function graphQLFetcher(graphQLParams: any) {
 export class Query extends React.Component {
   public state = {
     showQueryInPython: false,
+    showQueryAsCurl: false,
   }
   public props: { query: string};
   private ref: any;
@@ -42,6 +44,7 @@ export class Query extends React.Component {
     return (
       <div>
         {this.state.showQueryInPython && (<GetQueryAsPython onClose={() => this.setState({...this.state, showQueryInPython: false})} query={query} />)}
+        {this.state.showQueryAsCurl && (<GetQueryAsCurl onClose={() => this.setState({...this.state, showQueryAsCurl: false})} query={query} />)}
         <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
           <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
             color: '#b6bbbf',
@@ -57,7 +60,7 @@ export class Query extends React.Component {
               <GetCodeButton onClick={() => this.setState({...this.state, showQueryInPython: true})}>
                 Python
               </GetCodeButton>
-              <GetCodeButton>
+              <GetCodeButton onClick={() => this.setState({...this.state, showQueryAsCurl: true})}>
                 Curl
               </GetCodeButton>
             </div>
