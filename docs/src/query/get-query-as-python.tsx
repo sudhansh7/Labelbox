@@ -11,11 +11,11 @@ import { codeBlock } from 'common-tags';
 import 'brace/mode/python';
 import 'brace/theme/github';
 
-const getPythonCodeForQuery = (query: string):string => {
+const getPythonCodeForQuery = (query: string, apiKey?: string):string => {
   return codeBlock`
     from graphqlclient import GraphQLClient
     client = GraphQLClient('https://api.labelbox.io/graphql')
-    client.inject_token('Bearer <JWT_HERE>')
+    client.inject_token('Bearer ${apiKey ? apiKey : '<API_KEY_HERE>'}')
 
     data = client.execute('''
       ${query}
@@ -26,7 +26,7 @@ const getPythonCodeForQuery = (query: string):string => {
 }
 
 
-export function GetQueryAsPython({ onClose, query }: {query: string; onClose: () => void}){
+export function GetQueryAsPython({ onClose, query, apiKey }: {query: string; onClose: () => void, apiKey?: string}){
   return (
     <Dialog
       open={true}
@@ -50,7 +50,7 @@ export function GetQueryAsPython({ onClose, query }: {query: string; onClose: ()
           <AceEditor
             mode="python"
             theme="github"
-            value={getPythonCodeForQuery(query)}
+            value={getPythonCodeForQuery(query, apiKey)}
           />
         </DialogContentText>
       </DialogContent>

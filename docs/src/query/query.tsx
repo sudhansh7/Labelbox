@@ -18,33 +18,36 @@ const GetCodeButton = styled.div`
 `;
 
 
-function graphQLFetcher(graphQLParams: any) {
-  return fetch('https://api.labelbox.io/graphql', {
-    method: 'post',
-    headers: {
-      // TODO improve auth here
-      'Authorization': 'Bearer ' + localStorage.getItem('labelbox-jwt'),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(graphQLParams),
-  }).then(response => response.json());
-}
 
 export class Query extends React.Component {
   public state = {
     showQueryInPython: false,
     showQueryAsCurl: false,
   }
-  public props: { query: string};
+  public props: {
+    query: string,
+    apiKey?: string
+  };
   private ref: any;
 
   render(){
-    const { query } = this.props;
+    const { query, apiKey } = this.props;
+
+    const graphQLFetcher = (graphQLParams: any) => {
+      return fetch('https://api.labelbox.io/graphql', {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + apiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(graphQLParams),
+      }).then(response => response.json());
+    }
 
     return (
       <div>
-        {this.state.showQueryInPython && (<GetQueryAsPython onClose={() => this.setState({...this.state, showQueryInPython: false})} query={query} />)}
-        {this.state.showQueryAsCurl && (<GetQueryAsCurl onClose={() => this.setState({...this.state, showQueryAsCurl: false})} query={query} />)}
+        {this.state.showQueryInPython && (<GetQueryAsPython apiKey={apiKey} onClose={() => this.setState({...this.state, showQueryInPython: false})} query={query} />)}
+        {this.state.showQueryAsCurl && (<GetQueryAsCurl apiKey={apiKey} onClose={() => this.setState({...this.state, showQueryAsCurl: false})} query={query} />)}
         <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
           <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
             color: '#b6bbbf',
