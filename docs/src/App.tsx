@@ -1,10 +1,13 @@
 import * as React from 'react';
+import Icon from 'material-ui/Icon';
 import styled from 'styled-components';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { ImportingData } from './importing-data/importing-data';
+import './app.css';
 import './icons.css';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
+import { logo } from './logo';
 
 
 const AppContainer = styled.div`
@@ -20,6 +23,7 @@ const Menu = styled.div`
 `;
 
 const Left = styled.div`
+  font-weight: 300;
   display: flex;
   flex: 35;
   background-color: #f8f8f9;
@@ -39,6 +43,19 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   padding: 40px;
+  font-weight: 300;
+`;
+
+const MenuTitle = styled.div`
+  font-size: 20px;
+  display: flex;
+`;
+
+const MenuSubsection = styled.div`
+  display: flex;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: 3px;
 `;
 
 const primary = '#2195f3';
@@ -58,8 +75,15 @@ class App extends React.Component {
         <AppContainer>
           <Left>
             <Menu>
-              <div>Tutorials</div>
-              <div>Importing Data</div>
+              <img src={logo} width="140px" style={{marginBottom: '40px'}} />
+              <MenuTitle>
+                <Icon style={{flex: 15, color: 'grey'}}>local_library</Icon>
+                <div style={{flex: 85}}>Tutorials </div>
+              </MenuTitle>
+              <MenuSubsection>
+                <div style={{flex: 15}}></div>
+                <div style={{flex: 85}}>Importing Data</div>
+              </MenuSubsection>
             </Menu>
           </Left>
           <Right>
