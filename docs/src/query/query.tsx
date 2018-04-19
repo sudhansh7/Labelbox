@@ -9,7 +9,7 @@ function graphQLFetcher(graphQLParams: any) {
     method: 'post',
     headers: {
       // TODO improve auth here
-      'Authorizatoin': 'Bearer ' + localStorage.getItem('labelbox-jwt'),
+      'Authorization': 'Bearer ' + localStorage.getItem('labelbox-jwt'),
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(graphQLParams),

@@ -30,11 +30,11 @@ export function ImportingData() {
               id
               organization{
                 id
-                projects{
+                projects(filter:{deleted:false}){
                   id
                   name
                 }
-                datasets{
+                datasets(filter:{deleted:false}){
                   id
                   name
                 }
