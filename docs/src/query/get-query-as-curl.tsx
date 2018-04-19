@@ -11,16 +11,16 @@ import { codeBlock } from 'common-tags';
 import 'brace/mode/python';
 import 'brace/theme/github';
 
-const getCurlForQuery = (query: string):string => {
+const getCurlForQuery = (query: string, apiKey?: string):string => {
   return codeBlock`
     curl 'https://api.labelbox.io/graphql'
-      -H 'Authorization: Bearer <JWT_HERE>'
+      -H 'Authorization: Bearer ${apiKey ? apiKey : '<API_KEY_HERE>'}'
       -d '{"query":""${query.replace(/\n/g, '').replace(/ /g, '')}""}'
   `;
 }
 
 
-export function GetQueryAsCurl({ onClose, query }: {query: string; onClose: () => void}){
+export function GetQueryAsCurl({ onClose, query, apiKey }: {query: string; onClose: () => void, apiKey?: string}){
   return (
     <Dialog
       open={true}
@@ -33,7 +33,7 @@ export function GetQueryAsCurl({ onClose, query }: {query: string; onClose: () =
         <DialogContentText id="alert-dialog-description">
           <AceEditor
             theme="github"
-            value={getCurlForQuery(query)}
+            value={getCurlForQuery(query, apiKey)}
           />
 
         </DialogContentText>
