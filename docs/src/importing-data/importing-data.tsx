@@ -20,7 +20,7 @@ const Paragraph = styled.div`
 
 export function ImportingData() {
   return (
-    <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column'}}>
+    <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column', marginBottom: '40px'}}>
       <Title>Data Import Tutorial (beta)</Title>
       <Warning>The api calls below may change in the future</Warning>
 
@@ -39,7 +39,15 @@ export function ImportingData() {
       />
 
 
-      <Paragraph>Pull the needed ID's for your data import query</Paragraph>
+      <Paragraph>
+        In order to import data you will need the following IDs...
+        <ul>
+          <li>Your User ID</li>
+          <li>Your Organization ID</li>
+          <li>A Project ID</li>
+        </ul>
+        Use this query to collect those IDs
+      </Paragraph>
       <Query query={stripIndent`
           query {
             user {
@@ -50,17 +58,13 @@ export function ImportingData() {
                   id
                   name
                 }
-                datasets(filter:{deleted:false}){
-                  id
-                  name
-                }
               }
             }
           }
         `}
       />
 
-      <Paragraph>Create a dataset</Paragraph>
+      <Paragraph>You can create a new dataset with this query</Paragraph>
       <Query query={stripIndent`
           mutation {
             createDataset(
@@ -76,8 +80,8 @@ export function ImportingData() {
         `}
       />
 
-
-      <Paragraph>Create a datarow in a dataset</Paragraph>
+      <Paragraph>A datarow represents a single piece of data that needs to be labeled. For example if you have a CSV with 100 rows you will have 100 datarows.</Paragraph>
+      <Warning style={{marginBottom: '20px'}}>The Labelbox API is rate limited at 300 requests per minute. We recommend sending datarow import requests one after another and not in batch.</Warning>
       <Query query={stripIndent`
           mutation {
             createDataRow(
@@ -91,6 +95,8 @@ export function ImportingData() {
           }
         `}
       />
+
+      <div style={{marginBottom: '40px'}}></div>
 
     </div>
   );
