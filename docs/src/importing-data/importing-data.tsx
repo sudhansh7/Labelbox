@@ -19,13 +19,14 @@ const Paragraph = styled.div`
 `;
 
 const AlertBanner = styled.div`
-  margin: 20px;
+  margin: 50px 20px;
   padding: 20px;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  background-color: #2195f3;
-  color: white;
+  background-color: #eeeeee;
+  font-weigh: 300;
+  box-shadow: -1px 2px 5px #cbcbcb;
 `;
 
 
@@ -43,13 +44,13 @@ export class ImportingData extends React.Component {
         <Title>Data Import Tutorial (beta)</Title>
         <Warning>The api calls below may change in the future</Warning>
 
-        <AlertBanner>
-          <Input placeholder="API Key" style={{color: 'white'}} />
+        {!this.state.apiKey && <AlertBanner>
+          <Input placeholder="API Key" />
           <div style={{fontSize: '12px', marginTop: '10px'}}>
             Enter your api key to have the below queries run against the data in your account.
             If you don't have an API Key please contact our support team.
           </div>
-        </AlertBanner>
+        </AlertBanner>}
 
 
         <Paragraph>
