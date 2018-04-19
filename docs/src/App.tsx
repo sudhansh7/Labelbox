@@ -30,12 +30,12 @@ const Right = styled.div`
   display: flex;
   flex: 65;
   background-color: white;
+  overflow-y: auto;
 `;
 
 const MainContent = styled.div`
   max-width: 860px;
   width: 100%;
-  height: 100vh
   display: flex;
   flex-direction: column;
   padding: 40px;
