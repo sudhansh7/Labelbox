@@ -1,3 +1,7 @@
 .topBarWrap{
   display: none !important;
 }
+
+.graphiql-container .CodeMirror-lines{
+  padding: 0px !important;
+}
