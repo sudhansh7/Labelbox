@@ -1,6 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { MuiThemeProvider } from 'material-ui/styles';
 import { ImportingData } from './importing-data/importing-data';
+import './icons.css';
+import { createMuiTheme } from 'material-ui/styles';
+import lightblue from 'material-ui/colors/blue';
 
 
 const AppContainer = styled.div`
@@ -9,16 +13,6 @@ const AppContainer = styled.div`
   justify-content: center;
   height: 100vh;
 `;
-
-// const Content = styled.div`
-//   display: flex;
-//   width: 980px;
-// `;
-
-// const MainContent = styled.div`
-//   display: flex;
-//   width: 980px;
-// `;
 
 const Menu = styled.div`
   width: 260px;
@@ -35,32 +29,37 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   flex: 65;
+  background-color: white;
 `;
+
+const primary = '#2195f3';
+export const theme = createMuiTheme({
+  palette: {
+    primary: {
+      ...lightblue,
+      A700: primary,
+    },
+  },
+});
 
 class App extends React.Component {
   public render() {
     return (
-      <AppContainer>
-        <Left>
-          <Menu>
-            <div>Tutorials</div>
-            <div>Importing Data</div>
-          </Menu>
-        </Left>
-        <Right>
-          <ImportingData />
-        </Right>
-      </AppContainer>
+      <MuiThemeProvider theme={theme}>
+        <AppContainer>
+          <Left>
+            <Menu>
+              <div>Tutorials</div>
+              <div>Importing Data</div>
+            </Menu>
+          </Left>
+          <Right>
+            <ImportingData />
+          </Right>
+        </AppContainer>
+      </MuiThemeProvider>
     );
   }
 }
-
-        // <Content>
-        //   <Sidebar>
-        //   </Sidebar>
-        //   <div>
-        //     Content Here
-        //   </div>
-        // </Content>
 
 export default App;
