@@ -27,6 +27,7 @@ export class Query extends React.Component {
           position:'absolute',
           marginLeft: 'calc(50% - 50px)',
           cursor: 'pointer',
+          paddingTop: '5px'
         }}>play_circle_filled</Icon>
         <GraphiQL fetcher={graphQLFetcher} query={query} />
       </div>

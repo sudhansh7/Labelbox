@@ -1,7 +1,20 @@
-.topBarWrap{
+.topBarWrap,
+.CodeMirror-gutters,
+.CodeMirror-linenumber,
+.CodeMirror-gutter-elt,
+CodeMirror-gutter-wrapper {
   display: none !important;
 }
 
+.CodeMirror-sizer{
+  margin-left: 0px !important;
+}
+
 .graphiql-container .CodeMirror-lines{
-  padding: 0px !important;
+  padding: 10px !important;
+}
+
+
+.CodeMirror{
+  background-color: #f6f7f7 !important;
 }

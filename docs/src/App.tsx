@@ -32,6 +32,15 @@ const Right = styled.div`
   background-color: white;
 `;
 
+const MainContent = styled.div`
+  max-width: 860px;
+  width: 100%;
+  height: 100vh
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+`;
+
 const primary = '#2195f3';
 export const theme = createMuiTheme({
   palette: {
@@ -54,7 +63,9 @@ class App extends React.Component {
             </Menu>
           </Left>
           <Right>
-            <ImportingData />
+            <MainContent>
+              <ImportingData />
+            </MainContent>
           </Right>
         </AppContainer>
       </MuiThemeProvider>
