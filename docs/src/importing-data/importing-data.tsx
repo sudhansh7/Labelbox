@@ -1,18 +1,33 @@
 import * as React from 'react';
 import { Query } from '../query/query';
 import {stripIndent} from 'common-tags';
+import styled from 'styled-components';
+
+const Title = styled.div`
+   font-size: 26px;
+`;
+
+const Warning = styled.div`
+  font-size: 12px;
+  color: #E53935;
+`;
+
+const Paragraph = styled.div`
+  margin-top: 20px;
+  margin-bottom: 10px;
+`;
 
 
 export function ImportingData() {
   return (
     <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column'}}>
-      <div>Data Import Tutorial (beta)</div>
-      <div style={{color: 'grey'}}>The api calls below may change in the future.</div>
+      <Title>Data Import Tutorial (beta)</Title>
+      <Warning>The api calls below may change in the future</Warning>
 
-      <div>
+      <Paragraph>
         All operations in labelbox go through our <a href="https://graphql.org/">GraphQL API</a>.
         Click the play button below to see an example query.
-      </div>
+      </Paragraph>
 
       <Query query={stripIndent`
           query {
@@ -23,7 +38,8 @@ export function ImportingData() {
         `}
       />
 
-      <div>Pull the needed ID's for your data import query</div>
+
+      <Paragraph>Pull the needed ID's for your data import query</Paragraph>
       <Query query={stripIndent`
           query {
             user {
@@ -44,7 +60,7 @@ export function ImportingData() {
         `}
       />
 
-      <div>Create a dataset</div>
+      <Paragraph>Create a dataset</Paragraph>
       <Query query={stripIndent`
           mutation {
             createDataset(
@@ -60,7 +76,8 @@ export function ImportingData() {
         `}
       />
 
-      <div>Create a datarow in a dataset</div>
+
+      <Paragraph>Create a datarow in a dataset</Paragraph>
       <Query query={stripIndent`
           mutation {
             createDataRow(
