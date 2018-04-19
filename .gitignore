@@ -7,3 +7,4 @@ scripts/test-results/
 scripts/Images/
 scripts/Annotations/
 *.pytest_cache/
+docs/node_modules
