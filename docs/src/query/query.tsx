@@ -19,7 +19,7 @@ export class Query extends React.Component {
     const { query } = this.props;
 
     return (
-      <div style={{display: 'flex', flexGrow: 1, position: 'relative'}} ref={(e) => this.ref = e}>
+      <div style={{display: 'flex', flexGrow: 1, position: 'relative', height: '300px'}} ref={(e) => this.ref = e}>
         <Icon onClick={() => this.ref.querySelector('.execute-button').click()} style={{
           color: '#b6bbbf',
           fontSize: '40px',
