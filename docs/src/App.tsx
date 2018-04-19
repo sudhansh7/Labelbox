@@ -40,8 +40,6 @@ const Right = styled.div`
 const MainContent = styled.div`
   max-width: 860px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
   padding: 40px;
   font-weight: 300;
 `;

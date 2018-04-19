@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Query } from '../query/query';
 import {stripIndent} from 'common-tags';
+import Input from 'material-ui/Input';
 import styled from 'styled-components';
 
 const Title = styled.div`
@@ -17,6 +18,16 @@ const Paragraph = styled.div`
   margin-bottom: 10px;
 `;
 
+const AlertBanner = styled.div`
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  background-color: #2195f3;
+  color: white;
+`;
+
 
 export class ImportingData extends React.Component {
   // TODO install redux and move this into state
@@ -28,9 +39,18 @@ export class ImportingData extends React.Component {
 
   render(){
     return (
-      <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column', marginBottom: '40px'}}>
+      <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column'}}>
         <Title>Data Import Tutorial (beta)</Title>
         <Warning>The api calls below may change in the future</Warning>
+
+        <AlertBanner>
+          <Input placeholder="API Key" style={{color: 'white'}} />
+          <div style={{fontSize: '12px', marginTop: '10px'}}>
+            Enter your api key to have the below queries run against the data in your account.
+            If you don't have an API Key please contact our support team.
+          </div>
+        </AlertBanner>
+
 
         <Paragraph>
           All operations in labelbox go through our <a href="https://graphql.org/">GraphQL API</a>.
@@ -103,8 +123,6 @@ export class ImportingData extends React.Component {
             }
           `}
         />
-
-        <div style={{marginBottom: '40px'}}></div>
 
       </div>
     );
