@@ -25,14 +25,14 @@ const Menu = styled.div`
 const Left = styled.div`
   font-weight: 300;
   display: flex;
-  flex: 35;
+  flex: 20;
   background-color: #f8f8f9;
   justify-content: flex-end;
 `;
 
 const Right = styled.div`
   display: flex;
-  flex: 65;
+  flex: 80;
   background-color: white;
   overflow-y: auto;
 `;
