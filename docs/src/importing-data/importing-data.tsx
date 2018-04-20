@@ -66,7 +66,7 @@ export class ImportingData extends React.Component {
         </AlertBanner>}
 
         <div style={{fontSize: '18px', marginBottom: '10px'}}>Video Walkthrough</div>
-        <iframe width="630" height="394" src="https://www.useloom.com/embed/db3a74169403418c92ccdbc548624234" frameBorder="0" allowFullScreen></iframe>
+        <iframe width="630" height="394" src="https://www.useloom.com/embed/0bb22477372a4f2ebeea3f696594b84e" frameBorder="0" allowFullScreen></iframe>
 
         <Paragraph>
           All operations in labelbox go through our <a href="https://graphql.org/">GraphQL API</a>.
