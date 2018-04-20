@@ -55,7 +55,7 @@ export class ImportingData extends React.Component {
             Enter your api key to have the below queries run against the data in your account.
             If you don't have an API Key please contact our support team.
           </div>
-          <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+          <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '10px'}}>
             <Button
               disabled={!this.state.apiKey || this.state.apiKey.length < 5}
               color="primary"
