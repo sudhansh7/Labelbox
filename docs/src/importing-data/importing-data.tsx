@@ -3,6 +3,7 @@ import { Query } from '../query/query';
 import {stripIndent} from 'common-tags';
 import Input from 'material-ui/Input';
 import styled from 'styled-components';
+import Button from 'material-ui/Button';
 
 const Title = styled.div`
    font-size: 26px;
@@ -34,7 +35,9 @@ export class ImportingData extends React.Component {
   // TODO install redux and move this into state
   public state: {
     apiKey?: string;
+    apiKeyConfirmed: boolean;
   } = {
+    apiKeyConfirmed: false,
     apiKey: undefined
   }
 
@@ -44,11 +47,21 @@ export class ImportingData extends React.Component {
         <Title>Data Import Tutorial (beta)</Title>
         <Warning>The api calls below may change in the future</Warning>
 
-        {!this.state.apiKey && <AlertBanner>
-          <Input placeholder="API Key" onKeyUp={(e:any) => e.keyCode === 13 && this.setState({...this.state, apiKey: e.target.value})} />
+        {!this.state.apiKeyConfirmed && <AlertBanner>
+          <Input placeholder="API Key"
+            onKeyUp={(e:any) => e.keyCode === 13 && this.setState({...this.state, apiKeyConfirmed: true})}
+            onChange={(e) => this.setState({...this.state, apiKey: e.target.value})} />
           <div style={{fontSize: '12px', marginTop: '10px'}}>
             Enter your api key to have the below queries run against the data in your account.
             If you don't have an API Key please contact our support team.
+          </div>
+          <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Button
+              disabled={!this.state.apiKey || this.state.apiKey.length < 5}
+              color="primary"
+              variant="raised"
+              onClick={() => this.setState({...this.state, apiKeyConfirmed: true})}
+            >Confirm</Button>
           </div>
         </AlertBanner>}
 
