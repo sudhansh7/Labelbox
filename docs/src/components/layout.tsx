@@ -4,12 +4,14 @@ export const Content = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  margin-bottom: 100px;
 `
 export const Title = styled.div`
   font-size: 26px;
 `;
 
 export const SubTitle = styled.div`
+  margin-top: 15px;
   font-size: 20px;
 `;
 

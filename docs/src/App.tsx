@@ -9,7 +9,7 @@ import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { logo } from './logo';
 import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
-import  { ExportTutorial } from './pages/export-tutorial';
+import  { ExportTutorial } from './pages/export/export-tutorial';
 import { AppState } from './redux/index';
 import { Provider } from 'react-redux';
 
