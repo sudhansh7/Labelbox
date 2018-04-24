@@ -1,24 +1,9 @@
 import * as React from 'react';
-import { Query } from '../query/query';
+import { Query } from '../components/query/query';
 import {stripIndent} from 'common-tags';
 import { ApiKeyPrompt } from '../components/api-key-prompt';
-import styled from 'styled-components';
 import { AppState } from '../redux/index';
-
-const Title = styled.div`
-   font-size: 26px;
-`;
-
-const Warning = styled.div`
-  font-size: 12px;
-  color: #E53935;
-`;
-
-const Paragraph = styled.div`
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
+import { Title, Paragraph, Warning } from '../components/layout';
 
 export function ImportingData({state}: {state: AppState}) {
   const apiKey = state.app.apiKey;

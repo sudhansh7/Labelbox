@@ -7,7 +7,6 @@ enum ActionNames {
 }
 
 export function appReducer(state: AppReducerState = {}, {type, payload}: {type: ActionNames, payload: any}){
-  console.log('here2', payload)
   if (type === ActionNames.UserSetApiKey){
     return {
       ...state,
@@ -19,7 +18,6 @@ export function appReducer(state: AppReducerState = {}, {type, payload}: {type: 
 }
 
 export function userSetApiKey(apiKey: string){
-  console.log('here');
   return {
     type: ActionNames.UserSetApiKey,
     payload: {apiKey}
