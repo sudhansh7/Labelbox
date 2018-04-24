@@ -2,7 +2,7 @@ import * as React from 'react';
 import Icon from 'material-ui/Icon';
 import styled from 'styled-components';
 import { MuiThemeProvider } from 'material-ui/styles';
-import { ImportingData } from './importing-data/importing-data';
+import { ImportingData } from './pages/importing-data';
 import './app.css';
 import './icons.css';
 import { createMuiTheme } from 'material-ui/styles';
