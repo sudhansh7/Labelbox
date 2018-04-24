@@ -6,7 +6,11 @@ export const Content = styled.div`
   flex-direction: column;
 `
 export const Title = styled.div`
-   font-size: 26px;
+  font-size: 26px;
+`;
+
+export const SubTitle = styled.div`
+  font-size: 20px;
 `;
 
 export const Warning = styled.div`

@@ -77,7 +77,7 @@ function Content({state}:{state: AppState}){
   return (
     <MainContent>
       <Route path="/import" component={() => <ImportingData state={state} /> }/>
-      <Route path="/export" component={ExportTutorial}/>
+      <Route path="/export" component={() => <ExportTutorial state={state} />}/>
     </MainContent>
   )
 }
