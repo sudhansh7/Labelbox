@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const Content = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+`
 export const Title = styled.div`
    font-size: 26px;
 `;

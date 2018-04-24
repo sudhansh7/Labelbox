@@ -3,13 +3,13 @@ import { Query } from '../components/query/query';
 import {stripIndent} from 'common-tags';
 import { ApiKeyPrompt } from '../components/api-key-prompt';
 import { AppState } from '../redux/index';
-import { Title, Paragraph, Warning } from '../components/layout';
+import { Title, Paragraph, Warning, Content } from '../components/layout';
 
 export function ImportingData({state}: {state: AppState}) {
   const apiKey = state.app.apiKey;
 
   return (
-    <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column'}}>
+    <Content>
       <Title>Data Import Tutorial (beta)</Title>
       <Warning>The api calls below may change in the future</Warning>
 
@@ -90,6 +90,6 @@ export function ImportingData({state}: {state: AppState}) {
         `}
       />
 
-    </div>
+    </Content>
   );
 }
