@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@types/common-tags": "^1.4.0",
+    "@types/react-router": "^4.0.23",
+    "@types/react-router-dom": "^4.2.6",
     "common-tags": "^1.7.2",
     "graphiql": "^0.11.11",
     "graphql": "^0.13.2",
@@ -11,6 +13,8 @@
     "react": "^16.3.2",
     "react-ace": "^6.0.0",
     "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-scripts-ts": "2.15.1",
     "serve": "^6.5.5",
     "styled-components": "^3.2.6"

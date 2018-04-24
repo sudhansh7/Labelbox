@@ -8,7 +8,7 @@ import './icons.css';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { logo } from './logo';
-
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 const AppContainer = styled.div`
   display: flex;
@@ -66,30 +66,43 @@ export const theme = createMuiTheme({
   },
 });
 
+function Content(){
+  if (window.location.pathname !== '/import') {
+    return (<Redirect to="/import" />);
+  }
+  return (
+    <MainContent>
+        <Route path="/import" component={ImportingData}/>
+    </MainContent>
+  )
+}
+
+
 class App extends React.Component {
   public render() {
+
     return (
       <MuiThemeProvider theme={theme}>
-        <AppContainer>
-          <Left>
-            <Menu>
-              <img src={logo} width="140px" style={{marginBottom: '40px'}} />
-              <MenuTitle>
-                <Icon style={{flex: 15, color: 'grey'}}>local_library</Icon>
-                <div style={{flex: 85}}>Tutorials </div>
-              </MenuTitle>
-              <MenuSubsection>
-                <div style={{flex: 15}}></div>
-                <div style={{flex: 85}}>Importing Data</div>
-              </MenuSubsection>
-            </Menu>
-          </Left>
-          <Right>
-            <MainContent>
-              <ImportingData />
-            </MainContent>
-          </Right>
-        </AppContainer>
+        <Router>
+          <AppContainer>
+            <Left>
+              <Menu>
+                <img src={logo} width="140px" style={{marginBottom: '40px'}} />
+                <MenuTitle>
+                  <Icon style={{flex: 15, color: 'grey'}}>local_library</Icon>
+                  <div style={{flex: 85}}>Tutorials </div>
+                </MenuTitle>
+                <MenuSubsection>
+                  <div style={{flex: 15}}></div>
+                  <div style={{flex: 85}}>Importing Data</div>
+                </MenuSubsection>
+              </Menu>
+            </Left>
+            <Right>
+              <Content />
+            </Right>
+          </AppContainer>
+        </Router>
       </MuiThemeProvider>
     );
   }
