@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Query } from '../query/query';
 import {stripIndent} from 'common-tags';
+import { ApiKeyPrompt } from '../components/api-key-prompt';
 import Input from 'material-ui/Input';
 import styled from 'styled-components';
 import Button from 'material-ui/Button';
+import { AppState } from '../redux/index';
 
 const Title = styled.div`
    font-size: 26px;
@@ -41,11 +43,19 @@ export class ImportingData extends React.Component {
     apiKey: undefined
   }
 
+  public props: {state: AppState};
+
   render(){
+    console.log(this.props.state)
     return (
       <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column'}}>
         <Title>Data Import Tutorial (beta)</Title>
         <Warning>The api calls below may change in the future</Warning>
+
+        <ApiKeyPrompt />
+        <div>
+          apikey from state {this.props.state.app.apiKey}
+        </div>
 
         {!this.state.apiKeyConfirmed && <AlertBanner>
           <Input placeholder="API Key"

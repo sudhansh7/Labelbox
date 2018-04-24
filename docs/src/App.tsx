@@ -10,6 +10,8 @@ import lightblue from 'material-ui/colors/blue';
 import { logo } from './logo';
 import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
 import  { ExportTutorial } from './pages/export-tutorial';
+import { AppState } from './redux/index';
+import { Provider } from 'react-redux';
 
 const AppContainer = styled.div`
   display: flex;
@@ -68,13 +70,13 @@ export const theme = createMuiTheme({
   },
 });
 
-function Content(){
+function Content({state}:{state: AppState}){
   if (!(window.location.pathname === '/import' || window.location.pathname === '/export')) {
     return (<Redirect to="/import" />);
   }
   return (
     <MainContent>
-      <Route path="/import" component={ImportingData}/>
+      <Route path="/import" component={() => <ImportingData state={state} /> }/>
       <Route path="/export" component={ExportTutorial}/>
     </MainContent>
   )
@@ -90,31 +92,34 @@ function MenuItem({name, to}:{name: string, to: string}){
 }
 
 class App extends React.Component {
-  public render() {
+  public props: {store: any}
 
+  render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <Router>
-          <AppContainer>
-            <Left>
-              <Menu>
-                <img src={logo} width="140px" style={{marginBottom: '40px'}} />
-                <MenuTitle>
-                  <Icon style={{flex: 15, color: 'grey'}}>local_library</Icon>
-                  <div style={{flex: 85}}>Tutorials </div>
-                </MenuTitle>
-                <MenuSubsection>
-                  <MenuItem name="Importing Data" to="/import" />
-                  <MenuItem name="Exporting Data" to="/export" />
-                </MenuSubsection>
-              </Menu>
-            </Left>
-            <Right>
-              <Content />
-            </Right>
-          </AppContainer>
-        </Router>
-      </MuiThemeProvider>
+      <Provider store={this.props.store}>
+        <MuiThemeProvider theme={theme}>
+          <Router>
+            <AppContainer>
+              <Left>
+                <Menu>
+                  <img src={logo} width="140px" style={{marginBottom: '40px'}} />
+                  <MenuTitle>
+                    <Icon style={{flex: 15, color: 'grey'}}>local_library</Icon>
+                    <div style={{flex: 85}}>Tutorials </div>
+                  </MenuTitle>
+                  <MenuSubsection>
+                    <MenuItem name="Importing Data" to="/import" />
+                    <MenuItem name="Exporting Data" to="/export" />
+                  </MenuSubsection>
+                </Menu>
+              </Left>
+              <Right>
+                <Content state={this.props.store.getState()} />
+              </Right>
+            </AppContainer>
+          </Router>
+        </MuiThemeProvider>
+      </Provider>
     );
   }
 }
