@@ -17,6 +17,9 @@ export function ExportTutorial({state}: {state: AppState}){
 
       {!apiKey && <ApiKeyPrompt />}
 
+      <div style={{fontSize: '18px', marginBottom: '10px'}}>Video Walkthrough</div>
+      <iframe width="630" height="394" src="https://www.useloom.com/embed/f7760014296d40fdb14937d2e7edb050" frameBorder="0" allowFullScreen></iframe>
+
       <SubTitle>Export the labels in a project</SubTitle>
       <Paragraph>Get the projectId you want to export from.</Paragraph>
       <Query apiKey={apiKey} query={stripIndent`
