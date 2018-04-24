@@ -56,6 +56,7 @@ export function ExportTutorial({state}: {state: AppState}){
           }
         `}/>
 
+        <Paragraph>If you remove the "first: 5" parameter in the above query you'll get the first page of 1000 labels. In order to get all label pages you can use the below code.</Paragraph>
     </Content>
   );
 }
