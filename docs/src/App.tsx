@@ -8,7 +8,8 @@ import './icons.css';
 import { createMuiTheme } from 'material-ui/styles';
 import lightblue from 'material-ui/colors/blue';
 import { logo } from './logo';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
+import  { ExportTutorial } from './pages/export-tutorial';
 
 const AppContainer = styled.div`
   display: flex;
@@ -51,6 +52,7 @@ const MenuTitle = styled.div`
 
 const MenuSubsection = styled.div`
   display: flex;
+  flex-direction: column;
   font-size: 14px;
   margin-top: 10px;
   margin-left: 3px;
@@ -67,16 +69,25 @@ export const theme = createMuiTheme({
 });
 
 function Content(){
-  if (window.location.pathname !== '/import') {
+  if (!(window.location.pathname === '/import' || window.location.pathname === '/export')) {
     return (<Redirect to="/import" />);
   }
   return (
     <MainContent>
-        <Route path="/import" component={ImportingData}/>
+      <Route path="/import" component={ImportingData}/>
+      <Route path="/export" component={ExportTutorial}/>
     </MainContent>
   )
 }
 
+function MenuItem({name, to}:{name: string, to: string}){
+  return (
+    <Link style={{display: 'flex', marginBottom: '10px', textDecoration: 'none', color: 'inherit'}} to={to}>
+      <div style={{flex: 15}}></div>
+      <div style={{flex: 85}}>{name}</div>
+    </Link>
+  )
+}
 
 class App extends React.Component {
   public render() {
@@ -93,8 +104,8 @@ class App extends React.Component {
                   <div style={{flex: 85}}>Tutorials </div>
                 </MenuTitle>
                 <MenuSubsection>
-                  <div style={{flex: 15}}></div>
-                  <div style={{flex: 85}}>Importing Data</div>
+                  <MenuItem name="Importing Data" to="/import" />
+                  <MenuItem name="Exporting Data" to="/export" />
                 </MenuSubsection>
               </Menu>
             </Left>
