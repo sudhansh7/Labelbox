@@ -217,7 +217,6 @@ class App extends React.Component {
 
         const imageUrl = asset.data;
 
-        this.startLoading();
         const updateImageInfo = ({height, width}: {height: number, width: number}) => {
           // TODO this is questionable
           dispatch(syncState({
