@@ -389,18 +389,16 @@ const updateTempBoundingBox = (state: AppState, {location: {lat: mouseLat, lng: 
   };
 
   const index = state.annotations.findIndex(({id}) => state.rectangleInProgressId === id);
-  const newAnnotations = index !== -1 ? [
-    ...state.annotations.slice(0, index),
-    ...state.annotations.slice(index + 1),
-    boxAnnotation
-  ] : [
-    ...state.annotations,
-    boxAnnotation
-  ];
+  if (index === -1){
+    state.annotations.push(boxAnnotation);
+  } else {
+    state.annotations[index] = boxAnnotation;
+  }
+
   return {
     ...state,
     rectangleInProgressId: rectId,
-    annotations: newAnnotations
+    annotations: state.annotations
   }
 }
 
