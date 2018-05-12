@@ -180,7 +180,7 @@ class App extends React.Component {
         {this.state.loading && (<LinearProgress color="primary" />)}
         <AppContainer>
           <Header>
-            <a href={`https://app.labelbox.io/projects/${getQueryParam('project')}/overview`} style={{marginBottom: '30px'}}>
+            <a href={`https://app.labelbox.com/projects/${getQueryParam('project')}/overview`} style={{marginBottom: '30px'}}>
               <Logo src={logo} />
             </a>
             <History

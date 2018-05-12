@@ -1,5 +1,6 @@
 {
-  "name": "image-class-ts-2",
+  "name": "image-class-ts-2.com",
+- Will have a migration that updates existing templates
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -22,7 +23,7 @@
     "deploy": "now && now alias"
   },
   "now": {
-    "alias": "multi-image-classification.labelbox.io"
+    "alias": "multi-image-classification.labelbox.com"
   },
   "devDependencies": {
     "@types/jest": "^22.1.4",

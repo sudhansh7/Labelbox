@@ -32,9 +32,9 @@
       var script = document.createElement('script');
       script.id = 'labelbox-script';
       if (getQueryParam('local')){
-        script.src = 'http://localhost:8000/client/v0.1/labeling-api.js';
+        script.src = 'http://localhost:8080/labeling-api.js';
       } else {
-        script.src = 'https://api.labelbox.io/client/v0.1/labeling-api.js';
+        script.src = 'https://api.labelbox.com/labeling-api.js';
       }
       document.head.appendChild(script);
     </script>

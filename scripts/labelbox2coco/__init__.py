@@ -26,7 +26,7 @@ def from_json(labeled_data, coco_output):
         'version': None,
         'description': label_data[0]['Project Name'],
         'contributor': label_data[0]['Created By'],
-        'url': 'labelbox.io',
+        'url': 'labelbox.com',
         'date_created': dt.datetime.now(dt.timezone.utc).isoformat()
     }
 

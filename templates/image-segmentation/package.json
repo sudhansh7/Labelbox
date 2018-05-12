@@ -1,5 +1,5 @@
 {
-  "name": "image-segmentation-hybrid",
+  "name": "image-segmentation-hybrid.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -33,7 +33,7 @@
     "eject": "react-scripts-ts eject"
   },
   "now": {
-    "alias": "image-segmentation-hybrid.labelbox.io"
+    "alias": "image-segmentation-hybrid.labelbox.com"
   },
   "jest": {
     "transform": {

@@ -1,5 +1,5 @@
 {
-  "name": "text-classification.labelbox.io",
+  "name": "text-classification.labelbox.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,7 @@
     "deploy": "now && now alias"
   },
   "now": {
-    "alias": "text-classification.labelbox.io"
+    "alias": "text-classification.labelbox.com"
   },
   "devDependencies": {
     "serve": "^6.4.8"

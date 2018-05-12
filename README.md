@@ -25,12 +25,12 @@ Table of Contents
       * [Full API Reference](#full-api-reference)
       * [Reference Interfaces](#reference-interfaces)
       * [Local Development of Labeling Interfaces](#local-development-of-labeling-interfaces)
-      * [Installing a Labeling Frontend in labelbox.io](#installing-a-labeling-frontend-in-labelboxio)
+      * [Installing a Labeling Frontend in labelbox.com](#installing-a-labeling-frontend-in-labelboxio)
    * [Request features](#request-features)
    * [Terms of use, privacy and content dispute policy](#terms-of-use-privacy-and-content-dispute-policy)
 
 # Labelbox
-[Labelbox](https://www.labelbox.io/) is a data labeling tool that's purpose
+[Labelbox](https://www.labelbox.com/) is a data labeling tool that's purpose
 built for machine learning applications. Start labeling data in minutes using
 pre-made labeling interfaces, or create your own pluggable interface to suit
 the needs of your data labeling task. Labelbox is lightweight for single users
@@ -60,7 +60,7 @@ or small teams and scales up to support large teams and massive data sets.
   keeping track of labeling task performance of individuals and teams.
 
 ## Quickstart
-1. Sign up on [Labelbox](https://www.labelbox.io)
+1. Sign up on [Labelbox](https://www.labelbox.com)
 2. Jump into the example project or create a new one
 3. Step through the setup, attach a data set and start labeling
 4. Export your labels
@@ -303,7 +303,7 @@ labeling tasks. All of the pre-made labeling interfaces are open source.
 
 ### A Minimal Example
 ```html
-<script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
+<script src="https://api.labelbox.com/labeling-api.js"></script>
 <div id="form"></div>
 <script>
 function label(label){
@@ -354,7 +354,7 @@ CSV file contains an array of data pointers.
 __Attach the Labelbox Client Side API__
 
 ```html
-<script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
+<script src="https://api.labelbox.com/labeling-api.js"></script>
 ```
 
 __Get a row to label__
@@ -373,12 +373,12 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 
 ### Hello World Example
 
-[Try it in your browser](https://hello-world.labelbox.io)  
+[Try it in your browser](https://hello-world.labelbox.com)  
 (The project must be setup first)
 
 ### Full Example
 ```html
-<script src="https://api.labelbox.io/client/v0.1/labeling-api.js"></script>
+<script src="https://api.labelbox.com/labeling-api.js"></script>
 <div id="form"></div>
 <script>
 function label(label){
@@ -439,9 +439,9 @@ python -m SimpleHTTPServer
 
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_localhost.gif)
 
-### Installing a Labeling Frontend in labelbox.io  
+### Installing a Labeling Frontend in labelbox.com
 When you are ready to use your custom labeling interface on
-[Labelbox](https://www.labelbox.io), upload your `index.html` file to a cloud
+[Labelbox](https://www.labelbox.com), upload your `index.html` file to a cloud
 service that exposes a URL for Labelbox to fetch the file. If you don't have a
 hosting service on-hand, you can quickly get setup with
 [Now](https://zeit.co/now) from **Zeit**.
@@ -461,7 +461,7 @@ hosting service on-hand, you can quickly get setup with
 ## Request features
 Have a feature request? Need a custom labeling interface built for your labeling task? We can help.  
 
-Create an issue here: https://github.com/Labelbox/Labelbox/issues or contact us at support@labelbox.io
+Create an issue here: https://github.com/Labelbox/Labelbox/issues or contact us at support@labelbox.com
 
 ## Terms of use, privacy and content dispute policy
 Here is our [terms of service, privacy and content dispute policy](https://www.dropbox.com/s/ph6w2ov4i4v5pf9/Labelbox_Terms_Privacy_Content.pdf?dl=0)

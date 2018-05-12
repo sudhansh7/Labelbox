@@ -330,7 +330,7 @@ class App extends React.Component {
         <div className="app">
           <div className="content">
             <div className="sidebar">
-              <a href={`https://app.labelbox.io/projects/${getQueryParam('project')}/overview`} style={{marginBottom: '30px'}}>
+              <a href={`https://app.labelbox.com/projects/${getQueryParam('project')}/overview`} style={{marginBottom: '30px'}}>
                 <img src={logo} width="100px" style={{marginLeft: '30px'}}/>
               </a>
               <ToolMenu

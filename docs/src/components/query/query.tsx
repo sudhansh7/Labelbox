@@ -34,7 +34,7 @@ export class Query extends React.Component {
     const { query, apiKey } = this.props;
 
     const graphQLFetcher = (graphQLParams: any) => {
-      return fetch('https://api.labelbox.io/graphql', {
+      return fetch('https://api.labelbox.com/graphql', {
         method: 'post',
         headers: {
           'Authorization': 'Bearer ' + apiKey,

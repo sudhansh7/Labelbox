@@ -14,7 +14,7 @@ import 'brace/theme/github';
 const getPythonCodeForQuery = (query: string, apiKey?: string):string => {
   return codeBlock`
     from graphqlclient import GraphQLClient
-    client = GraphQLClient('https://api.labelbox.io/graphql')
+    client = GraphQLClient('https://api.labelbox.com/graphql')
     client.inject_token('${apiKey ? apiKey : '<API_KEY_HERE>'}')
 
     data = client.execute('''

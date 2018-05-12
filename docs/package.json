@@ -1,5 +1,5 @@
 {
-  "name": "docs",
+  "name": "docs.labelbox.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -22,7 +22,7 @@
     "styled-components": "^3.2.6"
   },
   "now": {
-    "alias": "docs.labelbox.io"
+    "alias": "docs.labelbox.com"
   },
   "scripts": {
     "now-start": "cd build && serve -s ./",

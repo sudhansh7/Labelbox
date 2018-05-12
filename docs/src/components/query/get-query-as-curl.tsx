@@ -12,7 +12,7 @@ import 'brace/theme/github';
 
 const getCurlForQuery = (query: string, apiKey?: string):string => {
   return [
-    `curl 'https://api.labelbox.io/graphql'`,
+    `curl 'https://api.labelbox.com/graphql'`,
     `-H 'Authorization: Bearer ${apiKey ? apiKey : '<API_KEY_HERE>'}'`,
     `-H 'content-type: application/json'`,
     `-d '{"query":"${query.replace(/\n/g, '').replace(/ /g, '').replace(/"/g, '\\"')}"}'`

@@ -30,7 +30,7 @@ CSV=$(echo "Data URL"; for fileName in $(ls); do echo $IP_ADDRESS:8000/$fileName
 echo "$CSV" > data.csv
 ```
 
-4. Upload data.csv to https://app.labelbox.io/data
+4. Upload data.csv to https://app.labelbox.com/data
 
 **Notes**
 - Only users on the same wifi network can see your data
