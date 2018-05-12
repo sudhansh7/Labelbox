@@ -38,7 +38,7 @@ export function ExportTutorial({state}: {state: AppState}){
       <Paragraph>Using the project ID from the above query you can pull all the labels created in that project.</Paragraph>
       <Query apiKey={apiKey} query={stripIndent`
           query {
-            Project(id: "<INSERT_PROJECT_ID_HERE>") {
+            project(where:{id: "<INSERT_PROJECT_ID_HERE>"}) {
               labels(first: 5){
                 id
                 label
@@ -72,10 +72,10 @@ export function ExportTutorial({state}: {state: AppState}){
       <Paragraph>Here are some common filter you might want to apply to your export</Paragraph>
       <Query apiKey={apiKey} query={stripIndent`
         query {
-          Project(id: "<INSERT_PROJECT_ID_HERE>") {
+          project(where:{id: "<INSERT_PROJECT_ID_HERE>"}) {
             labels(
               first: 5,
-              filter: {
+              where: {
                 createdBy:{id:"USER_ID"},
                 createdAt_lt:"2018-04-24T22:09:21.753Z",
                 createdAt_gt:"2018-04-01T22:09:21.753Z",

@@ -48,7 +48,7 @@ export function ImportingData({state}: {state: AppState}) {
               id
               organization{
                 id
-                projects(filter:{deleted:false}){
+                projects(where:{deleted:false}){
                   id
                   name
                 }
@@ -62,11 +62,13 @@ export function ImportingData({state}: {state: AppState}) {
       <Query apiKey={apiKey} query={stripIndent`
           mutation {
             createDataset(
-              name: "<INSERT_NAME_HERE>",
-              projectsIds: ["<INSERT_PROJECT_ID_HERE>"],
-              createdById: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>",
-              organizationId: "<INSERT_YOUR_ORGANIZATION_ID_FROM_ABOVE_HERE>",
-              deleted: false,
+              data:{
+                name: "<INSERT_NAME_HERE>",
+                projects: [{id: "<INSERT_PROJECT_ID_HERE>"}],
+                createdBy: {id: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>"},
+                organization: {id: "<INSERT_YOUR_ORGANIZATION_ID_FROM_ABOVE_HERE>"},
+                deleted: false,
+              }
             ) {
               id
             }
@@ -79,10 +81,12 @@ export function ImportingData({state}: {state: AppState}) {
       <Query apiKey={apiKey} query={stripIndent`
           mutation {
             createDataRow(
-              rowData: "<DATA_THAT_NEEDS_TO_BE_LABELED>",
-              datasetId: "<DATASET_ID_HERE>",
-              createdById: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>",
-              organizationId: "<INSERT_YOUR_ORGANIZATION_ID_FROM_ABOVE_HERE>",
+              data: {
+                rowData: "<DATA_THAT_NEEDS_TO_BE_LABELED>",
+                dataset: {id: "<DATASET_ID_HERE>"},
+                createdBy: {id: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>"},
+                organization: {id: "<INSERT_YOUR_ORGANIZATION_ID_FROM_ABOVE_HERE>"},
+              }
             ) {
               id
             }
