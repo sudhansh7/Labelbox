@@ -303,7 +303,7 @@ labeling tasks. All of the pre-made labeling interfaces are open source.
 
 ### A Minimal Example
 ```html
-<script src="https://api.labelbox.com/labeling-api.js"></script>
+<script src="https://api.labelbox.com/static/labeling-api.js"></script>
 <div id="form"></div>
 <script>
 function label(label){
@@ -354,7 +354,7 @@ CSV file contains an array of data pointers.
 __Attach the Labelbox Client Side API__
 
 ```html
-<script src="https://api.labelbox.com/labeling-api.js"></script>
+<script src="https://api.labelbox.com/static/labeling-api.js"></script>
 ```
 
 __Get a row to label__
@@ -378,7 +378,7 @@ Labelbox.setLabelForAsset(label); // labels the asset currently on the screen
 
 ### Full Example
 ```html
-<script src="https://api.labelbox.com/labeling-api.js"></script>
+<script src="https://api.labelbox.com/static/labeling-api.js"></script>
 <div id="form"></div>
 <script>
 function label(label){
