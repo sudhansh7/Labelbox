@@ -10,7 +10,7 @@ export const getPythonForLabelExport = ({apiKey = '<API_KEY_HERE'}:{apiKey?: str
     def get_page_of_labels(project_id, skip, page_size):
       page_query = '''
         query GetPageOfLabels($projectId: ID!, $skip: Int!, $first: Int!) {
-          Project(where:{id: $projectId}) {
+          project(where:{id: $projectId}) {
             labels(skip: $skip, first: $first){
               id
               label
