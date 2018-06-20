@@ -5,7 +5,7 @@ export const getPythonForLabelExport = ({apiKey = '<API_KEY_HERE'}:{apiKey?: str
     import json
     from graphqlclient import GraphQLClient
     client = GraphQLClient('https://api.labelbox.com/graphql')
-    client.inject_token('${apiKey}')
+    client.inject_token('Bearer ${apiKey}')
 
     def get_page_of_labels(project_id, skip, page_size):
       page_query = '''
