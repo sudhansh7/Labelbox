@@ -47,9 +47,9 @@ export function ImportingData({state}: {state: AppState}) {
             user {
               id
               organization{
-                id
+                id,
                 projects(where:{deleted:false}){
-                  id
+                  id,
                   name
                 }
               }
