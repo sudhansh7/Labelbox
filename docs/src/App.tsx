@@ -10,6 +10,7 @@ import lightblue from 'material-ui/colors/blue';
 import { logo } from './logo';
 import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
 import  { ExportTutorial } from './pages/export/export-tutorial';
+import  { LabelTutorial } from './pages/crud-labels';
 import { AppState } from './redux/index';
 import { Provider } from 'react-redux';
 
@@ -71,13 +72,14 @@ export const theme = createMuiTheme({
 });
 
 function Content({state}:{state: AppState}){
-  if (!(window.location.pathname === '/import' || window.location.pathname === '/export')) {
+  if (!(window.location.pathname === '/import' || window.location.pathname === '/export' || window.location.pathname === '/label')) {
     return (<Redirect to="/import" />);
   }
   return (
     <MainContent>
       <Route path="/import" component={() => <ImportingData state={state} /> }/>
       <Route path="/export" component={() => <ExportTutorial state={state} />}/>
+      <Route path="/label" component={() => <LabelTutorial state={state} />}/>
     </MainContent>
   )
 }
@@ -110,6 +112,7 @@ class App extends React.Component {
                   <MenuSubsection>
                     <MenuItem name="Importing Data" to="/import" />
                     <MenuItem name="Exporting Data" to="/export" />
+                    <MenuItem name="Labeling Data" to="/label" />
                   </MenuSubsection>
                 </Menu>
               </Left>
