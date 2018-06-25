@@ -80,8 +80,12 @@ export function BulkDataImport({state}: {state: AppState}) {
         `}
       />
 
-      TODO how to create a new dataset
-      TODO make a python file that does all of this end to end
+      <Paragraph>
+        Now you can fill in the ID's (USER-ID, ORGANIZATION-ID, DATASET-ID, CSV-URL) into the below query to append a CSV to a given dataset.<br/>
+        Here is an example <a href="https://storage.googleapis.com/labelbox-example-datasets/tesla_dataset.csv" target="_blank">CSV url</a>.<br/>
+        In the below example "parameters" is stringified JSON and csvDataColumnIndex and csvExternalIdIndex are numbers that tell this function how to read the CSV.<br/>
+        If "-1" is used for csvExternalIdIndex that column will not be populated.<br/>
+      </Paragraph>
 
       <Query apiKey={apiKey} query={stripIndent`
           mutation CreateTask {
@@ -118,7 +122,7 @@ export function BulkDataImport({state}: {state: AppState}) {
                         id: "<ORGANIZATION-ID>"
                       }
                     }
-                    parameters: "{\"csvUrl\":\"https://storage.googleapis.com/labelbox-example-datasets/tesla_dataset.csv\", \"csvDataColumnIndex\":0, \"csvExternalIdIndex\":-1, \"datasetId\":\"cjhv2pnbbms9b0779mr1ncq6w\"}"
+                    parameters: "{\"csvUrl\":\"<CSV-URL>\", \"csvDataColumnIndex\":0, \"csvExternalIdIndex\":-1, \"datasetId\":\"cjhv2pnbbms9b0779mr1ncq6w\"}"
                   }
                 }
               }
@@ -129,6 +133,7 @@ export function BulkDataImport({state}: {state: AppState}) {
         `}
       />
 
+    /* TODO make a python file that does all of this end to end*/
 
     </Content>
   );
