@@ -13,6 +13,7 @@ import  { ExportTutorial } from './pages/export/export-tutorial';
 import  { LabelTutorial } from './pages/crud-labels';
 import { AppState } from './redux/index';
 import { Provider } from 'react-redux';
+import { BulkDataImport } from './pages/bulk-data-import';
 
 const AppContainer = styled.div`
   display: flex;
@@ -72,12 +73,13 @@ export const theme = createMuiTheme({
 });
 
 function Content({state}:{state: AppState}){
-  if (!(window.location.pathname === '/import' || window.location.pathname === '/export' || window.location.pathname === '/label')) {
+  if (window.location.pathname === '/') {
     return (<Redirect to="/import" />);
   }
   return (
     <MainContent>
       <Route path="/import" component={() => <ImportingData state={state} /> }/>
+      <Route path="/bulk-import" component={() => <BulkDataImport state={state} /> }/>
       <Route path="/export" component={() => <ExportTutorial state={state} />}/>
       <Route path="/label" component={() => <LabelTutorial state={state} />}/>
     </MainContent>
@@ -110,7 +112,8 @@ class App extends React.Component {
                     <div style={{flex: 85}}>Tutorials </div>
                   </MenuTitle>
                   <MenuSubsection>
-                    <MenuItem name="Importing Data" to="/import" />
+                    <MenuItem name="Data Import" to="/import" />
+                    <MenuItem name="Bulk Data Import" to="/bulk-import" />
                     <MenuItem name="Exporting Data" to="/export" />
                     <MenuItem name="Labeling Data" to="/label" />
                   </MenuSubsection>
