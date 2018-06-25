@@ -1,6 +1,6 @@
 import { codeBlock } from 'common-tags';
 
-export const getPythonForLabelExport = ({apiKey = '<API_KEY_HERE'}:{apiKey?: string}) => {
+export const getPythonForLabelExport = ({apiKey = '<API_KEY_HERE>'}:{apiKey?: string}) => {
   return codeBlock`
     import json
     from graphqlclient import GraphQLClient
@@ -34,7 +34,7 @@ export const getPythonForLabelExport = ({apiKey = '<API_KEY_HERE'}:{apiKey?: str
       '''
       res = client.execute(page_query, {'projectId': project_id, 'skip': skip, 'first': page_size})
       data = json.loads(res)['data']
-      return data['Project']['labels'] or []
+      return data['project']['labels'] or []
 
     def get_all_labels(project_id, skip = 0, page_size = 1000, all_labels = []):
       new_labels = get_page_of_labels(project_id, skip, page_size)

@@ -89,7 +89,7 @@ export function BulkDataImport({state}: {state: AppState}) {
       </Paragraph>
 
       <Query apiKey={apiKey} query={stripIndent`
-          mutation CreateTask {
+          mutation AppendCSVToDataset {
             createTask(
               data:{
                 name: "Example Bulk Import Task",
