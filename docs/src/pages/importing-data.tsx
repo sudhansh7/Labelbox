@@ -69,7 +69,7 @@ export function ImportingData({state}: {state: AppState}) {
                 },
                 createdBy: {
                   connect: {
-                    id: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>"},
+                    id: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>",
                   }
                 }
                 organization: {

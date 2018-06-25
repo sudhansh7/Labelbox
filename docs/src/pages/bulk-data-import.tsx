@@ -15,29 +15,89 @@ export function BulkDataImport({state}: {state: AppState}) {
 
       {!apiKey && <ApiKeyPrompt />}
 
-      <Paragraph>If you want to import thousands of assets at the same time you can give Labelbox a CSV file to import.</Paragraph>
+      <Paragraph>
+        If you want to import thousands of assets at the same time you can give Labelbox a CSV file to import.
+        This will be much faster then sending a reqeust for each asset as explained in the data import tutorial.
+      </Paragraph>
 
-    TODO how to pull current dataset ids
+      <Paragraph>
+        In order to run the bulk import function you'll need to collect...
+        <ul>
+          <li>UserId</li>
+          <li>OrganizationId</li>
+          <li>DatasetId</li>
+          <li>Url to CSV file</li>
+        </ul>
+      </Paragraph>
 
-    TODO how to create a new dataset
+      <Paragraph>
+        With the query below you can retrieve a userId, organizationId, and datasetId.
+      </Paragraph>
 
-    TODO make a python file that does all of this end to end
+      <Query apiKey={apiKey} query={stripIndent`
+          query {
+            user{
+              id
+              organization{
+                id
+                datasets{
+                  id
+                  name
+                }
+              }
+            }
+          }
+        `}
+      />
+
+      <Paragraph>
+        If don't want to a append this new data to an existing dataset you can create a new dataset with the query below.
+      </Paragraph>
+      <Query apiKey={apiKey} query={stripIndent`
+          mutation {
+            createDataset(
+              data:{
+                name: "<INSERT_NAME_HERE>",
+                projects: {
+                  connect: [{id: "<INSERT_PROJECT_ID_HERE>"}]
+                },
+                createdBy: {
+                  connect: {
+                    id: "<INSERT_YOUR_USER_ID_FROM_ABOVE_HERE>",
+                  }
+                }
+                organization: {
+                  connect: {
+                    id: "<INSERT_YOUR_ORGANIZATION_ID_FROM_ABOVE_HERE>"
+                  }
+                },
+                deleted: false,
+              }
+            ) {
+              id
+            }
+          }
+        `}
+      />
+
+      TODO how to create a new dataset
+      TODO make a python file that does all of this end to end
 
       <Query apiKey={apiKey} query={stripIndent`
           mutation CreateTask {
             createTask(
               data:{
-                name: "Upload Data Test",
+                name: "Example Bulk Import Task",
                 status: IN_PROGRESS,
                 createdBy: {
                   connect: {
-                    id: "cjgcj7ujahr710105jd2a2zz5"
+                    id: "<USER-ID>"
                   }
                 },
                 completionPercentage: 0,
                 organization: {
                   connect: {
-                    id: "cjgcj7uayh1jl0198rjsoarja"
+                    id: "<ORGANIZATION-ID>"
                   }
                 },
                 notifyOnCompletion: false,
@@ -50,12 +110,12 @@ export function BulkDataImport({state}: {state: AppState}) {
                     },
                     createdBy: {
                       connect: {
-                        id: "cjgcj7ujahr710105jd2a2zz5"
+                        id: "<USER-ID>"
                       }
                     },
                     organization: {
                       connect: {
-                        id: "cjgcj7uayh1jl0198rjsoarja"
+                        id: "<ORGANIZATION-ID>"
                       }
                     }
                     parameters: "{\"csvUrl\":\"https://storage.googleapis.com/labelbox-example-datasets/tesla_dataset.csv\", \"csvDataColumnIndex\":0, \"csvExternalIdIndex\":-1, \"datasetId\":\"cjhv2pnbbms9b0779mr1ncq6w\"}"
