@@ -13,7 +13,7 @@ import  { ExportTutorial } from './pages/export/export-tutorial';
 import  { LabelTutorial } from './pages/crud-labels';
 import { AppState } from './redux/index';
 import { Provider } from 'react-redux';
-import { BulkDataImport } from './pages/bulk-data-import';
+import { BulkDataImport } from './pages/bulk-import/bulk-data-import';
 
 const AppContainer = styled.div`
   display: flex;
