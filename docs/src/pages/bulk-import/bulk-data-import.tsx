@@ -17,6 +17,9 @@ export function BulkDataImport({state}: {state: AppState}) {
 
       {!apiKey && <ApiKeyPrompt />}
 
+      <div style={{fontSize: '18px', marginBottom: '10px'}}>Video Walkthrough</div>
+      <iframe width="630" height="394" src="https://www.useloom.com/share/d045e8080113490ca16df1d0e6474df5" frameBorder="0" allowFullScreen></iframe>
+
       <Paragraph>
         If you want to import thousands of assets at the same time you can give Labelbox a CSV file to import.
         This will be much faster then sending a reqeust for each asset as explained in the data import tutorial.
