@@ -202,7 +202,28 @@ It is also possible to do image segmentation & classification together in the sa
     {
       "name": "Car",
       "color": "navy",
-      "tool": "polygon"
+      "tool": "polygon",
+      "classifications": [
+        {
+          "name": "color",
+          "instructions": "Select the car color",
+          "type": "radio",
+          "options": [
+            {
+              "value": "red",
+              "label": "Red"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "green",
+              "label": "Green"
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "Tree",
