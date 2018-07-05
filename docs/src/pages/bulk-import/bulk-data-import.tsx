@@ -31,7 +31,7 @@ export function BulkDataImport({state}: {state: AppState}) {
           <li>UserId</li>
           <li>OrganizationId</li>
           <li>DatasetId</li>
-          <li>Url to CSV file</li>
+          <li>Url to CSV file (needs to be publicly accessible URL)</li>
         </ul>
         With the query below you can retrieve a userId, organizationId, and datasetId.
       </Paragraph>
