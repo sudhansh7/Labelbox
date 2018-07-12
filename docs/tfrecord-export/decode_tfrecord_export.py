@@ -7,7 +7,7 @@ import tensorflow as tf
 
 
 def fail_for_missing_file():
-    print('You must provide a the path to export.json file.')
+    print('You must provide the path to export.json file.')
     sys.exit(1)
 
 
