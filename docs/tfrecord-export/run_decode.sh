@@ -17,9 +17,15 @@ IMAGE_NAME="labelbox/tfrecord_export"
 
 [ ! -z $(docker images -q ${IMAGE_NAME}:latest) ] || docker pull ${IMAGE_NAME}
 
+EXPORT_FILENAME=$(basename $1)
+EXPORT_PATH=$(cd "$(dirname "$1")"; pwd)/$(basename "$1")
+
 docker run \
  --mount src="$(pwd)",target=/root,type=bind \
+ --mount src="$EXPORT_PATH",target="/root/$EXPORT_FILENAME",type=bind \
  --rm \
  -it \
  ${IMAGE_NAME} \
- python3 decode_tfrecord_export.py $1
+ python3 decode_tfrecord_export.py $EXPORT_FILENAME
+
+
