@@ -1,6 +1,7 @@
 import sys
 from json import load
-from glob import glob
+from math import floor
+import os
 from PIL import Image
 import requests
 import tensorflow as tf
@@ -27,6 +28,8 @@ if __name__ == '__main__':
     legend = export_json['legend']
     tfrecord_paths = export_json['tfrecord_paths']
 
+    if not os.path.isdir('./output'):
+        os.mkdir('./output')
     with tf.name_scope('input'), tf.Session() as sess:
         dataset_iterator = (tf.data.TFRecordDataset([tfrecord_paths])
                 .map(lambda example: tf.parse_single_example(
@@ -60,15 +63,17 @@ if __name__ == '__main__':
                 ID = ID.decode('utf-8')
                 colorspace = colorspace.decode('utf-8')
 
-                print('Now showing image ID {}'.format(ID))
-                Image.fromarray(image, mode=colorspace).show()
+                image_output_path = 'output/{}.jpg'.format(ID)
+                print('Writing image for label ID {} to {}'.format(ID, image_output_path))
+                Image.fromarray(image, mode=colorspace).save(image_output_path)
                 input("Press ENTER to continue...")
 
-                print('Now label for image ID {}'.format(ID))
+                label_output_path = 'output/{}-label.jpg'.format(ID)
+                print('Writing label for label ID {} to {}'.format(ID, label_output_path))
                 # Tensorflow returns a 3D array from `decode_image`, but `Image.fromarray(... mode='L')` needs 2D
-                # The 50* scales label intensities to be more visible
                 label = label[:,:,0]
-                Image.fromarray(50*label, mode='L').show()
+                # Multiplication to scale labels for increased visibility
+                Image.fromarray(floor(255 / len(legend.keys())) * label, mode='L').save(label_output_path)
                 input("Press ENTER to continue...")
 
         except tf.errors.OutOfRangeError:
