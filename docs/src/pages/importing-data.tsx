@@ -116,6 +116,20 @@ export function ImportingData({state}: {state: AppState}) {
         `}
       />
 
+    <Paragraph>Lastly, after you've imported you'll need to rebuild the queue.</Paragraph>
+    <Query apiKey={apiKey} query={stripIndent`
+        mutation {
+          updateProject(
+            where: { id: "<PROJECT_ID>" }
+            data: { queueIsBuilding: true },
+          ) {
+            id
+          }
+        }
+      `}
+    />
+
     </Content>
+
   );
 }
