@@ -1,6 +1,5 @@
 import sys
 from json import load
-from glob import glob
 from math import floor
 import os
 from PIL import Image
