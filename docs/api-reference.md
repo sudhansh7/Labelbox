@@ -40,7 +40,7 @@ const subscription = Labelbox.currentAsset().subscribe((asset) => {
 subscription.unsubscribe();
 ```
 
-Note: This .subscribe will get called anytime any field on the asset changes. Its important to handle multiple emissions of the same asset.
+Note: This .subscribe will get called anytime any field on the asset changes. Its important your code can handle multiple emissions of the same asset. For example `asset.data` might emit and then a second later the same `asset.data` might emit but `asset.previous` has changed.
 
 ## Labelbox.enablePreloading
 
