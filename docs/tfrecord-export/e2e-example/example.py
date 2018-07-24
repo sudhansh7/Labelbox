@@ -1,8 +1,10 @@
 import sys
 from json import load
 import numpy as np
-import requests
 import tensorflow as tf
+from tensorflow.contrib.layers.python.layers import layers as layers_lib
+from tensorflow.contrib.layers.python.layers import utils
+from tensorflow.contrib import layers
 import tensorflow.contrib.slim as slim
 import tensorflow.contrib.slim.nets as nets
 
@@ -95,8 +97,9 @@ if __name__ == '__main__':
     vgg = nets.vgg
 
     training_dataset = (tf.data.TFRecordDataset([tfrecord_paths])
+	    .repeat()
             .map(_parse_tfrecord)
-            .batch(16))
+            .batch(1))
     iterator = training_dataset.make_one_shot_iterator()
 
     images_orig, labels_orig = iterator.get_next()
@@ -111,13 +114,33 @@ if __name__ == '__main__':
             size=[image_dim, image_dim],
             method=tf.image.ResizeMethod.BILINEAR)
 
-    upsample_factor = 56
+    upsample_factor = 1
     number_of_classes = len(legend) + 1
     upsample_filter = tf.constant(bilinear_upsample_weights(upsample_factor, number_of_classes))
 
     # Define the network
     with slim.arg_scope(vgg.vgg_arg_scope()):
-        logits, end_points= vgg.vgg_16(images, num_classes=3, spatial_squeeze=False)
+        # logits, end_points= vgg.vgg_16(images, num_classes=3, spatial_squeeze=False)
+          with tf.variable_scope('vgg_16', 'vgg_16', [images]) as sc:
+            end_points_collection = sc.original_name_scope + '_end_points'
+            # Collect outputs for conv2d, fully_connected and max_pool2d.
+            with slim.arg_scope(
+                [layers.conv2d, layers_lib.fully_connected, layers_lib.max_pool2d],
+                outputs_collections=end_points_collection):
+                dropout_keep_prob = 0.5
+                is_training = True
+
+                net = layers_lib.repeat(images, 2, layers.conv2d, 64, [3, 3], scope='conv1')
+                net = layers.conv2d(
+                    net,
+                    number_of_classes, [1, 1],
+                    activation_fn=None,
+                    normalizer_fn=None,
+                    scope='fc8')
+                # Convert end_points_collection into a end_point dict.
+                end_points = utils.convert_collection_to_dict(end_points_collection)
+
+    logits = net
 
     print(logits.get_shape())
     print(labels.shape)
@@ -179,11 +202,12 @@ if __name__ == '__main__':
         sess.run(weight_init)
         sess.run(adam_init)
 
-        for i in range(10):
+        for i in range(1000):
             loss, summary_string = sess.run([cross_entropy_sum, merged_summary_op])
             sess.run(train_step)
             pred_np, probabilities_np = sess.run([pred, probabilities])
             summary_string_writer.add_summary(summary_string, i)
 
             print("Current Loss: " + str(loss))
+
 
