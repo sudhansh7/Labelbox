@@ -27,6 +27,7 @@ const subscription = Labelbox.currentAsset().subscribe((asset) => {
 
   console.log(asset.id); // The labelbox id for this asset
   console.log(asset.data); // This is whatever data you imported into labelbox (E.X. your image url)
+  console.log(asset.dataRowId); // Labelbox's ID for this asset
   console.log(asset.label); // Undefined if the asset hasn't been labeled or whatever label you've submitted
   console.log(asset.previous); // The previous assetId in the queue (see setLabelAsCurrentAsset)
   console.log(asset.next); // The next assetId in the queu (see setLabelAsCurrentAsset)
