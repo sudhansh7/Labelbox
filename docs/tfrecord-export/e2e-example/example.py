@@ -133,7 +133,7 @@ if __name__ == '__main__':
         print(logits.get_shape())
         tf.summary.image('probabilities', tf.expand_dims(tf.nn.softmax(logits)[:,:,:,1], axis=3))
         tf.summary.image(
-            'prediction', 
+            'prediction',
             tf.expand_dims(math.floor(255 / number_of_classes) * tf.cast(pred, tf.uint8), axis=3))
 
     with tf.variable_scope("optimizer"):
