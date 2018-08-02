@@ -1,56 +1,21 @@
 import sys
 from json import load
-import numpy as np
+import math
 import tensorflow as tf
-from tensorflow.contrib.layers.python.layers import layers as layers_lib
-from tensorflow.contrib.layers.python.layers import utils
 from tensorflow.contrib import layers
+from tensorflow.contrib.data import map_and_batch
+from tensorflow.contrib.data import shuffle_and_repeat
+from tensorflow.contrib.layers.python.layers import layers as layers_lib
+from tensorflow.contrib.layers.python.layers import regularizers
+from tensorflow.contrib.layers.python.layers import utils
 import tensorflow.contrib.slim as slim
-import tensorflow.contrib.slim.nets as nets
+from tensorflow.python.ops import init_ops
+from tensorflow.python.ops import nn_ops
+
+
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-def get_kernel_size(factor):
-    """
-    Find the kernel size given the desired factor of upsampling.
-    """
-    return 2 * factor - factor % 2
-
-
-def upsample_filt(size):
-    """
-    Make a 2D bilinear kernel suitable for upsampling of the given (h, w) size.
-    """
-    factor = (size + 1) // 2
-    if size % 2 == 1:
-        center = factor - 1
-    else:
-        center = factor - 0.5
-    og = np.ogrid[:size, :size]
-    return (1 - abs(og[0] - center) / factor) * \
-           (1 - abs(og[1] - center) / factor)
-
-
-def bilinear_upsample_weights(factor, number_of_classes):
-    """
-    Create weights matrix for transposed convolution with bilinear filter
-    initialization.
-    """
-
-    filter_size = get_kernel_size(factor)
-
-    weights = np.zeros((filter_size,
-                        filter_size,
-                        number_of_classes,
-                        number_of_classes), dtype=np.float32)
-
-    upsample_kernel = upsample_filt(filter_size)
-
-    for i in range(number_of_classes):
-
-        weights[:, :, i, i] = upsample_kernel
-
-    return weights
 
 def fail_for_missing_file():
     print('You must provide the path to export.json file.')
@@ -79,6 +44,19 @@ def _parse_tfrecord(serialized_example):
     label_float = tf.to_float(label)
     return (image_float, label_float)
 
+def _resize(image_dim):
+    def _inner(images_orig, labels_orig):
+        images = tf.image.resize_images(
+                images=images_orig,
+                size=[image_dim, image_dim],
+                method=tf.image.ResizeMethod.BILINEAR)
+        labels = tf.image.resize_images(
+                images=labels_orig,
+                size=[image_dim, image_dim],
+                method=tf.image.ResizeMethod.BILINEAR)
+        return (images, labels)
+    return _inner
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         fail_for_missing_file()
@@ -94,93 +72,71 @@ if __name__ == '__main__':
     legend = export_json['legend']
     tfrecord_paths = export_json['tfrecord_paths']
 
-    vgg = nets.vgg
+    image_dim = 512
+    test_set_size = math.ceil(0.20 * len(tfrecord_paths))
 
-    training_dataset = (tf.data.TFRecordDataset([tfrecord_paths])
-	    .repeat()
+    training_dataset = (tf.data.TFRecordDataset(tfrecord_paths)
+            .skip(test_set_size)
             .map(_parse_tfrecord)
-            .batch(1))
-    iterator = training_dataset.make_one_shot_iterator()
+            .apply(shuffle_and_repeat(50))
+            .apply(map_and_batch(_resize(image_dim), 8)))
+    test_dataset = (tf.data.TFRecordDataset(tfrecord_paths)
+            .take(test_set_size)
+            .map(_parse_tfrecord)
+            .apply(map_and_batch(_resize(image_dim), test_set_size)))
 
-    images_orig, labels_orig = iterator.get_next()
-    print(iterator.output_shapes)
-    image_dim = vgg.vgg_16.default_image_size * 2
-    images = tf.image.resize_images(
-            images=images_orig,
-            size=[image_dim, image_dim],
-            method=tf.image.ResizeMethod.BILINEAR)
-    labels = tf.image.resize_images(
-            images=labels_orig,
-            size=[image_dim, image_dim],
-            method=tf.image.ResizeMethod.BILINEAR)
+    training_iterator = training_dataset.make_one_shot_iterator()
+    test_iterator = test_dataset.make_initializable_iterator()
 
-    upsample_factor = 1
-    number_of_classes = len(legend) + 1
-    upsample_filter = tf.constant(bilinear_upsample_weights(upsample_factor, number_of_classes))
+    handle = tf.placeholder(tf.string, shape=[])
+    iterator = tf.data.Iterator.from_string_handle(
+        handle, training_dataset.output_types, training_dataset.output_shapes)
+    images, labels = iterator.get_next()
+
+    number_of_classes = len(legend) + 1 # +1 to include background class
+    weight_decay = 0.0005
+    dropout_keep_prob = tf.placeholder(tf.float32, shape=[])
 
     # Define the network
-    with slim.arg_scope(vgg.vgg_arg_scope()):
-        # logits, end_points= vgg.vgg_16(images, num_classes=3, spatial_squeeze=False)
-          with tf.variable_scope('vgg_16', 'vgg_16', [images]) as sc:
-            end_points_collection = sc.original_name_scope + '_end_points'
-            # Collect outputs for conv2d, fully_connected and max_pool2d.
-            with slim.arg_scope(
-                [layers.conv2d, layers_lib.fully_connected, layers_lib.max_pool2d],
-                outputs_collections=end_points_collection):
-                dropout_keep_prob = 0.5
-                is_training = True
+    with tf.variable_scope('fcn', values=[images]):
+        with slim.arg_scope(
+            [layers.conv2d],
+            activation_fn=nn_ops.relu,
+            weights_regularizer=regularizers.l2_regularizer(weight_decay),
+            biases_initializer=init_ops.zeros_initializer()):
 
-                net = layers_lib.repeat(images, 2, layers.conv2d, 64, [3, 3], scope='conv1')
-                net = layers.conv2d(
-                    net,
-                    number_of_classes, [1, 1],
-                    activation_fn=None,
-                    normalizer_fn=None,
-                    scope='fc8')
-                # Convert end_points_collection into a end_point dict.
-                end_points = utils.convert_collection_to_dict(end_points_collection)
+            net = layers_lib.repeat(images, 2, layers.conv2d, 64, [3, 3], scope='conv1')
+            logits = layers.conv2d( # replace fc layer with conv for FCN
+                net,
+                number_of_classes, [1, 1],
+                activation_fn=None,
+                normalizer_fn=None,
+                scope='fc2')
 
-    logits = net
+    # Flatten logit scores (predictions) for cross entropy computation
+    flat_logits = tf.reshape(tensor=logits, shape=(-1, number_of_classes))
 
-    print(logits.get_shape())
-    print(labels.shape)
-
-    downsampled_logits_shape = tf.shape(logits)
-
-    # Calculate the ouput size of the upsampled tensor
-    upsampled_logits_shape = tf.stack([
-                                    downsampled_logits_shape[0],
-                                    downsampled_logits_shape[1] * upsample_factor,
-                                    downsampled_logits_shape[2] * upsample_factor,
-                                    downsampled_logits_shape[3]
-                                    ])
-
-    # Perform the upsampling
-    upsampled_logits = tf.nn.conv2d_transpose(logits, upsample_filter,
-                                    output_shape=upsampled_logits_shape,
-                                    strides=[1, upsample_factor, upsample_factor, 1])
-
-    # Flatten the predictions so that we can compute cross-entropy
-    flat_logits = tf.reshape(tensor=upsampled_logits, shape=(-1, number_of_classes))
-
-    # One-hot encodes and flattens the labels
+    # One-hot encode and flatten label
     labels_one_hot = tf.concat(axis=3, values=[tf.equal(labels, i) for i in range(number_of_classes)])
     flat_labels = tf.reshape(tensor=labels_one_hot, shape=(-1, number_of_classes))
 
-    cross_entropies = tf.nn.softmax_cross_entropy_with_logits(logits=flat_logits,
-                                                            labels=flat_labels)
-
+    cross_entropies = tf.nn.softmax_cross_entropy_with_logits_v2(
+        logits=flat_logits, labels=tf.stop_gradient(flat_labels))
     cross_entropy_sum = tf.reduce_sum(cross_entropies)
+    tf.summary.scalar('cross_entropy_loss', cross_entropy_sum)
 
-    # Tensor to get the final prediction for each pixel -- pay
-    # attention that we don't need softmax in this case because
-    # we only need the final decision. If we also need the respective
-    # probabilities we will have to apply softmax.
-    pred = tf.argmax(upsampled_logits, dimension=3)
+    # Tensor to get the final prediction for each pixel
+    pred = tf.argmax(logits, dimension=3)
 
-    probabilities = tf.nn.softmax(upsampled_logits)
+    with tf.name_scope('image_summaries'):
+        tf.summary.image('inputs', images)
+        print(logits.get_shape())
+        tf.summary.image('probabilities', tf.expand_dims(tf.nn.softmax(logits)[:,:,:,1], axis=3))
+        tf.summary.image(
+            'prediction',
+            tf.expand_dims(math.floor(255 / number_of_classes) * tf.cast(pred, tf.uint8), axis=3))
 
-    with tf.variable_scope("adam_vars"):
+    with tf.variable_scope("optimizer"):
         optimizer = tf.train.AdamOptimizer(learning_rate=0.0001)
         gradients = optimizer.compute_gradients(loss=cross_entropy_sum)
 
@@ -188,26 +144,36 @@ if __name__ == '__main__':
             curr_var = grad_var_pair[1]
             curr_grad = grad_var_pair[0]
 
-            tf.summary.histogram(curr_var.name.replace(":", "_"), curr_grad)
+            tf.summary.histogram(curr_var.name.replace(':', '_') + '-grad', curr_grad)
+
         train_step = optimizer.apply_gradients(grads_and_vars=gradients)
 
-    tf.summary.scalar('cross_entropy_loss', cross_entropy_sum)
-    merged_summary_op = tf.summary.merge_all()
-    summary_string_writer = tf.summary.FileWriter('./logs')
+    image_summaries = tf.summary.merge_all(scope=r"image_summaries")
+    other_summaries = tf.summary.merge_all(scope=r"^((?!image_summaries).)*$")
 
-    weight_init = tf.variables_initializer(slim.get_variables_to_restore(exclude=['adam_vars']))
-    adam_init = tf.variables_initializer(slim.get_variables_to_restore(include=['adam_vars']))
+    train_writer = tf.summary.FileWriter('./logs/train')
+    test_writer = tf.summary.FileWriter('./logs/test')
 
     with tf.Session() as sess:
-        sess.run(weight_init)
-        sess.run(adam_init)
+        tf.global_variables_initializer().run()
+        training_handle = sess.run(training_iterator.string_handle())
+        test_handle = sess.run(test_iterator.string_handle())
+
+        print('Training started. Run `tensorboard --logdir ./logs` to visualize summaries')
 
         for i in range(1000):
-            loss, summary_string = sess.run([cross_entropy_sum, merged_summary_op])
-            sess.run(train_step)
-            pred_np, probabilities_np = sess.run([pred, probabilities])
-            summary_string_writer.add_summary(summary_string, i)
+            summary, _ = sess.run([other_summaries, train_step], feed_dict={
+                handle: training_handle,
+                dropout_keep_prob: 0.5})
+            train_writer.add_summary(summary, i)
 
-            print("Current Loss: " + str(loss))
+            if i % 1 == 0: # evaluate on test set every iteration to generate visualizations
+                sess.run(test_iterator.initializer)
+                # NOTE: train_step must not be called with `test_handle` feed!
+                summary, summary_images = sess.run([other_summaries, image_summaries], feed_dict={
+                    handle: test_handle,
+                    dropout_keep_prob: 1.0})
+                test_writer.add_summary(summary, i)
+                test_writer.add_summary(summary_images, i)
 
 
