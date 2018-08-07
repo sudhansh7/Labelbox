@@ -20,13 +20,13 @@ Put all the files you want to label into a single folder and start a server in t
 
 3. Create a CSV with your data
 
-Now if you visit `<your-ip-address>:8000` you should see a directory listing with all your files.
+Now if you visit `http://<your-ip-address>:8000` you should see a directory listing with all your files.
 
 `cd` into the directory with all your files and run the below command that will generate data.csv
 
 ```
 IP_ADDRESS=$(ifconfig en0 | grep inet | grep -v inet6 | awk '{print $2}')
-CSV=$(echo "Data URL"; for fileName in $(ls); do echo $IP_ADDRESS:8000/$fileName; done)
+CSV=$(echo "Data URL"; for fileName in $(ls); do echo http://$IP_ADDRESS:8000/$fileName; done)
 echo "$CSV" > data.csv
 ```
 
