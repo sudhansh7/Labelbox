@@ -3,7 +3,7 @@ from json import load
 from math import floor
 import os
 from PIL import Image
-import requests
+# import requests
 import tensorflow as tf
 
 
@@ -31,8 +31,7 @@ if __name__ == '__main__':
     if not os.path.isdir('./output'):
         os.mkdir('./output')
     with tf.name_scope('input'), tf.Session() as sess:
-        dataset_iterator = (tf.data.TFRecordDataset([tfrecord_paths])
-                .map(lambda example: tf.parse_single_example(
+        dataset_iterator = (tf.data.TFRecordDataset([tfrecord_paths]).map(lambda example: tf.parse_single_example(
                     example,
                     features={
                         'image/encoded': tf.FixedLenFeature([], tf.string),
@@ -71,7 +70,7 @@ if __name__ == '__main__':
                 label_output_path = 'output/{}-label.jpg'.format(ID)
                 print('Writing label for label ID {} to {}'.format(ID, label_output_path))
                 # Tensorflow returns a 3D array from `decode_image`, but `Image.fromarray(... mode='L')` needs 2D
-                label = label[:,:,0]
+                label = label[:, :, 0]
                 # Multiplication to scale labels for increased visibility
                 Image.fromarray(floor(255 / len(legend.keys())) * label, mode='L').save(label_output_path)
                 input("Press ENTER to continue...")
