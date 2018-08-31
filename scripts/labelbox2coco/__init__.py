@@ -7,6 +7,7 @@ from PIL import Image
 
 
 def from_json(labeled_data, coco_output):
+
     # read labelbox JSON output
     with open(labeled_data, 'r') as f:
         lines = f.readlines()
@@ -61,36 +62,50 @@ def from_json(labeled_data, coco_output):
         coco['images'].append(image)
 
         # convert WKT multipolygon to COCO Polygon format
-        for cat in data['Label'].keys():
+        for label in data['Label']:
+
+            category_name = list(label)[0]
+            print("Category : " + category_name)
 
             try:
                 # check if label category exists in 'categories' field
-                cat_id = [c['id'] for c in coco['categories']
-                          if c['supercategory'] == cat][0]
-            except IndexError as e:
-                cat_id = len(coco['categories']) + 1
+                category_id = [c['id'] for c in coco['categories'] if c['supercategory'] == category_name][0]
+            except IndexError:
+                category_id = len(coco['categories']) + 1
                 category = {
-                    'supercategory': cat,
-                    'id': len(coco['categories']) + 1,
-                    'name': cat
+                    'supercategory': category_name,
+                    'id': category_id,
+                    'name': category_name
                 }
                 coco['categories'].append(category)
 
-            multipolygon = wkt.loads(data['Label'][cat])
-            for m in multipolygon:
+            # print("Categories : ")
+            # print(coco['categories'])
+
+            category_values = label[category_name]
+            # print(category_values)
+            for category_value in category_values:
+
+                polygon = category_value['geometry']
+                # print(polygon)
+                polygon_obj = wkt.loads(polygon)
+                print(polygon_obj)
+
+                # for m in polygon_obj:
+
                 segmentation = []
-                for x, y in m.exterior.coords:
-                    segmentation.extend([x, height-y])
+                for x, y in polygon_obj.exterior.coords:
+                    segmentation.extend([x, height - y])
 
                 annotation = {
                     "id": len(coco['annotations']) + 1,
                     "image_id": data['ID'],
-                    "category_id": cat_id,
+                    "category_id": category_id,
                     "segmentation": [segmentation],
-                    "area": m.area,  # float
-                    "bbox": [m.bounds[0], m.bounds[1],
-                             m.bounds[2]-m.bounds[0],
-                             m.bounds[3]-m.bounds[1]],
+                    "area": polygon_obj.area,  # float
+                    "bbox": [polygon_obj.bounds[0], polygon_obj.bounds[1],
+                             polygon_obj.bounds[2] - polygon_obj.bounds[0],
+                             polygon_obj.bounds[3] - polygon_obj.bounds[1]],
                     "iscrowd": 0
                 }
 
