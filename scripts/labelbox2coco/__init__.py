@@ -10,8 +10,9 @@ def from_json(labeled_data, coco_output):
 
     # read labelbox JSON output
     with open(labeled_data, 'r') as f:
-        lines = f.readlines()
-        label_data = json.loads(lines[0])
+        # lines = f.readlines()
+        # label_data = json.loads(lines[0])
+        label_data = json.loads(f.read())
 
     # setup COCO dataset container and info
     coco = {
@@ -32,6 +33,7 @@ def from_json(labeled_data, coco_output):
     }
 
     for data in label_data:
+
         # Download and get image name
         try:
             response = requests.get(data['Labeled Data'], stream=True)
@@ -62,9 +64,9 @@ def from_json(labeled_data, coco_output):
         coco['images'].append(image)
 
         # convert WKT multipolygon to COCO Polygon format
-        for label in data['Label']:
+        for category_name, category_instances in data['Label'].items():
 
-            category_name = list(label)[0]
+            print()
             print("Category : " + category_name)
 
             try:
@@ -79,14 +81,15 @@ def from_json(labeled_data, coco_output):
                 }
                 coco['categories'].append(category)
 
-            # print("Categories : ")
+            # print("COCO Categories : ")
             # print(coco['categories'])
 
-            category_values = label[category_name]
-            # print(category_values)
-            for category_value in category_values:
+            for category_instance in category_instances:
 
-                polygon = category_value['geometry']
+                print("Category Instance : ")
+                print(category_instance)
+
+                polygon = category_instance['geometry']
                 # print(polygon)
                 polygon_obj = wkt.loads(polygon)
                 print(polygon_obj)
