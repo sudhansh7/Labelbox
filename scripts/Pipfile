@@ -9,6 +9,7 @@ shapely = "*"
 requests = "*"
 pillow = "*"
 "jinja2" = "*"
+lbexporters = {editable = true, path = "."}
 
 [dev-packages]
 

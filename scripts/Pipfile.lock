@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8092e55207c4f12f268cfcb5e188f8e6bcf67a243b2f7698240ac6b2670e2c5f"
+            "sha256": "5012e286b6eae995cdd2613f1d294f6ac77585582e77ff81e1e3bef587c32371"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -59,6 +59,10 @@
             ],
             "index": "pypi",
             "version": "==2.10"
+        },
+        "lbexporters": {
+            "editable": true,
+            "path": "."
         },
         "markupsafe": {
             "hashes": [

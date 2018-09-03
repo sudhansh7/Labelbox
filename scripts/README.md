@@ -1,20 +1,9 @@
 # Labelbox Scripts
 
-## Setup
-
-Dependencies are managed with `pipenv`:
-
-```sh
-pipenv install
-```
-
-To make sure everything is working:
-
-```sh
-pipenv run pytest
-```
-
 ## Usage 
+
+### Setup
+
 
 ### Labelbox JSON to COCO
 
@@ -58,4 +47,26 @@ images_output_dir = './Images'
 #  format chosen on Labelbox; 'WKT' or 'XY'.
 lb2pa.from_json(labeled_data=labeled_data, ann_output_dir=ann_output_dir,
                 images_output_dir=images_output_dir, label_format='WKT')
+```
+
+## Development
+
+`pipenv` is used to manage virtualenvs and dependencies.
+
+To get set up:
+
+```sh
+pipenv install
+```
+
+To run tests:
+
+```sh
+pipenv run pytest
+```
+
+To lock dependencies defined in `setup.py` (required after introducing new dependencies):
+
+```sh
+pipenv install -e .
 ```
