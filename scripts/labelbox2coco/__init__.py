@@ -7,11 +7,8 @@ from PIL import Image
 
 
 def from_json(labeled_data, coco_output):
-
     # read labelbox JSON output
     with open(labeled_data, 'r') as f:
-        # lines = f.readlines()
-        # label_data = json.loads(lines[0])
         label_data = json.loads(f.read())
 
     # setup COCO dataset container and info
@@ -33,7 +30,6 @@ def from_json(labeled_data, coco_output):
     }
 
     for data in label_data:
-
         # Download and get image name
         try:
             response = requests.get(data['Labeled Data'], stream=True)
@@ -65,10 +61,6 @@ def from_json(labeled_data, coco_output):
 
         # convert WKT multipolygon to COCO Polygon format
         for category_name, category_instances in data['Label'].items():
-
-            print()
-            print("Category : " + category_name)
-
             try:
                 # check if label category exists in 'categories' field
                 category_id = [c['id'] for c in coco['categories'] if c['supercategory'] == category_name][0]
@@ -81,17 +73,11 @@ def from_json(labeled_data, coco_output):
                 }
                 coco['categories'].append(category)
 
-            # print("COCO Categories : ")
-            # print(coco['categories'])
-
             for category_instance in category_instances:
-
-                print("Category Instance : ")
-                print(category_instance)
-
+                # TODO: handle v2
                 polygon = category_instance['geometry']
-                # print(polygon)
                 polygon_obj = wkt.loads(polygon)
+
                 print(polygon_obj)
 
                 # for m in polygon_obj:

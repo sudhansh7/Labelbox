@@ -3,7 +3,6 @@ node_modules
 *.py[co]
 *.swp
 venv/
-scripts/test-results/
 scripts/Images/
 scripts/Annotations/
 *.pytest_cache/
