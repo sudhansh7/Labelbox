@@ -80,5 +80,6 @@ pipenv lock -r --dev
 
 ```sh
 pipenv run python setup.py sdist bdist_wheel
+twine upload --repository-url 'https://test.pypi.org/legacy/' 'dist/*' # stage in test pypi
 twine upload 'dist/*'
 ```
