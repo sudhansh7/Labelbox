@@ -61,6 +61,7 @@ def from_json(labeled_data, annotations_output_dir, images_output_dir,
             continue
 
 def write_label(label_id, image_url, labels, label_format, images_output_dir, annotations_output_dir):
+    "Writes a Pascal VOC formatted image and label pair to disk."
     # Download image and save it
     response = requests.get(image_url, stream=True)
     response.raw.decode_content = True
@@ -121,8 +122,7 @@ def _add_pascal_object_from_xy(xml_writer, img_height, polygons, label):
     for polygon in polygons:
         if 'geometry' in polygon: # V3
             polygon = polygon['geometry']
-
-        assert type(polygon) is list # V2
+        assert type(polygon) is list # V2 and V3
 
         xy_coords = []
         for x, y in [(p['x'], p['y']) for p in polygon]:
