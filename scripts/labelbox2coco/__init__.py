@@ -59,8 +59,8 @@ def from_json(labeled_data, coco_output):
 
         coco['images'].append(image)
 
-        # convert WKT multipolygon to COCO Polygon format
-        for category_name, category_instances in data['Label'].items():
+        # convert label to COCO Polygon format
+        for category_name, wkt_data in data['Label'].items():
             try:
                 # check if label category exists in 'categories' field
                 category_id = [c['id'] for c in coco['categories'] if c['supercategory'] == category_name][0]
@@ -73,17 +73,14 @@ def from_json(labeled_data, coco_output):
                 }
                 coco['categories'].append(category)
 
-            for category_instance in category_instances:
-                # TODO: handle v2
-                polygon = category_instance['geometry']
-                polygon_obj = wkt.loads(polygon)
+            if type(wkt_data) is list:
+                polygons = map(lambda x: wkt.loads(x['geometry']), wkt_data)
+            else:
+                polygons = wkt.loads(wkt_data)
 
-                print(polygon_obj)
-
-                # for m in polygon_obj:
-
+            for polygon in polygons:
                 segmentation = []
-                for x, y in polygon_obj.exterior.coords:
+                for x, y in polygon.exterior.coords:
                     segmentation.extend([x, height - y])
 
                 annotation = {
@@ -91,10 +88,10 @@ def from_json(labeled_data, coco_output):
                     "image_id": data['ID'],
                     "category_id": category_id,
                     "segmentation": [segmentation],
-                    "area": polygon_obj.area,  # float
-                    "bbox": [polygon_obj.bounds[0], polygon_obj.bounds[1],
-                             polygon_obj.bounds[2] - polygon_obj.bounds[0],
-                             polygon_obj.bounds[3] - polygon_obj.bounds[1]],
+                    "area": polygon.area,  # float
+                    "bbox": [polygon.bounds[0], polygon.bounds[1],
+                             polygon.bounds[2] - polygon.bounds[0],
+                             polygon.bounds[3] - polygon.bounds[1]],
                     "iscrowd": 0
                 }
 
