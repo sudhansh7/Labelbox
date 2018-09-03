@@ -1,11 +1,15 @@
 # Labelbox Scripts
+
 ### Setup
+
 1. Create a Python3 virtual environment here
-2. Activate virtual environment
-3. Install dependencies with `requirements.txt`
+1. Activate virtual environment
+1. Install dependencies with `requirements.txt`
 
 ### Labelbox JSON to COCO
+
 Convert a Labelbox JSON export file to COCO format.
+
 ```python
 # import labelbox2coco library
 import labelbox2coco as lb2co
@@ -21,7 +25,9 @@ lb2co.from_json(labeled_data=labeled_data, coco_output=coco_output)
 ```
 
 ### Labelbox JSON to Pascal VOC
+
 Convert a Labelbox JSON export file to Pascal VOC format.
+
 ```python
 # import labelbox2pascal library
 import labelbox2pascal as lb2pa

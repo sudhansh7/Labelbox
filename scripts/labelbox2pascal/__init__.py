@@ -4,7 +4,8 @@ import logging
 from shapely import wkt
 import requests
 from PIL import Image
-from pascal_voc_writer import Writer as PascalWriter
+
+from .pascal_voc_writer import Writer as PascalWriter
 
 
 class UnknownFormatError(Exception):
