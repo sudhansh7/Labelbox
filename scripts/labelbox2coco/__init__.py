@@ -89,9 +89,9 @@ def from_json(labeled_data, coco_output, label_format='WKT'):
             elif label_format == 'XY':
                 polygons = []
                 for xy_list in label_data:
-                    assert type(xy_list) is list # V2 and V3
                     if 'geometry' in xy_list: # V3
                         xy_list = xy_list['geometry']
+                    assert type(xy_list) is list # V2 and V3
 
                     polygons.append(Polygon(map(lambda p: (p['x'], p['y']), xy_list)))
             else:
