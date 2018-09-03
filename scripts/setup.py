@@ -21,11 +21,12 @@ dev_requirements = [
 
 setup(
     name='LBExporters',
-    version='0.1',
+    version='0.1.1',
     packages=['labelbox2coco', 'labelbox2pascal'],
     licence='Apache 2.0',
     description='Converters from Labelbox exports to other common foramts',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     install_requires=requirements,
     extras_require={
         'dev': dev_requirements,

@@ -7,7 +7,7 @@
 Tested against Python 3.6.4. To install to `site-packages` for use:
 
 ```sh
-python setup.py install
+pip install LBExporters
 ```
 
 ### Labelbox JSON to COCO
@@ -74,4 +74,11 @@ To generate a `requirements.txt` for backwards compatibility:
 
 ```sh
 pipenv lock -r --dev
+```
+
+### Releasing
+
+```sh
+pipenv run python setup.py sdist bdist_wheel
+twine upload 'dist/*'
 ```
