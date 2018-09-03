@@ -1,10 +1,20 @@
 # Labelbox Scripts
 
-### Setup
+## Setup
 
-1. Create a Python3 virtual environment here
-1. Activate virtual environment
-1. Install dependencies with `requirements.txt`
+Dependencies are managed with `pipenv`:
+
+```sh
+pipenv install
+```
+
+To make sure everything is working:
+
+```sh
+pipenv run pytest
+```
+
+## Usage 
 
 ### Labelbox JSON to COCO
 
@@ -48,9 +58,4 @@ images_output_dir = './Images'
 #  format chosen on Labelbox; 'WKT' or 'XY'.
 lb2pa.from_json(labeled_data=labeled_data, ann_output_dir=ann_output_dir,
                 images_output_dir=images_output_dir, label_format='WKT')
-```
-
-### Testing
-```sh
-pytest
 ```
