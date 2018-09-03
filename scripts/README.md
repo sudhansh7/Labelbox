@@ -4,6 +4,11 @@
 
 ### Setup
 
+Tested against Python 3.6.4. To install to `site-packages` for use:
+
+```sh
+python setup.py install
+```
 
 ### Labelbox JSON to COCO
 
@@ -56,7 +61,7 @@ lb2pa.from_json(labeled_data=labeled_data, ann_output_dir=ann_output_dir,
 To get set up:
 
 ```sh
-pipenv install
+pipenv install --dev -e '.[dev]'
 ```
 
 To run tests:
@@ -65,8 +70,8 @@ To run tests:
 pipenv run pytest
 ```
 
-To lock dependencies defined in `setup.py` (required after introducing new dependencies):
+To generate a `requirements.txt` for backwards compatibility:
 
 ```sh
-pipenv install -e .
+pipenv lock -r --dev
 ```
