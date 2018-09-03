@@ -4,6 +4,11 @@
 
 ### Setup
 
+Tested against Python 3.6.4. To install to `site-packages` for use:
+
+```sh
+python setup.py install
+```
 
 ### Labelbox JSON to COCO
 
