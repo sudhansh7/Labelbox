@@ -30,3 +30,7 @@ def test_v3(output_file):
 def test_v3_rectancle(output_file):
     labeled_data = os.path.abspath('test-fixtures/v3_wkt_rectangle.json')
     lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)
+
+def test_empty_skipped(output_file):
+    labeled_data = os.path.abspath('test-fixtures/empty_skipped.json')
+    lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)

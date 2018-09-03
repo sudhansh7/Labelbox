@@ -75,15 +75,15 @@ def from_json(labeled_data, ann_output_dir, images_output_dir,
             continue
 
         # convert label to Pascal VOC format
-        for cat in labels.keys():
+        for category_name, wkt_data in labels.items():
             if label_format == 'WKT':
                 xml_writer = _add_pascal_object_from_wkt(
-                    xml_writer, img_height=height, wkt_data=data['Label'][cat],
-                    label=cat)
+                    xml_writer, img_height=height, wkt_data=wkt_data,
+                    label=category_name)
             elif label_format == 'XY':
                 xml_writer = _add_pascal_object_from_xy(
-                    xml_writer, img_height=height, polygons=data['Label'][cat],
-                    label=cat)
+                    xml_writer, img_height=height, polygons=wkt_data,
+                    label=category_name)
             else:
                 e = UnknownFormatError(label_format=label_format)
                 print(e.message)

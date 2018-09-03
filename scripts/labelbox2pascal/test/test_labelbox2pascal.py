@@ -41,6 +41,9 @@ def test_xy_1(output_dir):
 def test_v3_xy(output_dir):
     lb2pa.from_json('test-fixtures/v3_xy.json', output_dir, output_dir, label_format='XY')
 
+def test_empty_skipped(output_dir):
+    lb2pa.from_json('test-fixtures/empty_skipped.json', output_dir, output_dir, label_format='WKT')
+
 def test_bad_label_format(output_dir):
     with pytest.raises(lb2pa.UnknownFormatError):
         lb2pa.from_json('test-fixtures/labelbox_xy_1.json', output_dir, output_dir, label_format='INVALID')
