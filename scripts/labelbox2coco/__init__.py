@@ -2,11 +2,14 @@ import json
 import datetime as dt
 import logging
 from shapely import wkt
+from shapely.geometry import Polygon
 import requests
 from PIL import Image
 
+from labelbox2pascal import UnknownFormatError
 
-def from_json(labeled_data, coco_output):
+
+def from_json(labeled_data, coco_output, label_format='WKT'):
     # read labelbox JSON output
     with open(labeled_data, 'r') as f:
         label_data = json.loads(f.read())
@@ -65,7 +68,7 @@ def from_json(labeled_data, coco_output):
             continue
 
         # convert label to COCO Polygon format
-        for category_name, wkt_data in labels.items():
+        for category_name, label_data in labels.items():
             try:
                 # check if label category exists in 'categories' field
                 category_id = [c['id'] for c in coco['categories'] if c['supercategory'] == category_name][0]
@@ -78,10 +81,23 @@ def from_json(labeled_data, coco_output):
                 }
                 coco['categories'].append(category)
 
-            if type(wkt_data) is list:
-                polygons = map(lambda x: wkt.loads(x['geometry']), wkt_data)
+            if label_format == 'WKT':
+                if type(label_data) is list: # V3
+                    polygons = map(lambda x: wkt.loads(x['geometry']), label_data)
+                else: # V2
+                    polygons = wkt.loads(label_data)
+            elif label_format == 'XY':
+                polygons = []
+                for xy_list in label_data:
+                    assert type(xy_list) is list # V2 and V3
+                    if 'geometry' in xy_list: # V3
+                        xy_list = xy_list['geometry']
+
+                    polygons.append(Polygon(map(lambda p: (p['x'], p['y']), xy_list)))
             else:
-                polygons = wkt.loads(wkt_data)
+                e = UnknownFormatError(label_format=label_format)
+                logging.exception(e.message)
+                raise e
 
             for polygon in polygons:
                 segmentation = []

@@ -91,7 +91,7 @@ def write_label(label_id, image_url, labels, label_format, images_output_dir, an
                 label=category_name)
         else:
             e = UnknownFormatError(label_format=label_format)
-            print(e.message)
+            logging.exception(e.message)
             raise e
 
     # write Pascal VOC xml annotation for image
