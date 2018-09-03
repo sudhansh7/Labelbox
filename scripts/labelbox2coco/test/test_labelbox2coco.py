@@ -1,19 +1,32 @@
 import os
+import pytest
+import tempfile
+
 import labelbox2coco as lb2co
 
 
-def test_from_json():
-    if not os.path.isdir('test-results'):
-        os.makedirs('test-results')
+@pytest.fixture
+def output_file():
+    with tempfile.NamedTemporaryFile() as f:
+        yield f.name
 
-    # test 1
+
+def test_labelbox_1(output_file):
     labeled_data = os.path.abspath('test-fixtures/labelbox_1.json')
-    lb2co.from_json(
-        labeled_data=labeled_data,
-        coco_output=os.path.abspath('test-results/labelbox2coco_1.json'))
+    lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)
 
-    # test 2
+def test_labelbox_2(output_file):
     labeled_data = os.path.abspath('test-fixtures/labelbox_2.json')
-    lb2co.from_json(
-        labeled_data=labeled_data,
-        coco_output=os.path.abspath('test-results/labelbox2coco_2.json'))
+    lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)
+
+def test_v2(output_file):
+    labeled_data = os.path.abspath('test-fixtures/v2_wkt.json')
+    lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)
+
+def test_v3(output_file):
+    labeled_data = os.path.abspath('test-fixtures/v3_wkt.json')
+    lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)
+
+def test_v3_rectancle(output_file):
+    labeled_data = os.path.abspath('test-fixtures/v3_wkt_rectangle.json')
+    lb2co.from_json(labeled_data=labeled_data, coco_output=output_file)
