@@ -59,8 +59,13 @@ def from_json(labeled_data, coco_output):
 
         coco['images'].append(image)
 
+        # remove classification labels (Skip, etc...)
+        labels = data['Label']
+        if not callable(getattr(labels, 'keys', None)):
+            continue
+
         # convert label to COCO Polygon format
-        for category_name, wkt_data in data['Label'].items():
+        for category_name, wkt_data in labels.items():
             try:
                 # check if label category exists in 'categories' field
                 category_id = [c['id'] for c in coco['categories'] if c['supercategory'] == category_name][0]
