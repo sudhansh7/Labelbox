@@ -15,7 +15,8 @@ requirements = [
         ]
 
 dev_requirements = [
-        'pytest'
+        'pytest',
+        'xmltodict',
         ]
 
 setup(
@@ -27,6 +28,6 @@ setup(
     long_description=long_description,
     install_requires=requirements,
     extras_require={
-        'dev': dev_requirements
-    }
+        'dev': dev_requirements,
+    },
 )

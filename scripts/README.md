@@ -56,7 +56,7 @@ lb2pa.from_json(labeled_data=labeled_data, ann_output_dir=ann_output_dir,
 To get set up:
 
 ```sh
-pipenv install
+pipenv install --dev -e '.[dev]'
 ```
 
 To run tests:
@@ -65,8 +65,8 @@ To run tests:
 pipenv run pytest
 ```
 
-To lock dependencies defined in `setup.py` (required after introducing new dependencies):
+To generate a `requirements.txt` for backwards compatibility:
 
 ```sh
-pipenv install -e .
+pipenv lock -r --dev
 ```
