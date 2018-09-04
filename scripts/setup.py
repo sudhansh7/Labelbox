@@ -21,8 +21,8 @@ dev_requirements = [
 
 setup(
     name='LBExporters',
-    version='0.1.2dev',
-    packages=['labelbox2coco', 'labelbox2pascal'],
+    version='0.1.2.dev1',
+    packages=['labelbox2coco', 'labelbox2pascal', 'labelbox2pascal.pascal_voc_writer'],
     licence='Apache 2.0',
     description='Converters from Labelbox exports to other common foramts',
     long_description=long_description,
