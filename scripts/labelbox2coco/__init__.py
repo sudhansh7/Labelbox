@@ -102,7 +102,10 @@ def add_label(coco, label_id, image_url, labels, label_format):
             for xy_list in label_data:
                 if 'geometry' in xy_list: # V3
                     xy_list = xy_list['geometry']
-                assert type(xy_list) is list # V2 and V3
+                    assert type(xy_list) is list, 'Expected list in "geometry" key but got {}'.format(xy_list) # V2 and V3
+                else: # V2, or non-list
+                    if type(xy_list) is not list or len(xy_list) == 0 or 'x' not in xy_list[0]: # skip non xy lists
+                        continue
 
                 polygons.append(Polygon(map(lambda p: (p['x'], p['y']), xy_list)))
         else:
