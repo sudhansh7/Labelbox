@@ -5,8 +5,12 @@ pre-made labeling interfaces, or create your own pluggable interface to suit
 the needs of your data labeling task. Labelbox is lightweight for single users
 or small teams and scales up to support large teams and massive data sets.
 
+## Semantic Segmentation (brush & superpixels)
+![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/pixelwise.gif)
 
-![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/interfaces.jpg)
+## Bounding boxes, Polygons, lines, points, nested classifications
+![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/vectors.gif)
+
 
 Table of Contents
 =================
