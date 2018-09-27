@@ -1,24 +1,18 @@
 # Labelbox
-[Labelbox](https://www.labelbox.com/) is a data labeling tool that's purpose
-built for machine learning applications. Start labeling data in minutes using
-pre-made labeling interfaces, or create your own pluggable interface to suit
-the needs of your data labeling task. Labelbox is lightweight for single users
-or small teams and scales up to support large teams and massive data sets.
+[Labelbox](https://www.labelbox.com/) is the fastest way to annotate data to build and ship artificial intelligence applications.
 
 ## Semantic Segmentation (brush & superpixels)
 ![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/pixelwise.gif)
 
-## Bounding boxes, Polygons, lines, points, nested classifications
+## Bounding boxes, polygons, lines, points, nested classifications
 ![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/vectors.gif)
 
 
 Table of Contents
 =================
 
-   * [Labelbox](#labelbox)
-   * [Benefits](#benefits)
    * [Full Documentation](#full-documentation)
-   * [Quickstart](#quickstart)
+   * [Getting Started](#getting-started)
    * [Creating Custom Labeling Interfaces](#creating-custom-labeling-interfaces)
       * [A Minimal Example](#a-minimal-example)
       * [Labelbox Pluggable Interface Architecture](#labelbox-pluggable-interface-architecture)
@@ -32,31 +26,9 @@ Table of Contents
    * [Request features](#request-features)
    * [Terms of use, privacy and content dispute policy](#terms-of-use-privacy-and-content-dispute-policy)
 
-
-## Benefits
-- **Simple image labeling**: Labelbox makes it quick and easy to do basic image
-  classification or segmentation tasks. To get started, simply upload your data
-  or a CSV file containing URLs pointing to your data hosted on a server,
-  select a labeling interface, (optional) invite collaborators and start labeling.
-
-- **Label just about anything**: Create a custom labeling interface to meet the
-  needs of your labeling task. Start by customizing one of the standard
-  Labelbox interfaces or build one from the ground up, just import
-  `labeling-api.js` in a script tag. See 
-  [Creating Custom Labeling Interfaces](#creating-custom-labeling-interfaces)
-  to get started.
-
-- **Manage Teams**: Invite your team members to help with labeling tasks. Labelbox
-  streamlines your labeling workflows, from micro labeling projects for quick
-  R&D to production grade projects requiring hundreds of collaborators.
-
-- **Measure Performance**: Maintain the highest quality standards for your data by
-  keeping track of labeling task performance of individuals and teams.
-
 ## [Full Documentation](https://support.labelbox.com/docs/getting-started)
 
-
-## Quickstart
+## Getting Started
 1. Sign up on [Labelbox](https://www.labelbox.com)
 2. Jump into the example project or create a new one
 3. Step through the setup, attach a data set and start labeling
