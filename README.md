@@ -5,7 +5,7 @@
 ![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/pixelwise.gif)
 
 ## Bounding boxes, polygons, lines, points, nested classifications
-![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/vectors.gif)
+![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/vectors-new.gif)
 
 
 Table of Contents
