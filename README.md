@@ -1,4 +1,4 @@
-![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/header.png)
+![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/interfaces.jpg)
 
 Table of Contents
 =================
@@ -26,9 +26,6 @@ built for machine learning applications. Start labeling data in minutes using
 pre-made labeling interfaces, or create your own pluggable interface to suit
 the needs of your data labeling task. Labelbox is lightweight for single users
 or small teams and scales up to support large teams and massive data sets.
-
-![](https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/gifs/Creating+segmentation+project.gif)
-
 
 ## Benefits
 - **Simple image labeling**: Labelbox makes it quick and easy to do basic image
