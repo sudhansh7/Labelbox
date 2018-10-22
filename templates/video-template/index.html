@@ -26,6 +26,7 @@
     height: 100vh;
     border-right: 1px solid #e8e8e8;
     width: 300px;
+    min-width: 300px;
   }
 
  .navbar{
@@ -93,9 +94,10 @@ input.materialize-textarea:focus:not([readonly]) {
   <div class="flex-grow flex-column content">
     <div style="display: flex; align-items: center; padding: 10px 0px">
 
-      <i class="material-icons" style="color: #9b9b9b; margin-left: -5px">keyboard_arrow_left</i>
+      <i id="back" class="material-icons" style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;" onclick="goBack()">keyboard_arrow_left</i>
 
-      <div style="color: #717171">dashbarm_footage.mp4</div>
+      <div style="color: #717171" id="externalid">Label this asset</div>
+      <i id="next" class="material-icons" style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;" onclick="goNext()">keyboard_arrow_right</i>
     </div>
     <div id="asset"></div>
   </div>
@@ -281,10 +283,26 @@ function submit(){
   }
 }
 
+function goBack(){
+  Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
+}
+
+function goNext(){
+  Labelbox.setLabelAsCurrentAsset(currentAsset.next);
+}
+
 function drawAsset(asset){
   const labelForm = `
-    <video class="asset" src="${asset.data}" controls></video>
+    <video class="asset" src="${asset.data}" controls autoplay></video>
   `;
+
+  const backButton = document.querySelector('#back')
+  backButton.style.opacity = asset.previous ? 1 : 0.2;
+  backButton.style.cursor = asset.previous ? 'pointer' : 'none';
+  const nextButton = document.querySelector('#next')
+  nextButton.style.opacity = asset.next ? 1 : 0.2;
+  nextButton.style.cursor = asset.next ? 'pointer' : 'none';
+
   document.querySelector('#asset').innerHTML = labelForm;
   if ((currentAsset && currentAsset.id) !== asset.id){
     if (asset.label){
