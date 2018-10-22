@@ -19,7 +19,7 @@
     width: 100%;
   }
   .content{
-    margin-left: 10px;
+    margin: 0px 20px;
   }
   .sidebar{
     display: flex;
@@ -48,6 +48,15 @@
 .btn:focus{
   background-color: pink;
 }
+.questions{
+  padding: 10px;
+}
+.label{
+  color: #717171;
+}
+.question{
+  margin-bottom: 15px;
+}
 </style>
 
 <div class="app flex-grow">
@@ -56,32 +65,58 @@
       <i class="material-icons" style="color: #9b9b9b;">home</i>
     </div>
 
-    <form action="#">
-      <p>
-        <label>
-          <input name="group1" type="radio" checked />
-          <span>Red</span>
-        </label>
-      </p>
-      <p>
-        <label>
-          <input name="group1" type="radio" />
-          <span>Yellow</span>
-        </label>
-      </p>
-      <p>
-        <label>
-          <input class="with-gap" name="group1" type="radio"  />
-          <span>Green</span>
-        </label>
-      </p>
-      <p>
-        <label>
-          <input name="group1" type="radio" disabled="disabled" />
-          <span>Brown</span>
-        </label>
-      </p>
-    </form>
+    <div class="questions">
+
+      <div class="question">
+        <div class="label">Unsafe driving?</div>
+        <form action="#">
+          <p>
+            <label>
+              <input name="group1" type="radio" checked />
+              <span>Red</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="group1" type="radio" />
+              <span>Yellow</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input class="with-gap" name="group1" type="radio"  />
+              <span>Green</span>
+            </label>
+          </p>
+        </form>
+      </div>
+
+      <div class="question">
+        <div class="label">Does the video contain accident?</div>
+        <form action="#">
+          <p>
+            <label>
+              <input name="group1" type="radio" checked />
+              <span>Red</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input name="group1" type="radio" />
+              <span>Yellow</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input class="with-gap" name="group1" type="radio"  />
+              <span>Green</span>
+            </label>
+          </p>
+        </form>
+      </div>
+
+
+    </div>
 
     <div class="flex-grow"></div>
     <div style="display: flex;">
@@ -91,8 +126,13 @@
   </div>
 
   <div class="flex-grow flex-column content">
-    <div>dashbarm_footage.mp4</div>
-    <video class="asset" src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
+    <div style="display: flex; align-items: center; padding: 10px 0px">
+
+      <i class="material-icons" style="color: #9b9b9b; margin-left: -5px">keyboard_arrow_left</i>
+
+      <div>dashbarm_footage.mp4</div>
+    </div>
+    <video class="asset" src="${dataToLabel}" autoplay controls></video>
   </div>
 </div>
 
