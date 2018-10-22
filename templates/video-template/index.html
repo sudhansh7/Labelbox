@@ -70,7 +70,7 @@
 
 }
 
-textarea.materialize-textarea:focus:not([readonly]) {
+input.materialize-textarea:focus:not([readonly]) {
   border-color: #03a9f4 !important;
 }
 </style>
@@ -171,12 +171,12 @@ function createOptionQuestion({type, name, options, instructions}){
   `;
 }
 
-function createTextInput({id, label}){
+function createTextInput({id, label}, answer){
   return `
     <div class="question" id="${id}" questiontype="text">
       <div class="input-field col s12">
         <div class="label">${label}</div>
-        <textarea class="materialize-textarea" data-length="120"></textarea>
+        <input class="materialize-textarea" data-length="120" value="${answer}"></input>
       </div>
     </div>
   `;
@@ -185,6 +185,7 @@ function createTextInput({id, label}){
 function createQuestion(question, answers){
   const optionalAnswer = (answers || {})[question.name];
   if (question.type === 'text'){
+    console.log('text', optionalAnswer);
     return createTextInput({
       id: question.name,
       label: question.instructions
@@ -225,7 +226,7 @@ function getLabel(){
     const type = node.getAttribute('questiontype');
     if (type === 'text'){
       return {
-        [key]: node.querySelector('textarea').value
+        [key]: node.querySelector('input').value
       }
     }
 
