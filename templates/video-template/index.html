@@ -68,6 +68,10 @@
   background-color: #03a9f4 !important;
 
 }
+
+textarea.materialize-textarea:focus:not([readonly]) {
+  border-color: #03a9f4 !important;
+}
 </style>
 
 <div class="app flex-grow">
@@ -107,30 +111,6 @@
         <form action="#">
           <p>
             <label>
-              <input class="with-gap" name="group1" type="radio" checked />
-              <span>Red</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" name="group1" type="radio" />
-              <span>Yellow</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" name="group1" type="radio" />
-              <span>Green</span>
-            </label>
-          </p>
-        </form>
-      </div>
-
-      <div class="question">
-        <div class="label">Does the video contain accident?</div>
-        <form action="#">
-          <p>
-            <label>
               <input type="checkbox" class="filled-in" checked="checked" />
               <span>Filled in</span>
             </label>
@@ -148,6 +128,13 @@
             </label>
           </p>
         </form>
+      </div>
+
+      <div class="question">
+        <div class="input-field col s12">
+          <div class="label">Start time</div>
+          <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
+        </div>
       </div>
 
     </div>
