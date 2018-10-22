@@ -97,7 +97,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
       <div style="color: #717171">dashbarm_footage.mp4</div>
     </div>
-    <video class="asset" src="${dataToLabel}" autoplay controls></video>
+    <div id="asset"></div>
   </div>
 </div>
 
@@ -256,31 +256,22 @@ function getLabel(){
 }
 
 function submit(){
-  console.log('Here is the label to submit', getLabel());
-  // Labelbox.setLabelForAsset()
-}
-
-function label(label){
-  Labelbox.setLabelForAsset(label).then(() => {
-    Labelbox.fetchNextAssetToLabel();
-  });
+  console.log('TODO: Here is the label to submit', getLabel());
+  // Labelbox.setLabelForAsset(getLabel())
+  // Labelbox.fetchNextAssetToLabel();
 }
 
 Labelbox.currentAsset().subscribe((asset) => {
   if (asset){
-    drawItem(asset.data);
+    drawAsset(asset);
   }
 })
-function drawItem(dataToLabel){
-  return;
+
+function drawAsset(asset){
   const labelForm = `
-    <video src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
-    <div style="display: flex;">
-      <button onclick="label('bad')">Bad Quality</button>
-      <button onclick="label('good')">Good Quality</button>
-    </div>
+    <video class="asset" src="${asset.data}" autoplay controls></video>
   `;
-  document.querySelector('#form').innerHTML = labelForm;
+  document.querySelector('#asset').innerHTML = labelForm;
 }
 
 </script>
