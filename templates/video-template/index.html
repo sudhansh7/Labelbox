@@ -107,7 +107,7 @@ input.materialize-textarea:focus:not([readonly]) {
       <div style="color: #717171" id="externalid">Label this asset</div>
       <i id="next" class="material-icons" style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;" onclick="goNext()">keyboard_arrow_right</i>
     </div>
-    <div id="asset"></div>
+    <div id="asset">loading...</div>
   </div>
 </div>
 
@@ -240,6 +240,7 @@ function goHome(){
 
 function skip(){
   Labelbox.skip();
+  Labelbox.fetchNextAssetToLabel();
 }
 
 function getLabel(){
@@ -254,11 +255,9 @@ function getLabel(){
 
     if (type === 'radio'){
       const inputs = Array.from(node.querySelectorAll('input'));
-      const value = inputs
-        .find((child) => child.checked)
-        .getAttribute('valuetosubmit');
+      const selected = inputs.find((child) => child.checked)
       return {
-        [key]: value
+        [key]: selected && selected.getAttribute('valuetosubmit')
       }
     }
 
@@ -287,6 +286,7 @@ function submit(){
 
   // Progress is this asset is new
   if (!currentAsset.label){
+    document.querySelector('#asset').innerHTML = 'loading...'
     Labelbox.fetchNextAssetToLabel();
   }
 }
@@ -300,13 +300,14 @@ function goNext(){
 }
 
 function getHtmlForAsset(data){
-  if (data.endsWith('.mp4')){
+  const info = data.toLowerCase();
+  if (info.indexOf('.mp4') !== -1){
     return `
       <video class="asset" src="${data}" controls autoplay></video>
     `
   }
 
-  if (data.endsWith('.png') || data.endsWith('.jpg') || data.endsWith('.jpeg')){
+  if (info.indexOf('.png') !== -1 || info.indexOf('.jpg') !== -1 || info.indexOf('.jpeg') !== -1){
     return `
       <img class="asset" src="${data}"></img>
     `
@@ -325,7 +326,9 @@ function drawAsset(asset){
   nextButton.style.opacity = asset.next ? 1 : 0.2;
   nextButton.style.cursor = asset.next ? 'pointer' : 'none';
 
-  document.querySelector('#asset').innerHTML = getHtmlForAsset(asset.data);
+  if ((currentAsset && currentAsset.data) !== asset.data){
+    document.querySelector('#asset').innerHTML = getHtmlForAsset(asset.data);
+  }
   if ((currentAsset && currentAsset.id) !== asset.id){
     if (asset.label){
       try{
