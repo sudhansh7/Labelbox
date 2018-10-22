@@ -146,7 +146,7 @@ const defaultConfiguration = {
   ]
 }
 
-function createOptionQuestion({name, options, instructions}, type){
+function createOptionQuestion({type, name, options, instructions}){
   const createOption = ({value, label}) => {
     return `
       <p value=${value}>
@@ -191,12 +191,8 @@ function createQuestion(question){
     });
   }
 
-  if (question.type === 'radio'){
-    return createOptionQuestion(question, 'radio');
-  }
-
-  if (question.type === 'checklist'){
-    return createOptionQuestion(question, 'checkbox');
+  if (question.type === 'radio' || question.type === 'checklist'){
+    return createOptionQuestion(question);
   }
 
   console.log('Unknown question type', question);
@@ -236,7 +232,7 @@ function getLabel(){
       }
     }
 
-    if (type === 'checkbox'){
+    if (type === 'checklist'){
       const inputs = Array.from(node.querySelectorAll('input'));
       const value = inputs
         .filter((child) => child.checked)
@@ -256,7 +252,8 @@ function getLabel(){
 }
 
 function submit(){
-  console.log('TODO: Here is the label to submit', getLabel());
+  const label = JSON.stringify(getLabel());
+  console.log('TODO: Here is the label to submit', label);
   // Labelbox.setLabelForAsset(getLabel())
   // Labelbox.fetchNextAssetToLabel();
 }
