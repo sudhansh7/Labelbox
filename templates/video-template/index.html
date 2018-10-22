@@ -1,9 +1,13 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://api.labelbox.com/static/labeling-api.js"></script>
 
 <style>
+  .app{
+    height: 100vh;
+  }
   .flex-column{
     flex-direction: column;
   }
@@ -18,48 +22,71 @@
     margin-left: 10px;
   }
   .sidebar{
+    display: flex;
+    height: 100vh;
     border-right: 1px solid grey;
+    width: 300px;
   }
+
+.btn{
+  background-color: aqua
+}
+.btn:visited{
+  background-color: yellow
+}
+.btn:hover {
+  background-color: skyblue
+}
+.btn:active{
+  background-color: pink;
+}
+.btn:focus{
+  background-color: pink;
+}
 </style>
 
-<div class="flex-grow flex-column sidebar">
-  <i class="material-icons">home</i>
+<div class="app flex-grow">
+  <div class="flex-column sidebar">
+    <i class="material-icons">home</i>
 
-  <form action="#">
-    <p>
-      <label>
-        <input name="group1" type="radio" checked />
-        <span>Red</span>
-      </label>
-    </p>
-    <p>
-      <label>
-        <input name="group1" type="radio" />
-        <span>Yellow</span>
-      </label>
-    </p>
-    <p>
-      <label>
-        <input class="with-gap" name="group1" type="radio"  />
-        <span>Green</span>
-      </label>
-    </p>
-    <p>
-      <label>
-        <input name="group1" type="radio" disabled="disabled" />
-        <span>Brown</span>
-      </label>
-    </p>
-  </form>
+    <form action="#">
+      <p>
+        <label>
+          <input name="group1" type="radio" checked />
+          <span>Red</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" />
+          <span>Yellow</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input class="with-gap" name="group1" type="radio"  />
+          <span>Green</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" disabled="disabled" />
+          <span>Brown</span>
+        </label>
+      </p>
+    </form>
 
-  <div class="flex-grow"></div>
-  <a class="waves-effect waves-light btn-large">Skip</a>
-  <a class="waves-effect waves-light btn-large">Submit</a>
-</div>
+    <div class="flex-grow"></div>
+    <div style="display: flex;">
+      <a class="waves-effect waves-light btn-large" style="background-color: white; color: black; width: 100%;">Skip</a>
+      <a class="waves-effect waves-light btn-large" style="background-color: #03a9f4; width: 100%;">Submit</a>
+    </div>
+  </div>
 
-<div class="flex-grow flex-column content">
-  <div>dashbarm_footage.mp4</div>
-  <video class="asset" src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
+  <div class="flex-grow flex-column content">
+    <div>dashbarm_footage.mp4</div>
+    <video class="asset" src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
+  </div>
 </div>
 
 
