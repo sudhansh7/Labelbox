@@ -103,7 +103,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 
 <script>
-const defaultCongiruation = {
+const defaultConfiguration = {
   "classifications": [
     {
       "name": "model",
@@ -182,15 +182,25 @@ function createTextInput({label}){
   `;
 }
 
-document.querySelector('#questions').innerHTML = [
-  createOptionQuestion(defaultCongiruation.classifications[0], 'radio'),
-  createOptionQuestion(defaultCongiruation.classifications[0], 'checkbox'),
-  createTextInput({ label: 'hi' })
-].join('');
+function createQuestion(question){
+  if (question.type === 'text'){
+    return createTextInput({ label: 'hi' });
+  }
+
+  if (question.type === 'radio'){
+    return createOptionQuestion(question, 'radio');
+  }
+
+  if (question.type === 'checklist'){
+    return createOptionQuestion(question, 'checkbox');
+  }
+
+  console.log('Unknown question type', question);
+}
 
 Labelbox.getTemplateCustomization().subscribe((customization) => {
-  const classifications = customization && customization.classifications || []
-  console.log(classifications);
+  const classifications = customization && customization.classifications || defaultConfiguration;
+  document.querySelector('#questions').innerHTML = classifications.map(createQuestion).join('');
 });
 
 function goHome(){
