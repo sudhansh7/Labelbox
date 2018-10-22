@@ -184,7 +184,7 @@ function createTextInput({label}){
 
 function createQuestion(question){
   if (question.type === 'text'){
-    return createTextInput({ label: 'hi' });
+    return createTextInput({label: question.instructions});
   }
 
   if (question.type === 'radio'){
