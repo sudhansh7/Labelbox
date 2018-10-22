@@ -83,29 +83,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
     <div class="questions">
 
-      <div class="question">
-        <div class="label">Unsafe driving?</div>
-        <form action="#">
-          <p>
-            <label>
-              <input class="with-gap" name="group1" type="radio" checked />
-              <span>Red</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" name="group1" type="radio" />
-              <span>Yellow</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input class="with-gap" name="group1" type="radio"  />
-              <span>Green</span>
-            </label>
-          </p>
-        </form>
-      </div>
+      <div id="here"></div>
 
       <div class="question">
         <div class="label">Does the video contain accident?</div>
@@ -160,10 +138,83 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 
 <script>
+const defaultCongiruation = {
+  "classifications": [
+    {
+      "name": "model",
+      "instructions": "Select the car model",
+      "type": "radio",
+      "options": [
+        {
+          "value": "model_s",
+          "label": "Tesla Model S"
+        },
+        {
+          "value": "model_3",
+          "label": "Tesla Model 3"
+        },
+        {
+          "value": "model_x",
+          "label": "Tesla Model X"
+        }
+      ]
+    },
+    {
+      "name": "image_problems",
+      "instructions": "Select all that apply",
+      "type": "checklist",
+      "options": [
+        {
+          "value": "blur",
+          "label": "Blurry"
+        },
+        {
+          "value": "saturated",
+          "label": "Over Saturated"
+        },
+        {
+          "value": "pixelated",
+          "label": "Pixelated"
+        }
+      ]
+    }
+  ]
+}
+
+function createRadio({id, options, instructions}){
+  const createOption = ({value, label}) => {
+    return `
+      <p>
+        <label>
+          <input class="with-gap" type="radio" name="group-${id}" />
+          <span>${label}</span>
+        </label>
+      </p>
+    `
+  }
+  return `
+    <div class="question" id="${id}">
+      <div class="label">${instructions}</div>
+      <form action="#">
+        ${options.map(createOption).join('')}
+      </form>
+    </div>
+  `;
+}
+
+document.querySelector('#here').innerHTML = createRadio(defaultCongiruation.classifications[0]);
+
+Labelbox.getTemplateCustomization().subscribe((customization) => {
+  const classifications = customization && customization.classifications || []
+  console.log(classifications);
+});
+
 function goHome(){
   const projectId = new URL(window.location.href).searchParams.get('project');
   window.location.href = 'https://app.labelbox.com/projects/'+projectId;
 }
+
+
 function label(label){
   Labelbox.setLabelForAsset(label).then(() => {
     Labelbox.fetchNextAssetToLabel();
