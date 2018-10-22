@@ -182,25 +182,32 @@ function createTextInput({id, label}){
   `;
 }
 
-function createQuestion(question){
+function createQuestion(question, answers){
+  const optionalAnswer = (answers || {})[question.name];
   if (question.type === 'text'){
-    console.log(question); 
     return createTextInput({
       id: question.name,
       label: question.instructions
-    });
+    }, optionalAnswer);
   }
 
   if (question.type === 'radio' || question.type === 'checklist'){
-    return createOptionQuestion(question);
+    return createOptionQuestion(question, optionalAnswer);
   }
 
   console.log('Unknown question type', question);
 }
 
+let classifications = [];
+function drawQuestions(classifications, answers){
+  document.querySelector('#questions').innerHTML = classifications
+    .map((classification) => createQuestion(classification, answers))
+    .join('');
+}
+
 Labelbox.getTemplateCustomization().subscribe((customization) => {
-  const classifications = customization && customization.classifications || defaultConfiguration;
-  document.querySelector('#questions').innerHTML = classifications.map(createQuestion).join('');
+  classifications = customization && customization.classifications || defaultConfiguration;
+  drawQuestions(classifications);
 });
 
 function goHome(){
@@ -254,7 +261,7 @@ function getLabel(){
 function submit(){
   const label = JSON.stringify(getLabel());
   console.log('TODO: Here is the label to submit', label);
-  // Labelbox.setLabelForAsset(getLabel())
+  Labelbox.setLabelForAsset(label)
   // Labelbox.fetchNextAssetToLabel();
 }
 
@@ -269,6 +276,14 @@ function drawAsset(asset){
     <video class="asset" src="${asset.data}" autoplay controls></video>
   `;
   document.querySelector('#asset').innerHTML = labelForm;
+  if (asset.label){
+    try{
+      const label = JSON.parse(asset.label);
+      drawQuestions(classifications, label);
+    } catch(e){
+      console.log('failed to read label', label);
+    }
+  }
 }
 
 </script>
