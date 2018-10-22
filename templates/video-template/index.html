@@ -57,6 +57,12 @@
 .question{
   margin-bottom: 15px;
 }
+
+[type="radio"]:checked+span:after,
+[type="radio"].with-gap:checked+span:before,
+[type="radio"].with-gap:checked+span:after {
+  border-color: #03a9f4 !important;
+}
 </style>
 
 <div class="app flex-grow">
@@ -108,7 +114,7 @@
           </p>
           <p>
             <label>
-              <input class="with-gap" name="group1" type="radio"  />
+              <input class="with-gap" name="group1" type="radio" />
               <span>Green</span>
             </label>
           </p>
