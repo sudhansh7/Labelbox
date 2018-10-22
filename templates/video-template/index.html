@@ -78,7 +78,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 <div class="app flex-grow">
   <div class="flex-column sidebar">
     <div class="navbar">
-      <i class="material-icons" style="color: #9b9b9b;">home</i>
+      <i class="material-icons" style="color: #9b9b9b; cursor: pointer;" onclick="goHome()">home</i>
     </div>
 
     <div class="questions">
@@ -160,6 +160,10 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 
 <script>
+function goHome(){
+  const projectId = new URL(window.location.href).searchParams.get('project');
+  window.location.href = 'https://app.labelbox.com/projects/'+projectId;
+}
 function label(label){
   Labelbox.setLabelForAsset(label).then(() => {
     Labelbox.fetchNextAssetToLabel();
