@@ -63,6 +63,11 @@
 [type="radio"].with-gap:checked+span:after {
   border-color: #03a9f4 !important;
 }
+[type="checkbox"].filled-in:checked+span:not(.lever):after {
+  border-color: #03a9f4 !important;
+  background-color: #03a9f4 !important;
+
+}
 </style>
 
 <div class="app flex-grow">
@@ -121,6 +126,29 @@
         </form>
       </div>
 
+      <div class="question">
+        <div class="label">Does the video contain accident?</div>
+        <form action="#">
+          <p>
+            <label>
+              <input type="checkbox" class="filled-in" checked="checked" />
+              <span>Filled in</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input type="checkbox" class="filled-in" />
+              <span>woot</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input type="checkbox" class="filled-in" />
+              <span>here</span>
+            </label>
+          </p>
+        </form>
+      </div>
 
     </div>
 
