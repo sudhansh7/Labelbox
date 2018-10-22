@@ -14,7 +14,7 @@ Labelbox.currentAsset().subscribe((asset) => {
 })
 function drawItem(dataToLabel){
   const labelForm = `
-    <img src="${dataToLabel}" style="width: 300px;"></img>
+    <video src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
     <div style="display: flex;">
       <button onclick="label('bad')">Bad Quality</button>
       <button onclick="label('good')">Good Quality</button>
