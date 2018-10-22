@@ -147,14 +147,8 @@ function drawItem(dataToLabel){
 
 ### Reference Interfaces
 
-#### [Image classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
+#### [Image/Video/Text classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/classification.png" width="400">
-
-#### [Image segmentation interface source code](https://github.com/Labelbox/Labelbox/tree/master/templates/image-segmentation)
-<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/segmentation.png" width="400">
-
-#### [Text classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/templates/text-classification)
-<img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/text-classification.png" width="400">
 
 ### Local Development of Labeling Interfaces
 Labeling interfaces are developed locally. Once the interface is ready to use,
