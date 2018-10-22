@@ -48,7 +48,7 @@
 .btn:focus{
   background-color: pink;
 }
-.questions{
+#questions{
   padding: 10px;
   overflow-y: auto;
 }
@@ -81,42 +81,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
       <i class="material-icons" style="color: #9b9b9b; cursor: pointer;" onclick="goHome()">home</i>
     </div>
 
-    <div class="questions">
-
-      <div id="here"></div>
-
-      <div class="question">
-        <div class="label">Does the video contain accident?</div>
-        <form action="#">
-          <p>
-            <label>
-              <input type="checkbox" class="filled-in" checked="checked" />
-              <span>Filled in</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input type="checkbox" class="filled-in" />
-              <span>woot</span>
-            </label>
-          </p>
-          <p>
-            <label>
-              <input type="checkbox" class="filled-in" />
-              <span>here</span>
-            </label>
-          </p>
-        </form>
-      </div>
-
-      <div class="question">
-        <div class="input-field col s12">
-          <div class="label">Start time</div>
-          <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
-        </div>
-      </div>
-
-    </div>
+    <div id="questions"></div>
 
     <div class="flex-grow"></div>
     <div style="display: flex;">
@@ -181,12 +146,16 @@ const defaultCongiruation = {
   ]
 }
 
-function createRadio({id, options, instructions}){
+function createOptionQuestion({id, options, instructions}, type){
+  const inputType = type == 'radio' ? 
+    `<input class="with-gap" type="radio" name="group-${id}" />` :
+    `<input type="checkbox" class="filled-in" />`
+
   const createOption = ({value, label}) => {
     return `
       <p>
         <label>
-          <input class="with-gap" type="radio" name="group-${id}" />
+          ${inputType}
           <span>${label}</span>
         </label>
       </p>
@@ -202,7 +171,22 @@ function createRadio({id, options, instructions}){
   `;
 }
 
-document.querySelector('#here').innerHTML = createRadio(defaultCongiruation.classifications[0]);
+function createTextInput({label}){
+  return `
+    <div class="question">
+      <div class="input-field col s12">
+        <div class="label">${label}</div>
+        <textarea class="materialize-textarea" data-length="120"></textarea>
+      </div>
+    </div>
+  `;
+}
+
+document.querySelector('#questions').innerHTML = [
+  createOptionQuestion(defaultCongiruation.classifications[0], 'radio'),
+  createOptionQuestion(defaultCongiruation.classifications[0], 'checkbox'),
+  createTextInput({ label: 'hi' })
+].join('');
 
 Labelbox.getTemplateCustomization().subscribe((customization) => {
   const classifications = customization && customization.classifications || []
