@@ -146,15 +146,15 @@ const defaultConfiguration = {
   ]
 }
 
-function createOptionQuestion({type, name, options, instructions}){
+function createOptionQuestion({type, name, options, instructions}, answer){
   const createOption = ({value, label}) => {
     return `
       <p value=${value}>
         <label>
           ${
             type == 'radio' ?
-              `<input class="with-gap" type="radio" name="group-${name}" valuetosubmit="${value}" />` :
-              `<input type="checkbox" class="filled-in" valuetosubmit="${value}" />`
+              `<input class="with-gap" type="radio" name="group-${name}" valuetosubmit="${value}" ${answer === value ? 'checked' : ''} />` :
+              `<input type="checkbox" class="filled-in" valuetosubmit="${value}" ${(answer || []).indexOf(value) !== -1 ? 'checked' : ''} />`
           }
           <span>${label}</span>
         </label>
@@ -176,7 +176,7 @@ function createTextInput({id, label}, answer){
     <div class="question" id="${id}" questiontype="text">
       <div class="input-field col s12">
         <div class="label">${label}</div>
-        <input class="materialize-textarea" data-length="120" value="${answer}"></input>
+        <input class="materialize-textarea" data-length="120" value="${answer || ''}"></input>
       </div>
     </div>
   `;
@@ -185,7 +185,6 @@ function createTextInput({id, label}, answer){
 function createQuestion(question, answers){
   const optionalAnswer = (answers || {})[question.name];
   if (question.type === 'text'){
-    console.log('text', optionalAnswer);
     return createTextInput({
       id: question.name,
       label: question.instructions
@@ -199,7 +198,19 @@ function createQuestion(question, answers){
   console.log('Unknown question type', question);
 }
 
+let currentAsset;
 let classifications = [];
+let markQuestionsAsLoaded;
+new Promise((resolve) => {
+  markQuestionsAsLoaded = resolve;
+}).then(() => {
+  Labelbox.currentAsset().subscribe((asset) => {
+    if (asset){
+      drawAsset(asset);
+    }
+  })
+})
+
 function drawQuestions(classifications, answers){
   document.querySelector('#questions').innerHTML = classifications
     .map((classification) => createQuestion(classification, answers))
@@ -209,6 +220,7 @@ function drawQuestions(classifications, answers){
 Labelbox.getTemplateCustomization().subscribe((customization) => {
   classifications = customization && customization.classifications || defaultConfiguration;
   drawQuestions(classifications);
+  markQuestionsAsLoaded()
 });
 
 function goHome(){
@@ -233,7 +245,7 @@ function getLabel(){
     if (type === 'radio'){
       const inputs = Array.from(node.querySelectorAll('input'));
       const value = inputs
-        .find((child) => child.value === 'on')
+        .find((child) => child.checked)
         .getAttribute('valuetosubmit');
       return {
         [key]: value
@@ -261,30 +273,32 @@ function getLabel(){
 
 function submit(){
   const label = JSON.stringify(getLabel());
-  console.log('TODO: Here is the label to submit', label);
   Labelbox.setLabelForAsset(label)
-  // Labelbox.fetchNextAssetToLabel();
-}
 
-Labelbox.currentAsset().subscribe((asset) => {
-  if (asset){
-    drawAsset(asset);
+  // Progress is this asset is new
+  if (!currentAsset.label){
+    Labelbox.fetchNextAssetToLabel();
   }
-})
+}
 
 function drawAsset(asset){
   const labelForm = `
-    <video class="asset" src="${asset.data}" autoplay controls></video>
+    <video class="asset" src="${asset.data}" controls></video>
   `;
   document.querySelector('#asset').innerHTML = labelForm;
-  if (asset.label){
-    try{
-      const label = JSON.parse(asset.label);
-      drawQuestions(classifications, label);
-    } catch(e){
-      console.log('failed to read label', label);
+  if ((currentAsset && currentAsset.id) !== asset.id){
+    if (asset.label){
+      try{
+        const label = JSON.parse(asset.label);
+        drawQuestions(classifications, label);
+      } catch(e){
+        console.log('failed to read label', e);
+      }
+    } else {
+      drawQuestions(classifications);
     }
   }
+  currentAsset = asset;
 }
 
 </script>
