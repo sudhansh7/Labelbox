@@ -29,6 +29,14 @@
     min-width: 300px;
   }
 
+.text{
+  background-color: #ececec;
+  padding: 30px;
+  font-size: 20px;
+  overflow: auto;
+  font-style: italic;
+}
+
  .navbar{
    padding: 10px;
    border-bottom: 1px solid #e8e8e8;
@@ -291,11 +299,25 @@ function goNext(){
   Labelbox.setLabelAsCurrentAsset(currentAsset.next);
 }
 
-function drawAsset(asset){
-  const labelForm = `
-    <video class="asset" src="${asset.data}" controls autoplay></video>
-  `;
+function getHtmlForAsset(data){
+  if (data.endsWith('.mp4')){
+    return `
+      <video class="asset" src="${data}" controls autoplay></video>
+    `
+  }
 
+  if (data.endsWith('.png') || data.endsWith('.jpg') || data.endsWith('.jpeg')){
+    return `
+      <img class="asset" src="${data}"></img>
+    `
+  }
+
+  return `
+    <div class="text">${data}</div>
+  `
+}
+
+function drawAsset(asset){
   const backButton = document.querySelector('#back')
   backButton.style.opacity = asset.previous ? 1 : 0.2;
   backButton.style.cursor = asset.previous ? 'pointer' : 'none';
@@ -303,7 +325,7 @@ function drawAsset(asset){
   nextButton.style.opacity = asset.next ? 1 : 0.2;
   nextButton.style.cursor = asset.next ? 'pointer' : 'none';
 
-  document.querySelector('#asset').innerHTML = labelForm;
+  document.querySelector('#asset').innerHTML = getHtmlForAsset(asset.data);
   if ((currentAsset && currentAsset.id) !== asset.id){
     if (asset.label){
       try{
