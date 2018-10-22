@@ -85,8 +85,8 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
     <div class="flex-grow"></div>
     <div style="display: flex;">
-      <a class="waves-effect waves-light btn-large" style="background-color: white; color: black; width: 100%;">Skip</a>
-      <a class="waves-effect waves-light btn-large" style="background-color: #03a9f4; width: 100%;">Submit</a>
+      <a class="waves-effect waves-light btn-large" style="background-color: white; color: black; width: 100%;" onclick="skip()">Skip</a>
+      <a class="waves-effect waves-light btn-large" style="background-color: #03a9f4; width: 100%;" onclick="submit()">Submit</a>
     </div>
   </div>
 
@@ -146,23 +146,23 @@ const defaultConfiguration = {
   ]
 }
 
-function createOptionQuestion({id, options, instructions}, type){
-  const inputType = type == 'radio' ? 
-    `<input class="with-gap" type="radio" name="group-${id}" />` :
-    `<input type="checkbox" class="filled-in" />`
-
+function createOptionQuestion({name, options, instructions}, type){
   const createOption = ({value, label}) => {
     return `
-      <p>
+      <p value=${value}>
         <label>
-          ${inputType}
+          ${
+            type == 'radio' ?
+              `<input class="with-gap" type="radio" name="group-${name}" valuetosubmit="${value}" />` :
+              `<input type="checkbox" class="filled-in" valuetosubmit="${value}" />`
+          }
           <span>${label}</span>
         </label>
       </p>
     `
   }
   return `
-    <div class="question" id="${id}">
+    <div class="question" id="${name}" questiontype="${type}">
       <div class="label">${instructions}</div>
       <form action="#">
         ${options.map(createOption).join('')}
@@ -171,9 +171,9 @@ function createOptionQuestion({id, options, instructions}, type){
   `;
 }
 
-function createTextInput({label}){
+function createTextInput({id, label}){
   return `
-    <div class="question">
+    <div class="question" id="${id}" questiontype="text">
       <div class="input-field col s12">
         <div class="label">${label}</div>
         <textarea class="materialize-textarea" data-length="120"></textarea>
@@ -184,7 +184,11 @@ function createTextInput({label}){
 
 function createQuestion(question){
   if (question.type === 'text'){
-    return createTextInput({label: question.instructions});
+    console.log(question); 
+    return createTextInput({
+      id: question.name,
+      label: question.instructions
+    });
   }
 
   if (question.type === 'radio'){
@@ -208,6 +212,53 @@ function goHome(){
   window.location.href = 'https://app.labelbox.com/projects/'+projectId;
 }
 
+function skip(){
+  Labelbox.skip();
+}
+
+function getLabel(){
+  const getAnswer = (node) => {
+    const key = node.getAttribute('id');
+    const type = node.getAttribute('questiontype');
+    if (type === 'text'){
+      return {
+        [key]: node.querySelector('textarea').value
+      }
+    }
+
+    if (type === 'radio'){
+      const inputs = Array.from(node.querySelectorAll('input'));
+      const value = inputs
+        .find((child) => child.value === 'on')
+        .getAttribute('valuetosubmit');
+      return {
+        [key]: value
+      }
+    }
+
+    if (type === 'checkbox'){
+      const inputs = Array.from(node.querySelectorAll('input'));
+      const value = inputs
+        .filter((child) => child.checked)
+        .map((child) => child.getAttribute('valuetosubmit'));
+      return {
+        [key]: value
+      }
+    }
+
+    console.log('Unable to find type for', node);
+  }
+
+  const answers = Array.from(document.querySelector('#questions').children)
+    .map(getAnswer)
+  
+  return Object.assign({}, ...answers);
+}
+
+function submit(){
+  console.log('Here is the label to submit', getLabel());
+  // Labelbox.setLabelForAsset()
+}
 
 function label(label){
   Labelbox.setLabelForAsset(label).then(() => {
