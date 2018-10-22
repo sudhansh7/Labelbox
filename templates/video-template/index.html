@@ -1,5 +1,68 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://api.labelbox.com/static/labeling-api.js"></script>
-<div id="form"></div>
+
+<style>
+  .flex-column{
+    flex-direction: column;
+  }
+  .flex-grow{
+    display: flex;
+    flex-grow: 1;
+  }
+  .asset{
+    width: 100%;
+  }
+  .content{
+    margin-left: 10px;
+  }
+  .sidebar{
+    border-right: 1px solid grey;
+  }
+</style>
+
+<div class="flex-grow flex-column sidebar">
+  <i class="material-icons">home</i>
+
+  <form action="#">
+    <p>
+      <label>
+        <input name="group1" type="radio" checked />
+        <span>Red</span>
+      </label>
+    </p>
+    <p>
+      <label>
+        <input name="group1" type="radio" />
+        <span>Yellow</span>
+      </label>
+    </p>
+    <p>
+      <label>
+        <input class="with-gap" name="group1" type="radio"  />
+        <span>Green</span>
+      </label>
+    </p>
+    <p>
+      <label>
+        <input name="group1" type="radio" disabled="disabled" />
+        <span>Brown</span>
+      </label>
+    </p>
+  </form>
+
+  <div class="flex-grow"></div>
+  <a class="waves-effect waves-light btn-large">Skip</a>
+  <a class="waves-effect waves-light btn-large">Submit</a>
+</div>
+
+<div class="flex-grow flex-column content">
+  <div>dashbarm_footage.mp4</div>
+  <video class="asset" src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
+</div>
+
+
 <script>
 function label(label){
   Labelbox.setLabelForAsset(label).then(() => {
@@ -13,6 +76,7 @@ Labelbox.currentAsset().subscribe((asset) => {
   }
 })
 function drawItem(dataToLabel){
+  return;
   const labelForm = `
     <video src="${dataToLabel}" style="width: 300px;" autoplay controls></video>
     <div style="display: flex;">
