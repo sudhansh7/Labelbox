@@ -33,6 +33,10 @@
 
 
 <script>
+let state = {
+  projectId: new URL(window.location.href).searchParams.get('project'),
+  currentAsset: undefined
+}
 const defaultConfiguration = {
   "classifications": [
     {
@@ -128,7 +132,6 @@ function createQuestion(question, answers){
   console.log('Unknown question type', question);
 }
 
-let currentAsset;
 let classifications = [];
 let markQuestionsAsLoaded;
 new Promise((resolve) => {
@@ -154,8 +157,7 @@ Labelbox.getTemplateCustomization().subscribe((customization) => {
 });
 
 function goHome(){
-  const projectId = new URL(window.location.href).searchParams.get('project');
-  window.location.href = 'https://app.labelbox.com/projects/'+projectId;
+  window.location.href = 'https://app.labelbox.com/projects/'+state.projectId;
 }
 
 function skip(){
@@ -205,18 +207,18 @@ function submit(){
   Labelbox.setLabelForAsset(label)
 
   // Progress is this asset is new
-  if (!currentAsset.label){
+  if (!state.currentAsset.label){
     document.querySelector('#asset').innerHTML = 'loading...'
     Labelbox.fetchNextAssetToLabel();
   }
 }
 
 function goBack(){
-  Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
+  Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
 }
 
 function goNext(){
-  Labelbox.setLabelAsCurrentAsset(currentAsset.next);
+  Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
 }
 
 function getHtmlForAsset(data){
@@ -246,10 +248,10 @@ function drawAsset(asset){
   nextButton.style.opacity = asset.next ? 1 : 0.2;
   nextButton.style.cursor = asset.next ? 'pointer' : 'none';
 
-  if ((currentAsset && currentAsset.data) !== asset.data){
+  if ((state.currentAsset && state.currentAsset.data) !== asset.data){
     document.querySelector('#asset').innerHTML = getHtmlForAsset(asset.data);
   }
-  if ((currentAsset && currentAsset.id) !== asset.id){
+  if ((state.currentAsset && state.currentAsset.id) !== asset.id){
     if (asset.label){
       try{
         const label = JSON.parse(asset.label);
@@ -261,7 +263,10 @@ function drawAsset(asset){
       drawQuestions(classifications);
     }
   }
-  currentAsset = asset;
+  state = {
+    ...state,
+    currentAsset: asset
+  }
 }
 
 </script>
