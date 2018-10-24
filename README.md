@@ -1,5 +1,5 @@
 # Labelbox
-[Labelbox](https://www.labelbox.com/) is the fastest way to annotate data to build and ship artificial intelligence applications.
+[Labelbox](https://www.labelbox.com/) is the fastest way to annotate data to build and ship artificial intelligence applications. This github repository is about building custom interfaces on the Labelbox platform.
 
 ## Semantic Segmentation (brush & superpixels)
 ![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/pixelwise.gif)
@@ -27,12 +27,6 @@ Table of Contents
    * [Terms of use, privacy and content dispute policy](#terms-of-use-privacy-and-content-dispute-policy)
 
 ## [Full Documentation](https://support.labelbox.com/docs/getting-started)
-
-## Getting Started
-1. Sign up on [Labelbox](https://www.labelbox.com)
-2. Jump into the example project or create a new one
-3. Step through the setup, attach a data set and start labeling
-4. Export your labels
 
 ## Creating Custom Labeling Interfaces
 You can create custom labeling interfaces to suit the needs of your
