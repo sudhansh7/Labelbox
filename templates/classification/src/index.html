@@ -149,7 +149,7 @@ function drawQuestions(classifications, answers){
 }
 
 Labelbox.getTemplateCustomization().subscribe((customization) => {
-  classifications = customization && customization.classifications || defaultConfiguration;
+  classifications = customization && customization.classifications || defaultConfiguration.classifications;
   drawQuestions(classifications);
   markQuestionsAsLoaded()
 });
