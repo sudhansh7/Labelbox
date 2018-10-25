@@ -1,3 +1,7 @@
+## Video Walkthrough
+
+[![Video Tutorial](./watchme.png)](https://www.useloom.com/share/c8bbd247ee674b6f8c2c6c34da2e3575)
+
 ## Running this example
 
 1. Create an account on labelbox
