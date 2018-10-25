@@ -1,10 +1,10 @@
 ## Running this example
 
 1. Create an account on labelbox
-2. Make a new project, "Video Example"
-3. Import the file "example-video-import.json"
+2. Make a new project, "Classification Example"
+3. Import the file "example-classification-data.json"
 4. Open index.html in your browser
-5. Select your new project "Video Example"
+5. Select your new project "Classification Example"
 
 ## Installing template into Labelbox
 

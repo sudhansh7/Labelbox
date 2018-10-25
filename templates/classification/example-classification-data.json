@@ -1,0 +1,26 @@
+[
+  {
+    "data": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "externalId": "Big Buck Bunny"
+  },
+  {
+    "data": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "externalId": "Elephant Dream"
+  },
+  {
+    "data": "Label this Text Here",
+    "externalId": "text-id"
+  },
+  {
+    "data": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "externalId": "text-id-2"
+  },
+  {
+    "data": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2014_tesla_model-s_sedan_p85_rq_oem_1_1280.jpg",
+    "externalId": "image-id"
+  },
+  {
+    "data": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2012_tesla_model-s_sedan_signature-performance_rq_oem_2_1280.jpg",
+    "externalId": "image-id-2"
+  }
+]
