@@ -140,7 +140,7 @@ function drawItem(dataToLabel){
 
 ### Reference Interfaces
 
-#### [Image/Video/Text classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/templates/classification)
+#### [Image/Video/Text classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/custom-interfaces/classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/classification.png" width="400">
 
 ### Local Development of Labeling Interfaces
@@ -149,7 +149,7 @@ it is installed in Labelbox by pointing to a hosted version of the interface.
 
 **Run localhost server**
 1. Start the localhost server in a directory containing your labeling frontend
-   files. For example, run the server inside `templates/hello-world` to run the
+   files. For example, run the server inside `custom-interfaces/hello-world` to run the
    hello world labeling interface locally.
 ```
 python -m SimpleHTTPServer
