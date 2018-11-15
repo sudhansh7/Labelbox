@@ -36,7 +36,7 @@ export const getPythonForLabelExport = ({apiKey = '<API_KEY_HERE>'}:{apiKey?: st
       data = json.loads(res)['data']
       return data['project']['labels'] or []
 
-    def get_all_labels(project_id, skip = 0, page_size = 1000, all_labels = []):
+    def get_all_labels(project_id, skip = 0, page_size = 100, all_labels = []):
       new_labels = get_page_of_labels(project_id, skip, page_size)
       if len(new_labels) == page_size:
         return get_all_labels(project_id, skip + page_size, page_size, all_labels + new_labels)
