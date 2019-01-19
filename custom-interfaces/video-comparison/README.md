@@ -1,6 +1,6 @@
 ## Video Walkthrough
 
-[![Video Tutorial](./watchme.png)](https://www.useloom.com/share/c8bbd247ee674b6f8c2c6c34da2e3575)
+[![Video Tutorial](./watchme.png)](https://www.useloom.com/share/97e20c8e3ab345ad996cc4c8f3b4cdae)
 
 ## Running this example
 
