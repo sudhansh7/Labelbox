@@ -10,7 +10,7 @@ Readmore here, https://github.com/antingshen/BeaverDam
 
 https://beaverdam-labelbox.now.sh
 
-[Install Template](./install.png)
+![Install Template](./install.png)
 
 ## Hosting your own version
 
