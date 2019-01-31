@@ -1,4 +1,4 @@
-# BeaverDam
+# Video Labeling with BeaverDam
 
 Readmore here, https://github.com/antingshen/BeaverDam
 
