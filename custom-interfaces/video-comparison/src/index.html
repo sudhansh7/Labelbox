@@ -213,8 +213,9 @@
   }
 
   function skip() {
-    Labelbox.skip();
-    Labelbox.fetchNextAssetToLabel();
+    Labelbox.skip().then(() => {
+      Labelbox.fetchNextAssetToLabel();
+    });
   }
 
   function getChosenVideoId() {
@@ -270,12 +271,15 @@
 
   function submit() {
     const label = JSON.stringify(getLabel());
-    Labelbox.setLabelForAsset(label);
-
+    const jumpToNext = Boolean(!state.currentAsset.label);
     // Progress is this asset is new
-    if (!state.currentAsset.label) {
+    Labelbox.setLabelForAsset(label).then(() => {
+      if (jumpToNext) {
+        Labelbox.fetchNextAssetToLabel();
+      }
+    });
+    if (jumpToNext) {
       document.querySelector("#asset").innerHTML = "loading...";
-      Labelbox.fetchNextAssetToLabel();
     }
   }
 
