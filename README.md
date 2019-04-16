@@ -140,7 +140,7 @@ function drawItem(dataToLabel){
 
 ### Reference Interfaces
 
-#### [Image/Video/Text classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/custom-interfaces/classification)
+#### [Image/Video/Text classification interface source code](https://github.com/Labelbox/Labelbox/tree/master/custom-interfaces/text-video-images-classification)
 <img src="https://s3-us-west-2.amazonaws.com/labelbox/documentation.assets/images/classification.png" width="400">
 
 ### Local Development of Labeling Interfaces
@@ -157,7 +157,7 @@ python -m SimpleHTTPServer
 
 2. Open your browser and navigate to the `localhost` endpoint provided by the
    server.
-  
+
 3. Customize the labeling frontend by making changes to `index.html`. Restart the
    server and refresh the browser to see the updates.
 
@@ -179,7 +179,7 @@ hosting service on-hand, you can quickly get setup with
 * Within the *Labeling Interface* menu of the *Settings* tab of your
   Labelbox project, choose *Custom* and paste the link in the *URL to
   labeling frontend* field as shown in the video below.
-  
+
 ![](https://s3-us-west-2.amazonaws.com/labelbox/labelbox_cloud_deploy.gif)
 
 
