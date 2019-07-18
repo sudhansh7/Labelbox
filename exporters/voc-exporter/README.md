@@ -14,6 +14,8 @@ To run the converter in docker, from this directory run the command (where `${PA
 make run-local-export EXPORT_PATH=${PATH_TO_INPUT}
 ```
 
+The script will generate a folder `output` with the XML annotation output of the VOC export and a folder `images` with the source images.
+
 Finally should you absolutely need to run the script directly we recommend using pipenv. The script uses Python 3.6.4 and `pipenv` to manage dependencies.
                                                                               
 To install dependencies, run:
@@ -23,5 +25,5 @@ pipenv install
 
 To then run the converter script, run: 
 ```sh
-pipenv python main.py ${PATH_TO_INPUT} ${PATH_TO_OUTPUT}
+pipenv python main.py ${PATH_TO_INPUT} ${PATH_TO_OUTPUT} ${PATH_TO_IMAGE_OUTPUT}
 ```
