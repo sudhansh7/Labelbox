@@ -1,5 +1,5 @@
 GIT_HASH := $(shell git rev-parse --short HEAD)
-LOCAL_IMAGE := app
+LOCAL_IMAGE := coco
 OUTPUT_DEST := $(shell pwd)/output
 
 build:
