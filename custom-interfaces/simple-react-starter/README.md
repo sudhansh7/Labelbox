@@ -8,7 +8,7 @@ It uses [material-ui-next](https://material-ui-next.com/) for componets
 
 # Setup
 
-1. Use node v6.11.1
+1. Use node v10.16.0
 
   Install NVM
   ```shell
@@ -21,9 +21,9 @@ It uses [material-ui-next](https://material-ui-next.com/) for componets
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
   ```
 
-  Install node v6.11.1
+  Install node v10.16.0
   ```
-  nvm install v6.11.1
+  nvm install v10.16.0
   ```
 
 
