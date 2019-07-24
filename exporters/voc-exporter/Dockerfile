@@ -11,4 +11,4 @@ RUN pipenv install --system
 
 ADD . /app
 
-CMD ["python", "main.py", "/input", "/output", "/images"]
+CMD ["python", "main.py", "/input", "/output"]

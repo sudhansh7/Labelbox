@@ -29,7 +29,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('file_input', help='File path to Labelbox JSON to parse export')
     parser.add_argument('file_output', help='File path to desired output directory for export asset')
-    parser.add_argument('image_output', help='File path to desired image output directory')
 
     args = parser.parse_args()
 
@@ -39,7 +38,6 @@ if __name__ == '__main__':
     file_output = args.file_output
     assert file_output
 
-    image_output = args.image_output
-    assert image_output
+    image_output = file_output + '/images'
 
     export(file_input, file_output, image_output)
