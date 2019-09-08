@@ -4,10 +4,6 @@
 ## Labelbox Platform
 ![](https://labelbox.com/static/images/product.png)
 
-## Bounding boxes, polygons, lines, points, nested classifications
-![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/vectors-new.gif)
-
-
 Table of Contents
 =================
 
