@@ -1,8 +1,8 @@
 # Labelbox
 [Labelbox](https://www.labelbox.com/) is the fastest way to annotate data to build and ship artificial intelligence applications. This github repository is about building custom interfaces on the Labelbox platform.
 
-## Semantic Segmentation (brush & superpixels)
-![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/pixelwise.gif)
+## Labelbox Platform
+![](https://labelbox.com/static/images/product.png)
 
 ## Bounding boxes, polygons, lines, points, nested classifications
 ![](https://s3-us-west-2.amazonaws.com/labelbox/website/images/vectors-new.gif)
