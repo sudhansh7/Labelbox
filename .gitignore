@@ -12,3 +12,4 @@ docs/node_modules
 *.egg-info
 dist/
 build/
+jupyter-notebooks/.ipynb_checkpoints
