@@ -1,3 +1,13 @@
+## Video Overview
+
+[![Video Tutorial](./video.png)](https://www.loom.com/share/5b53617b027d4ef382d56a8dcc6ca5f1)
+
+## Interface Setup
+
+URL: https://image-selection.labelbox.com
+
+![Interface Setup](./interface.png)
+
 ## Interface Input
 
 ```
