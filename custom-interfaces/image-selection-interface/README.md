@@ -12,16 +12,20 @@ URL: https://image-selection.labelbox.com
 
 ```
 {
-  "instructions": "Please select all images that would be appropriate for an athletic mom.",
+  "instructions": "Which cars do you like the most?",
   "images": [
     {
-      "id": "image-one-database-id",
-      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
+      "id": "example-id-1",
+      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2012_tesla_model-s_sedan_signature-performance_rq_oem_2_1280.jpg"
     },
     {
-      "id": "image-two-database-id",
-      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
-    }
+      "id": "example-id-2",
+      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2014_tesla_model-s_sedan_p85_rq_oem_1_1280.jpg"
+    },
+    {
+      "id": "example-id-3",
+      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2016-Tesla-Model-S-P90D-front-three-quarter.jpg"
+    },
   ]
 }
 ```
