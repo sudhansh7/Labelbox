@@ -146,7 +146,13 @@ function App() {
           color="primary"
           variant="contained"
           onClick={() =>
-            window.Labelbox.setLabelForAsset(JSON.stringify({ selectedImages }))
+            window.Labelbox.setLabelForAsset(
+              JSON.stringify({ selectedImages })
+            ).then(() => {
+              if (!asset.label) {
+                window.Labelbox.fetchNextAssetToLabel();
+              }
+            })
           }
         >
           Submit
