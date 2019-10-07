@@ -13,6 +13,7 @@ URL: https://image-selection.labelbox.com
 ```
 {
   "instructions": "Which cars do you like the most?",
+  "instructionImageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2016-Tesla-Model-X-75d-side-profile.jpg",
   "images": [
     {
       "id": "example-id-1",
@@ -29,6 +30,8 @@ URL: https://image-selection.labelbox.com
   ]
 }
 ```
+
+The field `instructionsImageUrl` is optional.
 
 ## Interface Label Output
 
