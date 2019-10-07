@@ -11,18 +11,30 @@ const ImageContainer = styled.div`
   display: flex;
   max-width: 300px;
   max-height: 300px;
-  border: 5px solid ${props => (props.selected ? "blue" : "transparent")};
-  cursor: pointer;
-  :hover {
-    opacity: 0.8;
-    border: 5px solid blue;
+  
+  &.item {
+    border: 5px solid ${props => (props.selected ? "blue" : "transparent")};
+    cursor: pointer;
+    :hover {
+      opacity: 0.8;
+      border: 5px solid blue;
+    }
+  }
+
+  &:not(.item) {
+    margin: 5px;
+  }
+
+  > img {
+    max-width: 300px;
+    max-height: 300px;
   }
 `;
 
-function Image({ src, selected, onClick }) {
+function Image({ src, alt, selected, onClick, isItem }) {
   return (
-    <ImageContainer selected={selected} onClick={onClick}>
-      <img src={src} style={{ maxWidth: "300px", maxHeight: "300px" }}></img>
+    <ImageContainer className={isItem ? 'item' : ''} selected={selected} onClick={onClick}>
+      <img src={src} alt={alt} />
     </ImageContainer>
   );
 }
@@ -44,8 +56,10 @@ const Instructions = styled.div`
 const Images = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 20px;
+  padding-top: 5px;
+  border-top: 1px solid lightgrey;
 `;
 
 const renderImage = (selectedImages, setSelectedImages) => (data, i) => {
@@ -71,11 +85,13 @@ const renderImage = (selectedImages, setSelectedImages) => (data, i) => {
 
   return (
     <Image
-      src={data.imageUrl}
-      id={data.id}
+      isItem
       key={i}
-      selected={selectedImages.indexOf(data.id) > -1}
+      id={data.id}
+      alt={data.id}
+      src={data.imageUrl}
       onClick={toggleImage}
+      selected={selectedImages.indexOf(data.id) > -1}
     />
   );
 };
@@ -131,6 +147,11 @@ function App() {
         }
       />
       <Instructions>{parsedData.instructions}</Instructions>
+      <Image
+        id='instruction-image'
+        alt='instruction image'
+        src={parsedData.instructionImageUrl}
+      />
       <Images>
         {parsedData.images.map(renderImage(selectedImages, setSelectedImages))}
       </Images>
