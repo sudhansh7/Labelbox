@@ -31,7 +31,7 @@ URL: https://image-selection.labelbox.com
 }
 ```
 
-The field "instructionsImageUrl" is optional.
+The field `instructionsImageUrl` is optional.
 
 ## Interface Label Output
 
