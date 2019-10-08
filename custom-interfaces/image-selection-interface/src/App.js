@@ -97,10 +97,13 @@ const renderImage = (selectedImages, setSelectedImages) => (data, i) => {
 };
 
 function App() {
+
+  const [asset, setAsset] = useState(undefined);
+  const [selectedImages, setSelectedImages] = useState([]);
   
   // this will run only once, upon mount
   useEffect(() => {
-    window.Labelbox.currentAsset().subscribe(emittedAsset => {
+    const _handleNewAsset = emittedAsset => {
       if (!emittedAsset) {
         return;
       }
@@ -122,11 +125,11 @@ function App() {
         }
         setAsset(emittedAsset);
       }
-    });
-  }, [])
+    };
 
-  const [asset, setAsset] = useState(undefined);
-  const [selectedImages, setSelectedImages] = useState([]);
+    const subscription = window.Labelbox.currentAsset().subscribe(_handleNewAsset);
+    return () => subscription.unsubscribe();
+  }, [asset])
 
   if (!asset) {
     return <LinearProgress />;
