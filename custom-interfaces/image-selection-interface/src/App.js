@@ -11,7 +11,7 @@ const ImageContainer = styled.div`
   display: flex;
   max-width: 300px;
   max-height: 300px;
-  
+
   &.item {
     border: 5px solid ${props => (props.selected ? "blue" : "transparent")};
     cursor: pointer;
@@ -33,7 +33,11 @@ const ImageContainer = styled.div`
 
 function Image({ src, alt, selected, onClick, isItem }) {
   return (
-    <ImageContainer className={isItem ? 'item' : ''} selected={selected} onClick={onClick}>
+    <ImageContainer
+      className={isItem ? "item" : ""}
+      selected={selected}
+      onClick={onClick}
+    >
       <img src={src} alt={alt} />
     </ImageContainer>
   );
@@ -59,7 +63,6 @@ const Images = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
   padding-top: 5px;
-  border-top: 1px solid lightgrey;
 `;
 
 const renderImage = (selectedImages, setSelectedImages) => (data, i) => {
@@ -173,7 +176,13 @@ function App() {
         <ConfirmationButton
           variant="contained"
           style={{ marginRight: "10px" }}
-          onClick={() => window.Labelbox.skip()}
+          onClick={() =>
+            window.Labelbox.skip().then(() => {
+              if (!asset.label) {
+                window.Labelbox.fetchNextAssetToLabel();
+              }
+            })
+          }
         >
           Skip
         </ConfirmationButton>
