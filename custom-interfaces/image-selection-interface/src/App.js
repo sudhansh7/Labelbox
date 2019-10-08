@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { LinearProgress } from "@material-ui/core";
 import { Toolbar } from "./Toolbar";
 import styled from "styled-components";
@@ -97,28 +97,36 @@ const renderImage = (selectedImages, setSelectedImages) => (data, i) => {
 };
 
 function App() {
-  const [asset, setAsset] = React.useState(undefined);
-  const [selectedImages, setSelectedImages] = React.useState([]);
-  window.Labelbox.currentAsset().subscribe(emittedAsset => {
-    if (!emittedAsset) {
-      return;
-    }
-    const assetIsNew = !asset || emittedAsset.id !== asset.id;
-    const assetHasMoreInfo =
-      asset &&
-      (asset.previous !== emittedAsset.previous ||
-        asset.next !== emittedAsset.next);
-
-    if (assetIsNew || assetHasMoreInfo) {
-      try {
-        const { selectedImages } = JSON.parse(emittedAsset.label);
-        setSelectedImages(selectedImages);
-      } catch {
-        setSelectedImages([]);
+  
+  // this will run only once, upon mount
+  useEffect(() => {
+    window.Labelbox.currentAsset().subscribe(emittedAsset => {
+      if (!emittedAsset) {
+        return;
       }
-      setAsset(emittedAsset);
-    }
-  });
+
+      const assetIsNew = !asset || emittedAsset.id !== asset.id;
+      const assetHasMoreInfo = 
+      asset
+      && (
+        asset.previous !== emittedAsset.previous
+        || asset.next !== emittedAsset.next
+      );
+        
+      if (assetIsNew || assetHasMoreInfo) {
+        try {
+          const { selectedImages } = JSON.parse(emittedAsset.label);
+          setSelectedImages(selectedImages);
+        } catch {
+          setSelectedImages([]);
+        }
+        setAsset(emittedAsset);
+      }
+    });
+  }, [])
+
+  const [asset, setAsset] = useState(undefined);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   if (!asset) {
     return <LinearProgress />;
@@ -147,11 +155,14 @@ function App() {
         }
       />
       <Instructions>{parsedData.instructions}</Instructions>
-      <Image
-        id='instruction-image'
-        alt='instruction image'
-        src={parsedData.instructionImageUrl}
-      />
+      {
+        parsedData.instructionImageUrl &&
+        <Image
+          id='instruction-image'
+          alt='instruction image'
+          src={parsedData.instructionImageUrl}
+        />
+      }
       <Images>
         {parsedData.images.map(renderImage(selectedImages, setSelectedImages))}
       </Images>
