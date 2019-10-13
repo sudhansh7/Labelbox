@@ -14,8 +14,9 @@ URL: https://image-selection.labelbox.com
 [{
   "instructions": "Which cars do you like the most?",
   "referenceImage":"https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg",
+  "externalId":"abadsf99w11",
   "data": [{
-    "externalId": "ab65d5e99w13",
+    "externalId": "ab65d5e99w12",
     "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
   },
   {
@@ -25,7 +26,7 @@ URL: https://image-selection.labelbox.com
 }]
 ```
 
-The field `referenceImage` is optional.
+The field `referenceImage` and outer `externalId` is optional.
 
 ## Interface Label Output
 
