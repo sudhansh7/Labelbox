@@ -11,27 +11,21 @@ URL: https://image-selection.labelbox.com
 ## Interface Input
 
 ```
-{
+[{
   "instructions": "Which cars do you like the most?",
-  "instructionImageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2016-Tesla-Model-X-75d-side-profile.jpg",
-  "images": [
-    {
-      "id": "example-id-1",
-      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2012_tesla_model-s_sedan_signature-performance_rq_oem_2_1280.jpg"
-    },
-    {
-      "id": "example-id-2",
-      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2014_tesla_model-s_sedan_p85_rq_oem_1_1280.jpg"
-    },
-    {
-      "id": "example-id-3",
-      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/2016-Tesla-Model-S-P90D-front-three-quarter.jpg"
-    },
-  ]
-}
+  "referenceImage":"https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg",
+  "data": [{
+    "externalId": "ab65d5e99w13",
+    "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
+  },
+  {
+    "externalId": "abadsf99w13",
+    "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
+  }]
+}]
 ```
 
-The field `instructionsImageUrl` is optional.
+The field `referenceImage` is optional.
 
 ## Interface Label Output
 

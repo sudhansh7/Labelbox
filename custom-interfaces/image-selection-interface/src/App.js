@@ -1,116 +1,108 @@
 import React, { useState, useEffect } from "react";
 import { LinearProgress } from "@material-ui/core";
-import { Toolbar } from "./Toolbar";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import blue from "@material-ui/core/colors/blue";
 
-const ImageContainer = styled.div`
-  display: flex;
-  max-width: 300px;
-  max-height: 300px;
+import { Toolbar } from "./components/Toolbar";
+import Image from './components/Image';
+import JsonUtils from './utils/Json.utils';
 
-  &.item {
-    border: 5px solid ${props => (props.selected ? "blue" : "transparent")};
-    cursor: pointer;
-    :hover {
-      opacity: 0.8;
-      border: 5px solid blue;
-    }
+const SECTION_PADDING = '10px';
+const MAX_BUTTONS_WRAPPER_WIDTH = '240px';
+
+const ButtonsWrapper = styled.div`
+  float: right;
+
+  button + button {
+    margin-left: 10px;
+  }
+`;
+
+const TopWrapper = styled.div`
+  padding: ${SECTION_PADDING};
+  > * {
+    display: inline-block;
+    vertical-align: top;
   }
 
-  &:not(.item) {
+  div.instructions {
+    max-width: calc(100% - ${MAX_BUTTONS_WRAPPER_WIDTH})
+  }
+
+  div.image-wrapper {
+    margin-top: 10px;
+  }
+`;
+
+const ImagesWrapper = styled.div`
+  padding: 5px;
+  border-top: ${props => props.hasReferenceImage ? '1px solid lightgray' : 'none'};
+
+  div.image-wrapper {
     margin: 5px;
-  }
-
-  > img {
-    max-width: 300px;
-    max-height: 300px;
+    display: inline-block;
+    vertical-align: top;
   }
 `;
 
-function Image({ src, alt, selected, onClick, isItem }) {
-  return (
-    <ImageContainer
-      className={isItem ? "item" : ""}
-      selected={selected}
-      onClick={onClick}
-    >
-      <img src={src} alt={alt} />
-    </ImageContainer>
-  );
-}
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue
-  }
-});
 
-const ConfirmationButton = styled(Button)`
-  width: 100px;
-`;
+const renderImages = ({
+  images,
+  selectedImages,
+  toggle,
+  isReview,
+}) => {
 
-const Instructions = styled.div`
-  padding: 10px;
-`;
-
-const Images = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding-top: 5px;
-`;
-
-const renderImage = (selectedImages, setSelectedImages) => (data, i) => {
-  if (!data || !data.id || !data.imageUrl) {
-    return (
+  return images.map(imageData => {
+    if(!imageData || !imageData.externalId || !imageData.imageUrl) return (
       <div>
-        Error: invalid image {JSON.stringify(data)} requires id and imageUrl
+        Error: invalid image {JSON.stringify(imageData)} requires id and imageUrl
       </div>
     );
-  }
-  const toggleImage = () => {
-    const foundIndex = selectedImages.indexOf(data.id);
-    const newSelectedImages =
-      foundIndex > -1
-        ? [
-            ...selectedImages.splice(0, foundIndex),
-            ...selectedImages.splice(foundIndex + 1)
-          ]
-        : [...selectedImages, data.id];
 
-    setSelectedImages(newSelectedImages);
-  };
+    const selected = selectedImages.some(({ externalId }) => imageData.externalId === externalId);
 
-  return (
-    <Image
-      isItem
-      key={i}
-      id={data.id}
-      alt={data.id}
-      src={data.imageUrl}
-      onClick={toggleImage}
-      selected={selectedImages.indexOf(data.id) > -1}
-    />
-  );
+    return (
+      <Image
+        pointer={!isReview}
+        key={imageData.externalId}
+        id={imageData.externalId}
+        alt={imageData.externalId}
+        src={imageData.imageUrl}
+        onClick={() => isReview ? null : toggle(imageData)}
+        selected={selected}
+      />
+    )
+  })
 };
 
-function App() {
-
-  const [asset, setAsset] = useState(undefined);
-  const [selectedImages, setSelectedImages] = useState([]);
+const mountOutput = (selectedImages, parsedData) => {
+  const output = {
+    label: selectedImages,
+  }
   
-  // this will run only once, upon mount
+  if(parsedData.externalId) output.externalId = parsedData.externalId;
+  if(parsedData.referenceImage) output.referenceImage = parsedData.referenceImage;
+  
+  return JsonUtils.ds(selectedImages);
+  
+}
+
+const App = () => {
+
+  const [asset, setAsset] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [isReview, setIsReview] = useState(false);
+
+  useEffect(() => {
+    if(window.top !== window.self) setIsReview(true);
+  }, []);
+  
   useEffect(() => {
     const _handleNewAsset = emittedAsset => {
-      if (!emittedAsset) {
-        return;
-      }
-
+      if (!emittedAsset) return;
+      
       const assetIsNew = !asset || emittedAsset.id !== asset.id;
       const assetHasMoreInfo = 
       asset
@@ -118,12 +110,12 @@ function App() {
         asset.previous !== emittedAsset.previous
         || asset.next !== emittedAsset.next
       );
-        
+      
       if (assetIsNew || assetHasMoreInfo) {
         try {
-          const { selectedImages } = JSON.parse(emittedAsset.label);
-          setSelectedImages(selectedImages);
-        } catch {
+          let { label } = emittedAsset;
+          setSelectedImages(JsonUtils.dp(label));
+        } catch(err) {
           setSelectedImages([]);
         }
         setAsset(emittedAsset);
@@ -134,23 +126,47 @@ function App() {
     return () => subscription.unsubscribe();
   }, [asset])
 
+
+  const toggle = imageData => {
+
+    let newSelectedImages = [...selectedImages];
+
+    // if image isn't selected
+    if(!selectedImages.some(({ externalId }) => externalId === imageData.externalId)) {
+      newSelectedImages.push(imageData);  
+    }
+    else {
+      const index = selectedImages.findIndex(({ externalId }) => externalId === imageData.externalId);
+      newSelectedImages.splice(index, 1);
+    }
+    
+    setSelectedImages(newSelectedImages);
+  };
+  
+  
   if (!asset) {
     return <LinearProgress />;
   }
-
+  
   const parsedData = JSON.parse(asset.data);
-  if (!parsedData || !parsedData.instructions || !parsedData.images) {
+  if (!parsedData || !parsedData.instructions || !parsedData.data) {
     return (
       <div>
-        Error: Input data {asset.data} does not include instructions and images.
+        Error: Input data {asset.data} does not include instructions and data fields.
       </div>
     );
   }
 
+  
+
+  const isEditing = !!asset.createdAt;
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
+
       <Toolbar
-        hasLeft={Boolean(asset.previous)}
+        hasRight
+        hasLeft={!!asset.previous}
         onLeftClick={() =>
           window.Labelbox.setLabelAsCurrentAsset(asset.previous)
         }
@@ -160,49 +176,65 @@ function App() {
             : window.Labelbox.fetchNextAssetToLabel()
         }
       />
-      <Instructions>{parsedData.instructions}</Instructions>
-      {
-        parsedData.instructionImageUrl &&
-        <Image
-          id='instruction-image'
-          alt='instruction image'
-          src={parsedData.instructionImageUrl}
-        />
-      }
-      <Images>
-        {parsedData.images.map(renderImage(selectedImages, setSelectedImages))}
-      </Images>
-      <div style={{ padding: "10px" }}>
-        <ConfirmationButton
-          variant="contained"
-          style={{ marginRight: "10px" }}
-          onClick={() =>
-            window.Labelbox.skip().then(() => {
-              if (!asset.label) {
-                window.Labelbox.fetchNextAssetToLabel();
-              }
-            })
+
+      <TopWrapper>
+        <div className='instructions'>
+          <div dangerouslySetInnerHTML={{ __html: parsedData.instructions }} />
+          {
+            parsedData.referenceImage &&
+            <Image
+              id='reference-image'
+              alt='reference image'
+              src={parsedData.referenceImage}
+            />
           }
-        >
-          Skip
-        </ConfirmationButton>
-        <ConfirmationButton
-          color="primary"
-          variant="contained"
-          onClick={() =>
-            window.Labelbox.setLabelForAsset(
-              JSON.stringify({ selectedImages })
-            ).then(() => {
-              if (!asset.label) {
-                window.Labelbox.fetchNextAssetToLabel();
-              }
-            })
-          }
-        >
-          Submit
-        </ConfirmationButton>
-      </div>
-    </ThemeProvider>
+        </div>
+
+        <ButtonsWrapper>
+
+          <Button
+            id="skip"
+            disabled={isReview}
+            variant="contained"
+            onClick={() =>
+              window.Labelbox.skip().then(() => {
+                if (!asset.label) window.Labelbox.fetchNextAssetToLabel();
+              })
+            }
+          >
+            Skip
+          </Button>
+
+          <Button
+            id="submit"
+            color="primary"
+            disabled={isReview}
+            variant="contained"
+            onClick={() => 
+              window.Labelbox.setLabelForAsset(mountOutput(selectedImages, parsedData))
+              .then(() => {
+                if (!asset.label) window.Labelbox.fetchNextAssetToLabel();
+              })
+              .catch(err => console.error('error in set label for asset: ', err))
+            }
+          >
+            {isEditing ? 'Save' : 'Submit'}
+          </Button>
+
+        </ButtonsWrapper>
+        
+      </TopWrapper>
+
+      <ImagesWrapper hasReferenceImage={!!parsedData.referenceImage}>
+        {renderImages({
+          toggle,
+          selectedImages,
+          images: parsedData.data,
+          isReview,
+        })}
+      </ImagesWrapper>
+
+    </>
   );
 }
 
