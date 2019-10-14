@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { LinearProgress } from "@material-ui/core";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Toolbar } from "./components/Toolbar";
 import Image from './components/Image';
@@ -163,13 +165,12 @@ const App = () => {
 
   return (
     <>
+      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
 
       <Toolbar
         hasRight
         hasLeft={!!asset.previous}
-        onLeftClick={() =>
-          window.Labelbox.setLabelAsCurrentAsset(asset.previous)
-        }
+        onLeftClick={() => window.Labelbox.setLabelAsCurrentAsset(asset.previous)}
         onRightClick={() =>
           asset.next
             ? window.Labelbox.setLabelAsCurrentAsset(asset.next)
@@ -196,11 +197,12 @@ const App = () => {
             id="skip"
             disabled={isReview}
             variant="contained"
-            onClick={() =>
+            onClick={() => {
               window.Labelbox.skip().then(() => {
+                toast('Skipped');
                 if (!asset.label) window.Labelbox.fetchNextAssetToLabel();
               })
-            }
+            }}
           >
             Skip
           </Button>
@@ -214,8 +216,8 @@ const App = () => {
               window.Labelbox.setLabelForAsset(mountOutput(selectedImages, parsedData))
               .then(() => {
                 if (!asset.label) window.Labelbox.fetchNextAssetToLabel();
+                toast(isEditing ? 'Saved' : 'Submitted');
               })
-              .catch(err => console.error('error in set label for asset: ', err))
             }
           >
             {isEditing ? 'Save' : 'Submit'}
