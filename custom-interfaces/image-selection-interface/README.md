@@ -34,7 +34,7 @@ The field `instructions` can receive either a HTML or a string.
 ```
 {
   "referenceImage":"https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg",
-  "externalId": "abadsf99w11"
+  "externalId": "abadsf99w11",
   "label": [
     {
       "externalId": "ab65d5e99w12",
