@@ -12,7 +12,7 @@ URL: https://image-selection.labelbox.com
 
 ```
 [{
-  "instructions": "Which cars do you like the most?",
+  "instructions": "<p>Which cars do you like the most?</p>",
   "referenceImage":"https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg",
   "externalId":"abadsf99w11",
   "data": [{
@@ -26,15 +26,26 @@ URL: https://image-selection.labelbox.com
 }]
 ```
 
-The field `referenceImage` and outer `externalId` is optional.
+The fields `referenceImage` and outer `externalId` is optional.
+The field `instructions` can receive either a HTML or a string.
 
 ## Interface Label Output
 
 ```
 {
-  "selectedImages": [
-    "image-one-database-id",
-    "image-two-database-id"
-  ]
+  "referenceImage":"https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg",
+  "externalId": "abadsf99w11"
+  "label": [
+    {
+      "externalId": "ab65d5e99w12",
+      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
+    },
+    {
+      "externalId": "ab65d5e99w13",
+      "imageUrl": "https://storage.googleapis.com/labelbox-example-datasets/tesla/104836109-p100d-review-5.1910x1000.jpeg"
+    }
+  ],
 }
 ```
+
+The fields `referenceImage` and outer `externalId` will exist only if they existed in the respective input.
