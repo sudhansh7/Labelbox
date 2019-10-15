@@ -2,13 +2,13 @@
 
 [![Video Tutorial](./video.png)](https://www.loom.com/share/5b53617b027d4ef382d56a8dcc6ca5f1)
 
-## Interface Setup
+## Editor Setup
 
 URL: https://image-selection.labelbox.com
 
-![Interface Setup](./interface.png)
+Follow the directions to install the editor here: https://labelbox.com/docs/custom-interface-sdk/custom-interfaces
 
-## Interface Input
+## Editor Input
 
 ```
 [{
@@ -29,7 +29,7 @@ URL: https://image-selection.labelbox.com
 The fields `referenceImage` and outer `externalId` is optional.
 The field `instructions` can receive either a HTML or a string.
 
-## Interface Label Output
+## Editor Label Output
 
 ```
 {
