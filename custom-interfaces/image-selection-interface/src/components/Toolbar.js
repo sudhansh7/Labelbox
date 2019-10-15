@@ -21,14 +21,14 @@ const Right = styled(ChevronRightIcon)`
   ${props => (props.disabled ? `opacity: 0.2` : "")}
 `;
 
-export function Toolbar({ hasLeft, onLeftClick, onRightClick }) {
+export function Toolbar({ hasLeft, hasRight, onLeftClick, onRightClick }) {
   return (
     <ToolbarContainer>
-      <Left disabled={!hasLeft} onClick={hasLeft ? onLeftClick : () => {}} />
+      <Left disabled={!hasLeft} onClick={() => hasLeft ? onLeftClick() : null} />
       <div style={{ marginLeft: "10px", marginRight: "10px" }}>
         Choose Images
       </div>
-      <Right onClick={onRightClick} />
+      <Right disabled={!hasRight} onClick={() => hasRight ? onRightClick() : null} />
     </ToolbarContainer>
   );
 }
